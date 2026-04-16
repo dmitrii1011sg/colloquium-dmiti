@@ -16,7 +16,7 @@
 1. Клонируйте репозиторий
 
 ```powershell
-git clone [ссылка_на_репозиторий]
+git clone https://github.com/dmitrii1011sg/colloquium-dmiti
 ```
 
 2. Создайте и активируйте виртуальное окружение
