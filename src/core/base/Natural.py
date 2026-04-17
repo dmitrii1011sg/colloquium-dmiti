@@ -1,4 +1,4 @@
-##ЖуковАлександр
+##ЖуковАлександр5381
 
 class Natural:
     """
@@ -12,7 +12,7 @@ class Natural:
         length (int): Количество разрядов числа.
     """
 
-    def init(self, digits: list[int], need_reverse: bool = False) -> None:
+    def __init__(self, digits: list[int], need_reverse: bool = False) -> None:
         """
         Инициализация натурального числа из массива цифр.
 
@@ -36,6 +36,7 @@ class Natural:
         self.digits: list[int] = normalized
         self.length: int = len(normalized)
 
+    @classmethod
     def from_str(cls, value: str, need_reverse: bool = False) -> Natural:
         """
         Создание натурального числа из строки.
@@ -60,8 +61,8 @@ class Natural:
             digits.reverse()
         return cls(digits, need_reverse=False)
 
-
-    def from_int(cls, value: int, need_reverse: bool = False) -> Natural:
+    @classmethod
+    def from_int(cls, value: int) -> Natural:
         """
         Создание натурального числа из int.
 
@@ -91,6 +92,7 @@ class Natural:
             value //= 10
         return cls(digits, need_reverse=False)
 
+    @staticmethod
     def _strip_leading_zeros(digits: list[int]) -> list[int]:
         """
         Удаление ведущих нулей из массива (находятся в конце).
@@ -106,7 +108,7 @@ class Natural:
             result.pop()
         return result
 
-    def str(self) -> str:
+    def __str__(self) -> str:
         """
         Строковое представление числа.
 
@@ -115,7 +117,7 @@ class Natural:
         """
         return "".join(str(d) for d in reversed(self.digits))
 
-    def repr(self) -> str:
+    def __repr__(self) -> str:
         """
         Отладочное представление.
 
