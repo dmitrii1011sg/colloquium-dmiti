@@ -17,7 +17,7 @@ class HelpDialog(ft.AlertDialog):
                 ft.TextButton(
                     "Открыть GitHub",
                     icon=ft.Icons.OPEN_IN_NEW,
-                    url="https://github.com/",
+                    url="https://github.com/dmitrii1011sg/colloquium-dmiti",
                     style=ft.ButtonStyle(mouse_cursor=ft.MouseCursor.CLICK),
                 ),
                 ft.Divider(height=10, color=ft.Colors.TRANSPARENT),
