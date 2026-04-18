@@ -1,3 +1,5 @@
+# Дмитрий Лопатин 5381
+
 from core.base.Natural import Natural
 
 def MUL_ND_N(a: Natural, d: Natural) -> Natural:
@@ -6,7 +8,7 @@ def MUL_ND_N(a: Natural, d: Natural) -> Natural:
 
     Args:
          a (Natural): Натуральное число.
-         b (Natural): Цифра, на которую умножаем.
+         d (Natural): Цифра, на которую умножаем.
 
     Raises:
         ValueError: Параметры не соответствуют типам.
@@ -21,18 +23,16 @@ def MUL_ND_N(a: Natural, d: Natural) -> Natural:
     if d.length > 1:
         raise ValueError("Invalid value")
 
-    a_cpy = a.digits
-    d_cpy = d.digits[0]
     carry = 0
     res = []
 
-    if d_cpy == 0:
+    if d.digits[0] == 0:
         return Natural([0])
-    if a.length == 1 and a_cpy[0] == 0:
+    if a.length == 1 and a.digits[0] == 0:
         return Natural([0])
 
-    for digit in a_cpy:
-        total = digit * d_cpy + carry
+    for digit in a.digits:
+        total = digit * d.digits[0] + carry
         res.append(total % 10)
         carry = total // 10
     if carry > 0:
