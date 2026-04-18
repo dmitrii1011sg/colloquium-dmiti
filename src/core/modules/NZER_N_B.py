@@ -1,5 +1,5 @@
 from core.base.Natural import Natural
-##ЖуковАлександр5381
+# Жуков Александр 5381
 
 def NZER_N_B(n: Natural) -> bool:
     """
