@@ -1,4 +1,5 @@
-##ЖуковАлександр5381
+# Жуков Александр 5381
+
 
 class Natural:
     """
@@ -37,7 +38,7 @@ class Natural:
         self.length: int = len(normalized)
 
     @classmethod
-    def from_str(cls, value: str, need_reverse: bool = False) -> Natural:
+    def from_str(cls, value: str, need_reverse: bool = False) -> "Natural":
         """
         Создание натурального числа из строки.
 
@@ -62,7 +63,7 @@ class Natural:
         return cls(digits, need_reverse=False)
 
     @classmethod
-    def from_int(cls, value: int) -> Natural:
+    def from_int(cls, value: int) -> "Natural":
         """
         Создание натурального числа из int.
 
@@ -77,8 +78,6 @@ class Natural:
             Natural: Натуральное число.
         """
         if not isinstance(value, int) or isinstance(value, bool):
-            raise ValueError("Invalid value")
-        if not isinstance(need_reverse, bool):
             raise ValueError("Invalid value")
         if value < 0:
             raise ValueError("Invalid value")
