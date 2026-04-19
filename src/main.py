@@ -8,8 +8,10 @@ def main(page: ft.Page):
 
     page.window.min_width = 700
     page.window.min_height = 800
+    page.window.max_width = 800
+    page.window.max_height = 900
 
-    page.window.width = 1100
+    page.window.width = 700
     page.window.height = 800
 
     page.padding = 0
