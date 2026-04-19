@@ -1,5 +1,5 @@
 from core.base.Natural import Natural
-
+##ЖуковАлександр5381
 
 def COM_NN_D(a: Natural, b: Natural) -> int:
     """
