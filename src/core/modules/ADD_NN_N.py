@@ -19,10 +19,7 @@ def ADD_NN_N(a: Natural, b: Natural) -> Natural:
     if not isinstance(a, Natural) or not isinstance(b, Natural):
         raise ValueError("Invalid value")
 
-    if COM_NN_D(a, b) == 1:
-        bigger, smaller = b, a
-    else:
-        bigger, smaller = a, b
+    bigger, smaller = (b, a) if COM_NN_D(a, b) == 1 else (a, b)
 
     result_digits: list[int] = []
     carry = 0
