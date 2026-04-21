@@ -124,3 +124,18 @@ class Natural:
             str: Строка вида "Natural(1234)".
         """
         return f"Natural({self})"
+
+    def __int__(self) -> int:
+        """
+        Преобразование натурального числа в целое число.
+
+        Returns:
+            int: Целочисленное представление числа.
+        """
+        int_self = 0
+
+        for digit in range(self.length - 1, -1, -1):
+            int_self *= 10
+            int_self += self.digits[digit]
+        
+        return int_self
