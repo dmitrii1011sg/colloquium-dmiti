@@ -17,8 +17,8 @@ class NModule(ft.Column):
             "N-1: Сравнение чисел (COM_NN_D)": COM_NN_D,
             "N-2: Проверка на ноль (NZER_N_B)": NZER_N_B,
             "N-3: Добавить 1 числу (ADD_1N_N)": ADD_1N_N,
-	    "N-4: Сложение чисел (ADD_NN_N)": ADD_NN_N,
-	    "N-5: Вычитание из большего меньшее (SUB_NN_N)": SUB_NN_N,
+            "N-4: Сложение чисел (ADD_NN_N)": ADD_NN_N,
+            "N-5: Вычитание из большего меньшее (SUB_NN_N)": SUB_NN_N,
             "N-6: Умножение на цифру (MUL_ND_N)": MUL_ND_N,
             "N-7: Умножение на 10^k (MUL_Nk_N)": MUL_Nk_N,
         }
