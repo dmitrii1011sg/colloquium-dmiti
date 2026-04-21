@@ -1,5 +1,6 @@
 import flet as ft
 from core.modules.ADD_1N_N import ADD_1N_N
+from core.modules.SUB_NN_N import SUB_NN_N
 from core.modules.ADD_NN_N import ADD_NN_N
 from core.modules.COM_NN_D import COM_NN_D
 from core.modules.MUL_ND_N import MUL_ND_N
