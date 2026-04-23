@@ -7,6 +7,7 @@ from core.modules.MUL_ND_N import MUL_ND_N
 from core.modules.MUL_Nk_N import MUL_Nk_N
 from core.modules.MUL_NN_N import MUL_NN_N
 from core.modules.NZER_N_B import NZER_N_B
+from core.modules.SUB_NDN_N import SUB_NDN_N
 from ui.components.forms.dynamic_func_form import DynamicFuncForm
 
 
@@ -24,6 +25,7 @@ class NModule(ft.Column):
             "N-6: Умножение на цифру (MUL_ND_N)": MUL_ND_N,
             "N-7: Умножение на 10^k (MUL_Nk_N)": MUL_Nk_N,
             "N-8: Умножение натуральных чисел (MUL_NN_N)": MUL_NN_N,
+            "N-9: Вычитание числа, умноженного на цифру (SUB_NDN_N)": SUB_NDN_N,
         }
 
         self.controls = [
