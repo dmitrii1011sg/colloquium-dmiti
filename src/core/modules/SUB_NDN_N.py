@@ -27,6 +27,9 @@ def SUB_NDN_N(a: Natural, b: Natural, d: Natural):
     if not (isinstance(a, Natural) and isinstance(b, Natural)
             and isinstance(d, Natural)):
         raise ValueError("Invalid Value")
+    
+    if d.length > 1:
+        raise ValueError("Invalid Value")
 
     composition = MUL_ND_N(b, d)  # Произведение второго числа на цифру
 
