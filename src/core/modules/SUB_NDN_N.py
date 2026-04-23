@@ -1,0 +1,38 @@
+from core.base.Natural import Natural
+from core.modules.SUB_NN_N import SUB_NN_N
+from core.modules.MUL_ND_N import MUL_ND_N
+from core.modules.COM_NN_D import COM_NN_D
+# Жулин Максим 5381
+
+
+def SUB_NDN_N(a: Natural, b: Natural, d: Natural):
+    """
+    Вычитание из одного натурального числа другого натурального числа,
+    умноженного на цифру для случая с неотрицательным результатом.
+
+    Первое число должно быть больше или равно второму числу, умноженному
+    на цифру.
+
+    Args:
+        a (Natural): Уменьшаемое
+        b (Natural): Неполное вычитаемое
+        d (Natural): Цифра, на которую умножаем
+
+    Raises:
+        ValueError: Параметры не соответствуют типам или a < b * d
+
+    Returns:
+        Natural: Неотрицательное число, равное a - (b * d)
+    """
+    if not (isinstance(a, Natural) and isinstance(b, Natural)
+            and isinstance(d, Natural)):
+        raise ValueError("Invalid Value")
+
+    composition = MUL_ND_N(b, d)  # Произведение второго числа на цифру
+
+    if COM_NN_D(a, composition) == 1:
+        raise ValueError("Invalid Value")
+
+    result = SUB_NN_N(a, composition)
+
+    return result
