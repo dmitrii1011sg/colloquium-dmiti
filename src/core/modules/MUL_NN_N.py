@@ -28,7 +28,9 @@ def MUL_NN_N(a: Natural, b: Natural) -> Natural:
     res = Natural([0])
 
     for i, digit in enumerate(b.digits):
-        natural_digit = Natural([digit], need_reverse=False)
+        if digit == 0:
+            continue
+        natural_digit = Natural.from_int(digit)
         tmp = MUL_Nk_N(MUL_ND_N(a, natural_digit), Natural.from_int(i))
         res = ADD_NN_N(res, tmp)
 
