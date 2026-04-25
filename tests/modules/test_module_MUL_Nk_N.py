@@ -1,4 +1,5 @@
 import random
+
 import pytest
 from core.base.Natural import Natural
 from core.modules.MUL_Nk_N import MUL_Nk_N
@@ -44,7 +45,7 @@ def test_mul_nk_n_random(iteration):
     a = Natural.from_int(val)
     k = Natural.from_int(k_val)
 
-    expected = val * (10 ** k_val)
+    expected = val * (10**k_val)
     result = MUL_Nk_N(a, k)
 
     assert str(result) == str(expected)

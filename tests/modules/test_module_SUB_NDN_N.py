@@ -1,4 +1,5 @@
 import random
+
 import pytest
 from core.base.Natural import Natural
 from core.modules.SUB_NDN_N import SUB_NDN_N

@@ -1,6 +1,8 @@
 from core.base.Natural import Natural
 from core.modules.COM_NN_D import COM_NN_D
+
 # Жуков Александр 5381
+
 
 def SUB_NN_N(a: Natural, b: Natural) -> Natural:
     """

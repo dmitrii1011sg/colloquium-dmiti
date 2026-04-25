@@ -1,4 +1,5 @@
 import random
+
 import pytest
 from core.base.Natural import Natural
 from core.modules.NZER_N_B import NZER_N_B

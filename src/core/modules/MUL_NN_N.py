@@ -1,9 +1,10 @@
-# Дмитрий Лопатин 5381
-
 from core.base.Natural import Natural
 from core.modules.ADD_NN_N import ADD_NN_N
 from core.modules.MUL_ND_N import MUL_ND_N
 from core.modules.MUL_Nk_N import MUL_Nk_N
+
+# Дмитрий Лопатин 5381
+
 
 def MUL_NN_N(a: Natural, b: Natural) -> Natural:
     """

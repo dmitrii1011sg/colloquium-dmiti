@@ -1,5 +1,7 @@
 from core.base.Natural import Natural
+
 # Жуков Александр 5381
+
 
 def NZER_N_B(n: Natural) -> bool:
     """

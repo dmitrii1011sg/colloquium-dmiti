@@ -1,4 +1,5 @@
 import random
+
 import pytest
 from core.base.Natural import Natural
 from core.modules.DIV_NN_N import DIV_NN_N

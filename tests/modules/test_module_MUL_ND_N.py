@@ -1,10 +1,12 @@
 import random
-import pytest
 import sys
+
+import pytest
 from core.base.Natural import Natural
 from core.modules.MUL_ND_N import MUL_ND_N
 
 sys.set_int_max_str_digits(20000)
+
 
 def test_mul_nd_n():
     n1 = Natural.from_str("123")
@@ -59,4 +61,4 @@ def test_invalid_input():
         MUL_ND_N(n1, n2)
 
     with pytest.raises(ValueError, match="Invalid value"):
-        MUL_ND_N(n1, "string") # type: ignore
+        MUL_ND_N(n1, "string")  # type: ignore

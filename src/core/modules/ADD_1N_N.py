@@ -1,5 +1,7 @@
 from core.base.Natural import Natural
+
 # Жуков Александр 5381
+
 
 def ADD_1N_N(n: Natural) -> Natural:
     """

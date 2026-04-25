@@ -1,6 +1,7 @@
+from core.base.Natural import Natural
+
 # Дмитрий Лопатин 5381
 
-from core.base.Natural import Natural
 
 def MUL_ND_N(a: Natural, d: Natural) -> Natural:
     """
@@ -39,4 +40,3 @@ def MUL_ND_N(a: Natural, d: Natural) -> Natural:
         res.append(carry)
 
     return Natural(res, need_reverse=False)
-

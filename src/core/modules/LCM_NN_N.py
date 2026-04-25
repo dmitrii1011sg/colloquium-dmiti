@@ -28,6 +28,4 @@ def LCM_NN_N(a: Natural, b: Natural):
     if not (NZER_N_B(a) and NZER_N_B(b)):
         raise ValueError("Invalid value")
 
-    # НОК(a, b) = (a * b) / НОД(a, b)
-
     return DIV_NN_N(MUL_NN_N(a, b), GCF_NN_N(a, b))

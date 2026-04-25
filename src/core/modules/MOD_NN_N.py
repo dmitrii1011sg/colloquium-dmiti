@@ -3,7 +3,9 @@ from core.modules.COM_NN_D import COM_NN_D
 from core.modules.DIV_NN_N import DIV_NN_N
 from core.modules.MUL_NN_N import MUL_NN_N
 from core.modules.SUB_NN_N import SUB_NN_N
+
 # Жуков Александр 5381
+
 
 def MOD_NN_N(a: Natural, b: Natural) -> Natural:
     """

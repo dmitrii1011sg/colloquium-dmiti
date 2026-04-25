@@ -1,7 +1,8 @@
 from core.base.Natural import Natural
-from core.modules.SUB_NN_N import SUB_NN_N
-from core.modules.MUL_ND_N import MUL_ND_N
 from core.modules.COM_NN_D import COM_NN_D
+from core.modules.MUL_ND_N import MUL_ND_N
+from core.modules.SUB_NN_N import SUB_NN_N
+
 # Жулин Максим 5381
 
 
@@ -24,14 +25,15 @@ def SUB_NDN_N(a: Natural, b: Natural, d: Natural):
     Returns:
         Natural: Неотрицательное число, равное a - (b * d)
     """
-    if not (isinstance(a, Natural) and isinstance(b, Natural)
-            and isinstance(d, Natural)):
+    if not (
+        isinstance(a, Natural) and isinstance(b, Natural) and isinstance(d, Natural)
+    ):
         raise ValueError("Invalid Value")
-    
+
     if d.length > 1:
         raise ValueError("Invalid Value")
 
-    composition = MUL_ND_N(b, d)  # Произведение второго числа на цифру
+    composition = MUL_ND_N(b, d)
 
     if COM_NN_D(a, composition) == 1:
         raise ValueError("Invalid Value")

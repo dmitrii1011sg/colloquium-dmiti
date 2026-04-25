@@ -1,6 +1,7 @@
+from core.base.Natural import Natural
+
 # Дмитрий Лопатин 5381
 
-from core.base.Natural import Natural
 
 def MUL_Nk_N(a: Natural, k: Natural) -> Natural:
     """
@@ -22,7 +23,7 @@ def MUL_Nk_N(a: Natural, k: Natural) -> Natural:
     if not isinstance(a, Natural) or not isinstance(k, Natural):
         raise ValueError("Invalid Value")
 
-    zeros = int(str(k)) 
+    zeros = int(str(k))
 
     if (a.length == 1 and a.digits[0] == 0) or zeros == 0:
         return Natural(a.digits.copy(), need_reverse=False)

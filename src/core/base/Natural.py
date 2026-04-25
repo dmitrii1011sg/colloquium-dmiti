@@ -137,5 +137,5 @@ class Natural:
         for digit in range(self.length - 1, -1, -1):
             int_self *= 10
             int_self += self.digits[digit]
-        
+
         return int_self

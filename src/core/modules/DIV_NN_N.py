@@ -1,10 +1,12 @@
 from core.base.Natural import Natural
+from core.modules.ADD_NN_N import ADD_NN_N
 from core.modules.COM_NN_D import COM_NN_D
 from core.modules.DIV_NN_Dk import DIV_NN_Dk
-from core.modules.SUB_NDN_N import SUB_NDN_N
-from core.modules.ADD_NN_N import ADD_NN_N
 from core.modules.MUL_Nk_N import MUL_Nk_N
+from core.modules.SUB_NDN_N import SUB_NDN_N
+
 # Жуков Александр 5381
+
 
 def DIV_NN_N(a: Natural, b: Natural) -> Natural:
     """

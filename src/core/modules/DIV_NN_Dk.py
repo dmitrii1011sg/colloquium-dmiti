@@ -1,8 +1,9 @@
-# Дмитрий Лопатин 5381
 from core.base.Natural import Natural
 from core.modules.COM_NN_D import COM_NN_D
 from core.modules.MUL_ND_N import MUL_ND_N
 from core.modules.MUL_Nk_N import MUL_Nk_N
+
+# Дмитрий Лопатин 5381
 
 
 def DIV_NN_Dk(a: Natural, b: Natural) -> tuple[int, int]:
