@@ -5,6 +5,7 @@ from core.modules.COM_NN_D import COM_NN_D
 from core.modules.DIV_NN_Dk import DIV_NN_Dk
 from core.modules.DIV_NN_N import DIV_NN_N
 from core.modules.GCF_NN_N import GCF_NN_N
+from core.modules.LCM_NN_N import LCM_NN_N
 from core.modules.MOD_NN_N import MOD_NN_N
 from core.modules.MUL_ND_N import MUL_ND_N
 from core.modules.MUL_Nk_N import MUL_Nk_N
@@ -34,6 +35,7 @@ class NModule(ft.Column):
             "N-11: Неполное частное от деления(DIV_NN_N)": DIV_NN_N,
             "N-12: Остаток от деления натуральных(MOD_NN_N)": MOD_NN_N,
             "N-13: НОД натуральных чисел(GCF_NN_N)": GCF_NN_N,
+            "N-14: НОК натуральных чисел(LCM_NN_N)": LCM_NN_N,
         }
 
         self.controls = [
