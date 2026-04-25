@@ -3,7 +3,7 @@
 [![Python Version](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
 [![Framework](https://img.shields.io/badge/UI-Flet-red.svg)](https://flet.dev/)
 
-Проект разработан в рамках [коллоквиума](https://docs.google.com/document/d/1Dv_6AIhxg_3ezu6VMcEnMpyfRzgym9l8PmE4ULGfjgM/edit?tab=t.0) по дисциплине **«Дискретная математика и теория алгоритмов» (ДМиТИ)**.
+Проект разработан в рамках [коллоквиума](https://docs.google.com/document/d/1Dv_6AIhxg_3ezu6VMcEnMpyfRzgym9l8PmE4ULGfjgM/edit?tab=t.0) по дисциплине **«Дискретная математика и теоретическая информатика» (ДМиТИ)**.
 
 ## 📖 Описание
 
