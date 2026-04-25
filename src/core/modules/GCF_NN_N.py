@@ -26,17 +26,17 @@ def GCF_NN_N(a: Natural, b: Natural) -> Natural:
     if not (NZER_N_B(a) and NZER_N_B(b)):
         raise ValueError("Invalid value")
 
+    # техдолг: разобраться с равенствами
+
     if COM_NN_D(a, b) == 0:
         return a
 
     if COM_NN_D(a, b) == 1:
         a, b = b, a
 
-    remainder = MOD_NN_N(a, b)  # остаток
+    n1, n2 = a, b
 
-    while NZER_N_B(remainder) != 0:
-        a = b
-        b = remainder
-        remainder = MOD_NN_N(a, b)
+    while NZER_N_B(n2):
+        n1, n2 = n2, MOD_NN_N(n1, n2)
 
-    return b
+    return n1
