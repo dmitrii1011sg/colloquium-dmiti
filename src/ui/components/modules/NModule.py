@@ -1,11 +1,11 @@
 import flet as ft
-from core.modules.MOD_NN_N import MOD_NN_N
-from core.modules.DIV_NN_N import DIV_NN_N
 from core.modules.ADD_1N_N import ADD_1N_N
-from core.modules.SUB_NN_N import SUB_NN_N
 from core.modules.ADD_NN_N import ADD_NN_N
 from core.modules.COM_NN_D import COM_NN_D
 from core.modules.DIV_NN_Dk import DIV_NN_Dk
+from core.modules.DIV_NN_N import DIV_NN_N
+from core.modules.GCF_NN_N import GCF_NN_N
+from core.modules.MOD_NN_N import MOD_NN_N
 from core.modules.MUL_ND_N import MUL_ND_N
 from core.modules.MUL_Nk_N import MUL_Nk_N
 from core.modules.MUL_NN_N import MUL_NN_N
@@ -31,8 +31,9 @@ class NModule(ft.Column):
             "N-8: Умножение натуральных чисел (MUL_NN_N)": MUL_NN_N,
             "N-9: Вычитание числа, умноженного на цифру (SUB_NDN_N)": SUB_NDN_N,
             "N-10: Вычисление первой цифры деления (DIV_NN_Dk)": DIV_NN_Dk,
-	        "N-11: Неполное частное от деления(DIV_NN_N)": DIV_NN_N,
-	        "N-12: Остаток от деления натуральных(MOD_NN_N)": MOD_NN_N,
+            "N-11: Неполное частное от деления(DIV_NN_N)": DIV_NN_N,
+            "N-12: Остаток от деления натуральных(MOD_NN_N)": MOD_NN_N,
+            "N-13: НОД натуральных чисел(GCF_NN_N)": GCF_NN_N,
         }
 
         self.controls = [
