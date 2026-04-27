@@ -2,7 +2,7 @@ import random
 
 import pytest
 from core.base.Natural import Natural
-from core.modules.SUB_NDN_N import SUB_NDN_N
+from core.modules.NModule.SUB_NDN_N import SUB_NDN_N
 
 
 def test_SUB_NDN_N():

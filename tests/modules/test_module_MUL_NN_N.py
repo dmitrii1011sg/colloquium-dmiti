@@ -2,7 +2,7 @@ import random
 
 import pytest
 from core.base.Natural import Natural
-from core.modules.MUL_NN_N import MUL_NN_N
+from core.modules.NModule.MUL_NN_N import MUL_NN_N
 
 
 def test_mul_nn_n():
@@ -121,7 +121,7 @@ def test_mul_nn_n_associative():
 
 def test_mul_nn_n_distributive():
     """Проверка дистрибутивности: a * (b + c) == a * b + a * c"""
-    from core.modules.ADD_NN_N import ADD_NN_N
+    from core.modules.NModule.ADD_NN_N import ADD_NN_N
 
     a = Natural.from_str("12")
     b = Natural.from_str("34")

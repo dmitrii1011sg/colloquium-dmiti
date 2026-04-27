@@ -3,7 +3,7 @@ from math import gcd
 
 import pytest
 from core.base.Natural import Natural
-from core.modules.GCF_NN_N import GCF_NN_N
+from core.modules.NModule.GCF_NN_N import GCF_NN_N
 
 
 def test_GCF_NN_N():

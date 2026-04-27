@@ -2,7 +2,7 @@ import random
 
 import pytest
 from core.base.Natural import Natural
-from core.modules.COM_NN_D import COM_NN_D
+from core.modules.NModule.COM_NN_D import COM_NN_D
 
 
 def test_com_nn_d():

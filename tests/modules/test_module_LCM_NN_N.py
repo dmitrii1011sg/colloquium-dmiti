@@ -3,7 +3,7 @@ from math import lcm
 
 import pytest
 from core.base.Natural import Natural
-from core.modules.LCM_NN_N import LCM_NN_N
+from core.modules.NModule.LCM_NN_N import LCM_NN_N
 
 
 def test_LCM_NN_N():

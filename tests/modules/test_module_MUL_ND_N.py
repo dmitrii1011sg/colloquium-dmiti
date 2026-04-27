@@ -3,7 +3,7 @@ import sys
 
 import pytest
 from core.base.Natural import Natural
-from core.modules.MUL_ND_N import MUL_ND_N
+from core.modules.NModule.MUL_ND_N import MUL_ND_N
 
 sys.set_int_max_str_digits(20000)
 

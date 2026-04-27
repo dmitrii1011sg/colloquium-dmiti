@@ -1,8 +1,8 @@
 from core.base.Natural import Natural
-from core.modules.DIV_NN_N import DIV_NN_N
-from core.modules.GCF_NN_N import GCF_NN_N
-from core.modules.MUL_NN_N import MUL_NN_N
-from core.modules.NZER_N_B import NZER_N_B
+from core.modules.NModule.DIV_NN_N import DIV_NN_N
+from core.modules.NModule.GCF_NN_N import GCF_NN_N
+from core.modules.NModule.MUL_NN_N import MUL_NN_N
+from core.modules.NModule.NZER_N_B import NZER_N_B
 
 # Жулин Максим 5381
 

@@ -1,7 +1,7 @@
 from core.base.Natural import Natural
-from core.modules.COM_NN_D import COM_NN_D
-from core.modules.MUL_ND_N import MUL_ND_N
-from core.modules.SUB_NN_N import SUB_NN_N
+from core.modules.NModule.COM_NN_D import COM_NN_D
+from core.modules.NModule.MUL_ND_N import MUL_ND_N
+from core.modules.NModule.SUB_NN_N import SUB_NN_N
 
 # Жулин Максим 5381
 

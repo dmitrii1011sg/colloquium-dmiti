@@ -2,7 +2,7 @@ import random
 
 import pytest
 from core.base.Natural import Natural
-from core.modules.SUB_NN_N import SUB_NN_N
+from core.modules.NModule.SUB_NN_N import SUB_NN_N
 
 
 def test_SUB_NN_N():
