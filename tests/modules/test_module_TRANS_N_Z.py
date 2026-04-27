@@ -1,9 +1,9 @@
 import random
-import pytest
 
-from core.base.Natural import Natural
-from core.modules.TRANS_N_Z import TRANS_N_Z
+import pytest
 from core.base.Integer import Integer
+from core.base.Natural import Natural
+from core.modules.ZModule.TRANS_N_Z import TRANS_N_Z
 
 
 def test_trans_n_z():

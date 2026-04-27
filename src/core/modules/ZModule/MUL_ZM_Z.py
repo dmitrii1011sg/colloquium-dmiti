@@ -3,7 +3,7 @@ from core.base.Integer import Integer
 # Чугунников Валерий 5382
 
 
-def MUL_ZM_Z(n : Integer) -> Integer:
+def MUL_ZM_Z(n: Integer) -> Integer:
     """
     Умножение целого числа на -1
 
@@ -20,7 +20,8 @@ def MUL_ZM_Z(n : Integer) -> Integer:
     if not isinstance(n, Integer):
         raise ValueError("Invalid value")
 
-    if n.sign == 1:
-        return Integer(n.number, sign = 0)
-    else:
-        return Integer(n.number, sign = 1)
+    if n.number.length == 1 and n.number.digits[0] == 0:
+        return Integer(n.number, sign=0)
+
+    new_sign = 1 if n.sign == 0 else 0
+    return Integer(n.number, sign=new_sign)

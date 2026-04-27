@@ -2,7 +2,7 @@ import random
 
 import pytest
 from core.base.Natural import Natural
-from core.modules.MOD_NN_N import MOD_NN_N
+from core.modules.NModule.MOD_NN_N import MOD_NN_N
 
 
 def test_MOD_NN_N():

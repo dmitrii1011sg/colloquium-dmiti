@@ -4,7 +4,7 @@ from core.base.Natural import Natural
 # Чугунников Валерий 5382
 
 
-def ABS_Z_N(n : Integer) -> Natural:
+def ABS_Z_N(n: Integer) -> Natural:
     """
     Нахождение абсолютной величины числа
 

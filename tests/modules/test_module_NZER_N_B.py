@@ -2,7 +2,7 @@ import random
 
 import pytest
 from core.base.Natural import Natural
-from core.modules.NZER_N_B import NZER_N_B
+from core.modules.NModule.NZER_N_B import NZER_N_B
 
 
 def test_nzer_n_b():

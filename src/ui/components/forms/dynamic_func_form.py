@@ -3,6 +3,7 @@ import threading
 import time
 
 import flet as ft
+from core.base.Integer import Integer
 from core.base.Natural import Natural
 
 
@@ -241,6 +242,8 @@ class DynamicFuncForm(ft.Column):
             return Natural.from_str(value)
         elif expected_type == int:
             return int(value)
+        elif expected_type == Integer:
+            return Integer.from_str(value)
 
         return value
 

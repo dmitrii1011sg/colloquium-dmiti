@@ -1,8 +1,8 @@
 import random
-import pytest
 
+import pytest
 from core.base.Integer import Integer
-from core.modules.MUL_ZM_Z import MUL_ZM_Z
+from core.modules.ZModule.MUL_ZM_Z import MUL_ZM_Z
 
 
 def test_mul_zm_z():
@@ -16,10 +16,10 @@ def test_mul_zm_z():
 
 @pytest.mark.parametrize("iteration", range(5))
 def test_mul_zm_z_random(iteration):
-    val = random.randint(-10**3, 10**50)
+    val = random.randint(-(10**3), 10**50)
     n = Integer.from_int(val)
     result = MUL_ZM_Z(n)
-    assert str(result) == str(-1*val)
+    assert str(result) == str(-1 * val)
 
 
 def test_mul_zm_z_huge_numbers():

@@ -1,8 +1,8 @@
 import random
-import pytest
 
+import pytest
 from core.base.Integer import Integer
-from core.modules.POZ_Z_D import POZ_Z_D
+from core.modules.ZModule.POZ_Z_D import POZ_Z_D
 
 
 def test_poz_z_d():
@@ -13,9 +13,10 @@ def test_poz_z_d():
     assert str(POZ_Z_D(n2)) == "1"
     assert str(POZ_Z_D(n3)) == "0"
 
+
 @pytest.mark.parametrize("iteration", range(5))
 def test_poz_z_d_random(iteration):
-    val = random.randint(-10**3, 10**50)
+    val = random.randint(-(10**3), 10**50)
     n = Integer.from_int(val)
     result = POZ_Z_D(n)
     if val == 0:
@@ -24,6 +25,7 @@ def test_poz_z_d_random(iteration):
         assert str(result) == "2"
     else:
         assert str(result) == "1"
+
 
 def test_poz_z_d_huge_numbers():
     base_str = "9" * 10000

@@ -2,7 +2,7 @@ import random
 
 import pytest
 from core.base.Natural import Natural
-from core.modules.MUL_Nk_N import MUL_Nk_N
+from core.modules.NModule.MUL_Nk_N import MUL_Nk_N
 
 
 def test_mul_nk_n():

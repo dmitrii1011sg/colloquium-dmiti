@@ -1,8 +1,8 @@
 import random
-import pytest
 
+import pytest
 from core.base.Integer import Integer
-from core.modules.ABS_Z_N import ABS_Z_N
+from core.modules.ZModule.ABS_Z_N import ABS_Z_N
 
 
 def test_abs_z_n():
@@ -16,7 +16,7 @@ def test_abs_z_n():
 
 @pytest.mark.parametrize("iteration", range(5))
 def test_abs_z_n_random(iteration):
-    val = random.randint(-10**3, 10**50)
+    val = random.randint(-(10**3), 10**50)
     n = Integer.from_int(val)
     result = ABS_Z_N(n)
     assert str(result) == str(abs(val))

@@ -3,7 +3,7 @@ from core.base.Integer import Integer
 # Чугунников Валерий 5382
 
 
-def POZ_Z_D(n : Integer) -> int:
+def POZ_Z_D(n: Integer) -> int:
     """
     Определение положительности числа
 
@@ -20,10 +20,7 @@ def POZ_Z_D(n : Integer) -> int:
     if not isinstance(n, Integer):
         raise ValueError("Invalid value")
 
-    if n.sign == 1:
-        return 1
-    if n.sign == 0:
-        if n.number.digits[0] == 0 and n.number.length == 1:
-            return 0
-        else:
-            return 2
+    if n.number.length == 1 and n.number.digits[0] == 0:
+        return 0
+
+    return 1 if n.sign == 1 else 2

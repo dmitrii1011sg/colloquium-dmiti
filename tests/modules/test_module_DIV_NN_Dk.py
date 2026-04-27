@@ -1,6 +1,6 @@
 import pytest
 from core.base.Natural import Natural
-from core.modules.DIV_NN_Dk import DIV_NN_Dk
+from core.modules.NModule.DIV_NN_Dk import DIV_NN_Dk
 
 
 def test_div_nn_dk_simple():

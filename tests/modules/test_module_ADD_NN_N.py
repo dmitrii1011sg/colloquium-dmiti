@@ -2,7 +2,7 @@ import random
 
 import pytest
 from core.base.Natural import Natural
-from core.modules.ADD_NN_N import ADD_NN_N
+from core.modules.NModule.ADD_NN_N import ADD_NN_N
 
 
 def test_ADD_NN_N():

@@ -2,7 +2,7 @@ import random
 
 import pytest
 from core.base.Natural import Natural
-from core.modules.DIV_NN_N import DIV_NN_N
+from core.modules.NModule.DIV_NN_N import DIV_NN_N
 
 
 def test_DIV_NN_N():
