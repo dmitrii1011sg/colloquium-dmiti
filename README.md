@@ -54,12 +54,6 @@ pip install -r requirements.txt
 pre-commit install
 ```
 
-1. Клонируйте репозиторий
-
-```powershell
-git clone https://github.com/dmitrii1011sg/colloquium-dmiti
-```
-
 ### 2. Запуск приложения
 
 ```powershell
