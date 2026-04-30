@@ -1,6 +1,6 @@
 from core.base.Natural import Natural
 
-# Дмитрий Лопатин 5381
+# Лопатин Дмитрий 5381
 
 
 def MUL_ND_N(a: Natural, d: Natural) -> Natural:

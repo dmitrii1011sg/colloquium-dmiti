@@ -3,7 +3,7 @@ from core.modules.NModule.ADD_NN_N import ADD_NN_N
 from core.modules.NModule.MUL_ND_N import MUL_ND_N
 from core.modules.NModule.MUL_Nk_N import MUL_Nk_N
 
-# Дмитрий Лопатин 5381
+# Лопатин Дмитрий 5381
 
 
 def MUL_NN_N(a: Natural, b: Natural) -> Natural:

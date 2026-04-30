@@ -1,4 +1,5 @@
 import random
+
 import pytest
 from core.base.Integer import Integer
 from core.modules.ZModule.ADD_ZZ_Z import ADD_ZZ_Z
@@ -115,10 +116,10 @@ def test_add_zz_z_no_mutation():
 def test_add_zz_z_invalid_input():
     with pytest.raises(ValueError):
         ADD_ZZ_Z("not integer", Integer.from_str("5"))
-    
+
     with pytest.raises(ValueError):
         ADD_ZZ_Z(Integer.from_str("5"), "not integer")
-    
+
     with pytest.raises(ValueError):
         ADD_ZZ_Z(None, Integer.from_str("5"))
 
@@ -147,6 +148,6 @@ def test_add_zz_z_edge_cases():
     min_int = Integer.from_str("-" + "9" * 100)
     result = ADD_ZZ_Z(max_int, min_int)
     assert str(result) == "0"
-    
+
     assert str(ADD_ZZ_Z(Integer.from_str("0"), Integer.from_str("1"))) == "1"
     assert str(ADD_ZZ_Z(Integer.from_str("-1"), Integer.from_str("1"))) == "0"
