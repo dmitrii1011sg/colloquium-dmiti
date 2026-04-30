@@ -49,6 +49,7 @@ class Sidebar(ft.Container):
             ("Целые (Z)", ft.Icons.EXPOSURE, 1),
             ("Рациональные (Q)", ft.Icons.PERCENT, 2),
             ("Многочлены (P)", ft.Icons.FUNCTIONS, 3),
+            ("Калькулятор", ft.Icons.CALCULATE, 4),
         ]
 
         buttons_column = ft.Column(spacing=10)

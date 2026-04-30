@@ -5,6 +5,8 @@ import time
 import flet as ft
 from core.base.Integer import Integer
 from core.base.Natural import Natural
+from core.base.Polynom import Polynom
+from core.base.Rational import Rational
 
 
 class DynamicFuncForm(ft.Column):
@@ -25,6 +27,7 @@ class DynamicFuncForm(ft.Column):
             module_name (str): Название модуля для заголовка.
         """
         super().__init__()
+        self.expand = True
         self.spacing = 20
         self.functions_registry = functions_registry
 
@@ -89,6 +92,12 @@ class DynamicFuncForm(ft.Column):
 
         self.result_text = ft.Text(size=16, selectable=True)
 
+        self.result_scroll_area = ft.Column(
+            [self.result_text],
+            scroll=ft.ScrollMode.AUTO,
+            expand=True,
+        )
+
         self.result_card = ft.Container(
             content=ft.Column(
                 [
@@ -109,7 +118,7 @@ class DynamicFuncForm(ft.Column):
                             ),
                         ]
                     ),
-                    self.result_text,
+                    self.result_scroll_area,
                 ]
             ),
             padding=ft.Padding(top=15, bottom=15, left=20, right=20),
@@ -122,7 +131,7 @@ class DynamicFuncForm(ft.Column):
 
         self.controls = [
             self.title_text,
-            self.dropdown,
+            ft.Row([self.dropdown]),
             ft.Divider(height=1, color=ft.Colors.OUTLINE_VARIANT),
             self.inputs_container,
             self.loader,
@@ -134,15 +143,6 @@ class DynamicFuncForm(ft.Column):
     def _create_metric_item(self, icon, label, value, key):
         """
         Создаёт виджет для отображения одной метрики.
-
-        Args:
-            icon: Иконка метрики
-            label: Текст подписи
-            value: Начальное значение
-            key: Ключ для сохранения ссылки на текстовое поле
-
-        Returns:
-            Контейнер с метрикой
         """
         value_text = ft.Text(value, size=12, weight=ft.FontWeight.W_500)
         self.metric_refs[key] = value_text
@@ -170,10 +170,6 @@ class DynamicFuncForm(ft.Column):
     def _update_metrics(self, exec_time, result):
         """
         Обновляет значения метрик после выполнения вычисления.
-
-        Args:
-            exec_time: Время выполнения в секундах
-            result: Результат вычисления
         """
         time_str = (
             f"{exec_time*1000:.3f} ms"
@@ -193,11 +189,9 @@ class DynamicFuncForm(ft.Column):
 
         self.stats_row.visible = True
 
-    def _on_function_select(self, _):
+    def _on_function_select(self, e):
         """
         Обработчик выбора функции из выпадающего списка.
-
-        Анализирует сигнатуру выбранной функции и динамически создаёт поля ввода.
         """
         func_name = self.dropdown.value
         if not func_name:
@@ -233,25 +227,23 @@ class DynamicFuncForm(ft.Column):
     def _parse_value(self, value: str, expected_type):
         """
         Умный парсинг введенной строки в нужный тип данных
-
-        Args:
-            value (str): Данные для парсинга
-            expected_type (Unknown): Ожидаемый тип данных
         """
         if expected_type == Natural:
             return Natural.from_str(value)
+        elif expected_type == Integer:
+            return Natural.from_str(value)
+        elif expected_type == Rational:
+            return Rational.from_str(value)
+        elif expected_type == Polynom:
+            return Polynom.from_str(value)
         elif expected_type == int:
             return int(value)
-        elif expected_type == Integer:
-            return Integer.from_str(value)
 
         return value
 
     def _on_calculate(self, _):
         """
         Обработчик нажатия кнопки вычисления.
-
-        Проверяет заполненность полей и запускает фоновую задачу.
         """
         if not self.active_function:
             return
@@ -265,6 +257,7 @@ class DynamicFuncForm(ft.Column):
 
         self.loader.visible = True
         self.calc_button.disabled = True
+        self.result_card.visible = False
         self.update()
 
         threading.Thread(target=self._background_compute_task, daemon=True).start()
@@ -272,9 +265,6 @@ class DynamicFuncForm(ft.Column):
     def _background_compute_task(self):
         """
         Фоновая задача для выполнения выбранной функции.
-
-        Разбирает аргументы, вызывает функцию, замеряет время,
-        обновляет результат и метрики. При ошибке показывает сообщение.
         """
         if not self.active_function:
             return
@@ -302,9 +292,14 @@ class DynamicFuncForm(ft.Column):
             self.result_card.visible = True
             self.stats_row.visible = False
 
-        self.loader.visible = False
-        self.calc_button.disabled = False
-        self.update()
+        finally:
+            self.loader.visible = False
+            self.calc_button.disabled = False
+
+            if self.page:
+                self.page.update()
+            else:
+                self.update()
 
     async def _copy_result(self, _):
         await ft.Clipboard().set(self.result_text.value)

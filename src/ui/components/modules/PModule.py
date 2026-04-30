@@ -10,7 +10,7 @@ class PModule(ft.Column):
         self.registry = {}
 
         self.controls = [
-            ft.Text("Модуль: Многочлены (P)", size=28, weight=ft.FontWeight.BOLD),
+            ft.Text("Многочлены (P)", size=28, weight=ft.FontWeight.BOLD),
             ft.Text(
                 "Выберите функцию из списка ниже для выполнения операции.",
                 color=ft.Colors.GREY_400,

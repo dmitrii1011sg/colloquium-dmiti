@@ -22,6 +22,7 @@ class AppLayout(ft.Row):
             1: ZModule(),
             2: QModule(),
             3: PModule(),
+            # 4: SmartCalculator(),
         }
 
         self.content_area = ft.Container(

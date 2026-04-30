@@ -21,7 +21,7 @@ class ZModule(ft.Column):
         }
 
         self.controls = [
-            ft.Text("Модуль: Целые числа (Z)", size=28, weight=ft.FontWeight.BOLD),
+            ft.Text("Целые числа (Z)", size=28, weight=ft.FontWeight.BOLD),
             ft.Text(
                 "Выберите функцию из списка ниже для выполнения операции.",
                 color=ft.Colors.GREY_400,

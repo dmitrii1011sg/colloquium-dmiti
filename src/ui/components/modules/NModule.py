@@ -39,9 +39,7 @@ class NModule(ft.Column):
         }
 
         self.controls = [
-            ft.Text(
-                "Модуль: Натуральные числа (N)", size=28, weight=ft.FontWeight.BOLD
-            ),
+            ft.Text("Натуральные числа (N)", size=28, weight=ft.FontWeight.BOLD),
             ft.Text(
                 "Выберите функцию из списка ниже для выполнения операции.",
                 color=ft.Colors.GREY_400,

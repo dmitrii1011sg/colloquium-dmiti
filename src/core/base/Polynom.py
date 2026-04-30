@@ -70,6 +70,56 @@ class Polynom:
         n = r.numer.number
         return n.length == 1 and n.digits[0] == 0
 
+    @staticmethod
+    def from_str(s: str) -> Polynom:
+        """
+        Создание многочлена из строки.
+
+        Args:
+            value (str): Строка многочлена.
+
+        Raises:
+            ValueError: Параметры не соответствуют типам или значениям.
+
+        Returns:
+            Polynom: Многочлен.
+        """
+        s = s.replace(" ", "").replace("-", "+-")
+        parts = s.split("+")
+
+        poly_dict = {}
+        max_degree = 0
+
+        for part in parts:
+            if not part:
+                continue
+
+            if "x^" in part:
+                coeff_part, degree_part = part.split("x^")
+                degree = int(degree_part)
+            elif "x" in part:
+                coeff_part = part.replace("x", "")
+                degree = 1
+            else:
+                coeff_part = part
+                degree = 0
+
+            if coeff_part == "" or coeff_part == "+":
+                coeff = Rational.from_str("1")
+            elif coeff_part == "-":
+                coeff = Rational.from_str("-1")
+            else:
+                coeff = Rational.from_str(coeff_part)
+
+            poly_dict[degree] = coeff
+            max_degree = max(max_degree, degree)
+
+        coefficients = []
+        for i in range(max_degree + 1):
+            coefficients.append(poly_dict.get(i, Rational.from_str("0")))
+
+        return Polynom(coefficients)
+
     def __str__(self) -> str:
         """
         Строковое представление многочлена.
