@@ -3,7 +3,7 @@ from core.modules.NModule.COM_NN_D import COM_NN_D
 from core.modules.NModule.MUL_ND_N import MUL_ND_N
 from core.modules.NModule.MUL_Nk_N import MUL_Nk_N
 
-# Дмитрий Лопатин 5381
+# Лопатин Дмитрий 5381
 
 
 def DIV_NN_Dk(a: Natural, b: Natural) -> tuple[int, int]:
