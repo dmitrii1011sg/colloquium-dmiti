@@ -25,7 +25,7 @@ def get_project_map(root_dir):
             if file.endswith(EXTENSIONS):
                 with open(os.path.join(root, file), "r", encoding="utf-8") as f:
                     tree = ast.parse(f.read())
-                    module_name = os.path.basename(root)
+                    module_name = file
                     for node in ast.walk(tree):
                         if isinstance(node, (ast.FunctionDef, ast.ClassDef)):
                             entity_map[node.name] = module_name
@@ -38,7 +38,7 @@ def analyze_file(path, project_map):
         tree = ast.parse(content)
 
     author = get_author(content)
-    current_module = os.path.basename(os.path.dirname(path))
+    current_module = os.path.basename(path)
 
     lloc = 0
     foreign_calls = 0
