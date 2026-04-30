@@ -1,7 +1,7 @@
 from __future__ import annotations
+
 from core.base.Rational import Rational
-from core.base.Integer import Integer
-from core.base.Natural import Natural
+
 # Жуков Александр 5381
 
 

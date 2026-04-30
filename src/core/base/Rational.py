@@ -1,5 +1,6 @@
-from core.base.Natural import Natural
 from core.base.Integer import Integer
+from core.base.Natural import Natural
+
 # Жуков Александр 5381
 
 
@@ -23,7 +24,7 @@ class Rational:
             denom (Natural): Знаменатель (не равен нулю).
 
         Raises:
-            ValueError: Если параметры не соответствуют типам или знаменатель равен нулю.
+            ValueError: Параметры не соответствуют типам или знаменатель равен нулю.
         """
         if not isinstance(numer, Integer) or not isinstance(denom, Natural):
             raise ValueError("Invalid value")
@@ -31,11 +32,11 @@ class Rational:
         if denom.length == 1 and denom.digits[0] == 0:
             raise ValueError("Denominator must not be zero")
 
-        self.numer = numer
-        self.denom = denom
+        self.numer: Integer = numer
+        self.denom: Natural = denom
 
     @classmethod
-    def from_str(cls, value: str) -> Rational:
+    def from_str(cls, value: str) -> "Rational":
         """
         Создание рационального числа из строки.
 
