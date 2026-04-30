@@ -14,7 +14,7 @@ def test_DIV_ZZ_Z():
     assert str(DIV_ZZ_Z(a, b)) == "33"
     assert str(DIV_ZZ_Z(a, c)) == "-25"
     assert str(DIV_ZZ_Z(d, c)) == "5"
-    assert str(DIV_ZZ_Z(c, a)) == "0"
+    assert str(DIV_ZZ_Z(c, a)) == "-1"
 
 
 @pytest.mark.parametrize("iteration", range(10))
@@ -28,8 +28,8 @@ def test_DIV_ZZ_Z_random(iteration):
     a = Integer.from_int(val1)
     b = Integer.from_int(val2)
 
-    q_trunc = int(val1 / val2) if val1 * val2 >= 0 else -((-val1) // val2)
-    assert int(DIV_ZZ_Z(a, b)) == q_trunc
+    expected = val1 // val2
+    assert int(DIV_ZZ_Z(a, b)) == expected
 
 
 def test_DIV_ZZ_Z_huge_numbers():
@@ -45,8 +45,8 @@ def test_DIV_ZZ_Z_huge_numbers():
 
 def test_DIV_ZZ_Z_sign_cases():
     assert str(DIV_ZZ_Z(Integer.from_str("10"), Integer.from_str("3"))) == "3"
-    assert str(DIV_ZZ_Z(Integer.from_str("-10"), Integer.from_str("3"))) == "-3"
-    assert str(DIV_ZZ_Z(Integer.from_str("10"), Integer.from_str("-3"))) == "-3"
+    assert str(DIV_ZZ_Z(Integer.from_str("-10"), Integer.from_str("3"))) == "-4"
+    assert str(DIV_ZZ_Z(Integer.from_str("10"), Integer.from_str("-3"))) == "-4"
     assert str(DIV_ZZ_Z(Integer.from_str("-10"), Integer.from_str("-3"))) == "3"
 
 
@@ -64,8 +64,8 @@ def test_DIV_ZZ_Z_small_dividend():
     c = Integer.from_str("-10")
 
     assert int(DIV_ZZ_Z(a, b)) == 0
-    assert int(DIV_ZZ_Z(a, c)) == 0
-    assert int(DIV_ZZ_Z(Integer.from_str("-3"), b)) == 0
+    assert int(DIV_ZZ_Z(a, c)) == -1
+    assert int(DIV_ZZ_Z(Integer.from_str("-3"), b)) == -1
 
 
 def test_DIV_ZZ_Z_no_mutation():

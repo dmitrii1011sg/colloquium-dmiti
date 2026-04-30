@@ -51,6 +51,8 @@ def test_MUL_ZZ_Z_zero_cases():
     assert int(MUL_ZZ_Z(a, zero)) == 0
     assert int(MUL_ZZ_Z(zero, a)) == 0
     assert int(MUL_ZZ_Z(zero, zero)) == 0
+    assert zero.sign == 0
+    assert zero.number.digits == [0]
 
 
 def test_MUL_ZZ_Z_one_cases():
@@ -61,6 +63,8 @@ def test_MUL_ZZ_Z_one_cases():
     assert int(MUL_ZZ_Z(a, one)) == 42
     assert int(MUL_ZZ_Z(a, neg_one)) == -42
     assert int(MUL_ZZ_Z(neg_one, neg_one)) == 1
+    assert one.sign == 0
+    assert one.number.digits == [1]
 
 
 def test_MUL_ZZ_Z_no_mutation():

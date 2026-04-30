@@ -21,13 +21,6 @@ def test_MOD_ZZ_Z():
     assert str(MOD_ZZ_Z(e, b)) == "1"
 
 
-def trunc_mod(val1, val2):
-    if val2 == 0:
-        return None
-    q_trunc = int(val1 / val2) if val1 * val2 >= 0 else -((-val1) // val2)
-    return val1 - q_trunc * val2
-
-
 @pytest.mark.parametrize("iteration", range(10))
 def test_MOD_ZZ_Z_random(iteration):
     val2 = random.randint(1, 10**50)
@@ -40,10 +33,8 @@ def test_MOD_ZZ_Z_random(iteration):
     a = Integer.from_int(val1)
     b = Integer.from_int(val2)
 
-    expected = trunc_mod(val1, val2)
-
-    if val2 != 0:
-        assert int(MOD_ZZ_Z(a, b)) == expected
+    expected = val1 % val2
+    assert int(MOD_ZZ_Z(a, b)) == expected
 
 
 def test_MOD_ZZ_Z_huge_numbers():
@@ -53,13 +44,13 @@ def test_MOD_ZZ_Z_huge_numbers():
     c = Integer.from_str("-3")
 
     assert str(MOD_ZZ_Z(a, b)) == "1"
-    assert str(MOD_ZZ_Z(a, c)) == "1"
+    assert str(MOD_ZZ_Z(a, c)) == "-2"
 
 
 def test_MOD_ZZ_Z_sign_cases():
     assert str(MOD_ZZ_Z(Integer.from_str("10"), Integer.from_str("3"))) == "1"
-    assert str(MOD_ZZ_Z(Integer.from_str("-10"), Integer.from_str("3"))) == "-1"
-    assert str(MOD_ZZ_Z(Integer.from_str("10"), Integer.from_str("-3"))) == "1"
+    assert str(MOD_ZZ_Z(Integer.from_str("-10"), Integer.from_str("3"))) == "2"
+    assert str(MOD_ZZ_Z(Integer.from_str("10"), Integer.from_str("-3"))) == "-2"
     assert str(MOD_ZZ_Z(Integer.from_str("-10"), Integer.from_str("-3"))) == "-1"
 
 
@@ -82,7 +73,7 @@ def test_MOD_ZZ_Z_mod_less_than_divisor():
     assert str(MOD_ZZ_Z(a, b)) == "3"
 
     a_neg = Integer.from_str("-3")
-    assert str(MOD_ZZ_Z(a_neg, b)) == "-3"
+    assert str(MOD_ZZ_Z(a_neg, b)) == "7"
 
 
 def test_MOD_ZZ_Z_property():

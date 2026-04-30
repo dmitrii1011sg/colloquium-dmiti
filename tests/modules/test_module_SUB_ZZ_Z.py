@@ -60,6 +60,8 @@ def test_SUB_ZZ_Z_zero_cases():
     assert int(SUB_ZZ_Z(zero, a)) == -42
     assert int(SUB_ZZ_Z(zero, b)) == 42
     assert int(SUB_ZZ_Z(zero, zero)) == 0
+    assert zero.sign == 0
+    assert zero.number.digits == [0]
 
 
 def test_SUB_ZZ_Z_no_mutation():

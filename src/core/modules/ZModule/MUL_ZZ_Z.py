@@ -25,6 +25,9 @@ def MUL_ZZ_Z(a: Integer, b: Integer) -> Integer:
     if not isinstance(a, Integer) or not isinstance(b, Integer):
         raise ValueError("Invalid Value")
 
+    if POZ_Z_D(a) == 0 or POZ_Z_D(b) == 0:
+        return Integer.from_int(0)
+
     abs_a = ABS_Z_N(a)
     abs_b = ABS_Z_N(b)
     sign_a = POZ_Z_D(a)
