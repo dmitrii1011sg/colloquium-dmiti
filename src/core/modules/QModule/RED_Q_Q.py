@@ -3,6 +3,7 @@ from core.base.Natural import Natural
 from core.base.Integer import Integer
 from core.modules.ZModule.ABS_Z_N import ABS_Z_N
 from core.modules.NModule.GCF_NN_N import GCF_NN_N
+from core.modules.NModule.COM_NN_N import COM_NN_N
 from core.modules.ZModule.DIV_ZZ_Z import DIV_ZZ_Z
 from core.modules.ZModule.POZ_Z_D import POZ_Z_D
 
@@ -27,10 +28,12 @@ def RED_Q_Q(n: Rational) -> Rational:
 
     numer = n.numer
     denom = n.denom
+    if numer == Integer.from_int(0):
+        return Rational.from_str("0")
 
     abs_numer = ABS_Z_N(numer)
     GCD_num_denom = GCF_NN_N(abs_numer, denom)
-    if GCD_num_denom == Natural.from_int(1):
+    if COM_NN_N(GCD_num_denom, Natural.from_int(1)) == 0:
         return n
 
     integer_GCD = Integer(GCD_num_denom)
