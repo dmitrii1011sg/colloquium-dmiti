@@ -20,7 +20,7 @@ def TRANS_Q_Z(n: Rational) -> Integer:
     """
     if not isinstance(n, Integer):
         raise ValueError("Invalid value")
-    if n.denom != 1:
+    if n.denom != Natural.from_int(1)(1):
         raise ValueError("Invalid value")
 
-    return Integer(n.number)
+    return n.numer

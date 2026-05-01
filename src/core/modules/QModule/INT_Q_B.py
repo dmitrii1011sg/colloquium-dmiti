@@ -1,4 +1,5 @@
 from core.base.Rational import Rational
+from core.base.Natural import Natural
 
 # Помаскин Макар 5381
 
@@ -19,4 +20,4 @@ def INT_Q_B(n: Rational) -> bool:
     if not isinstance(n, Rational):
         raise ValueError("Invalid value")
 
-    return n.denom == 1
+    return n.denom == Natural.from_int(1)

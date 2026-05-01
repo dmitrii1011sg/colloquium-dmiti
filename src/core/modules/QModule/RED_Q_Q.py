@@ -1,7 +1,10 @@
 from core.base.Rational import Rational
+from core.base.Natural import Natural
+from core.base.Integer import Integer
 from core.modules.ZModule.ABS_Z_N import ABS_Z_N
 from core.modules.NModule.GCF_NN_N import GCF_NN_N
 from core.modules.ZModule.DIV_ZZ_Z import DIV_ZZ_Z
+from core.modules.ZModule.POZ_Z_D import POZ_Z_D
 
 # Помаскин Макар 5381
 
@@ -22,14 +25,23 @@ def RED_Q_Q(n: Rational) -> Rational:
     if not isinstance(n, Rational):
         raise ValueError("Invalid value")
 
-    num = n.number
+    numer = n.numer
     denom = n.denom
 
-    abs_num = ABS_Z_N(num)
-    GCD_num_denom = GCF_NN_N(abs_num, denom)
+    abs_numer = ABS_Z_N(numer)
+    GCD_num_denom = GCF_NN_N(abs_numer, denom)
+    if GCD_num_denom == Natural.from_int(1):
+        return n
 
-    future_num = DIV_ZZ_Z(num, GCD_num_denom)
-    future_denom = DIV_ZZ_Z(denom, GCD_num_denom)
-    future_n = Rational(future_num, future_denom)
+    integer_GCD = Integer(GCD_num_denom)
+    integer_denom = Integer(denom)
+    if POZ_Z_D(numer) == 1:
+        integer_numer = Integer(numer, 1)
+    else:
+        integer_numer = Integer(numer, 0)
 
-    return future_n
+    res_numer = DIV_ZZ_Z(integer_numer, integer_GCD)
+    res_denom = DIV_ZZ_Z(integer_denom, integer_GCD)
+
+    res_n = Rational(res_numer, ABS_Z_N(res_denom))
+    return res_n

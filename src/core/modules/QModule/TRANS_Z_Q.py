@@ -21,4 +21,4 @@ def TRANS_Z_Q(n: Integer) -> Rational:
     if not isinstance(n, Integer):
         raise ValueError("Invalid value")
 
-    return Rational(n, Natural(1))
+    return Rational(n, Natural.from_int(1))
