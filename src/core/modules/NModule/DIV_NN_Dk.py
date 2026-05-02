@@ -37,10 +37,7 @@ def DIV_NN_Dk(a: Natural, b: Natural) -> tuple[int, int]:
         b_shifted = MUL_Nk_N(b, Natural.from_int(k))
 
     for digit in range(9, 0, -1):
-        digit_nat = Natural([digit], need_reverse=False)
-
-        b_mul = MUL_ND_N(b_shifted, digit_nat)
-
+        b_mul = MUL_ND_N(b_shifted, digit)
         if COM_NN_D(a, b_mul) != 1:
             return (digit, k)
 
