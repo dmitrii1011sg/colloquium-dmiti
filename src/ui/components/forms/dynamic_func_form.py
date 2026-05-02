@@ -231,7 +231,7 @@ class DynamicFuncForm(ft.Column):
         if expected_type == Natural:
             return Natural.from_str(value)
         elif expected_type == Integer:
-            return Natural.from_str(value)
+            return Integer.from_str(value)
         elif expected_type == Rational:
             return Rational.from_str(value)
         elif expected_type == Polynom:
