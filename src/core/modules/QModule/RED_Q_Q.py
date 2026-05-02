@@ -38,12 +38,8 @@ def RED_Q_Q(n: Rational) -> Rational:
 
     integer_GCD = Integer(GCD_num_denom)
     integer_denom = Integer(denom)
-    if POZ_Z_D(numer) == 1:
-        integer_numer = Integer(abs_numer, 1)
-    else:
-        integer_numer = Integer(numer, 0)
 
-    res_numer = DIV_ZZ_Z(integer_numer, integer_GCD)
+    res_numer = DIV_ZZ_Z(numer, integer_GCD)
     res_denom = DIV_ZZ_Z(integer_denom, integer_GCD)
 
     res_n = Rational(res_numer, ABS_Z_N(res_denom))
