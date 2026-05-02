@@ -17,6 +17,8 @@ class Polynom:
         degree (int): Степень многочлена.
     """
 
+    __slots__ = ("coefficients", "degree")
+
     def __init__(self, coefficients: list[Rational]) -> None:
         """
         Инициализация многочлена.

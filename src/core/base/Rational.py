@@ -15,6 +15,8 @@ class Rational:
         denom (Natural): Знаменатель (натуральное число, не равное нулю).
     """
 
+    __slots__ = ("numer", "denom")
+    
     def __init__(self, numer: Integer, denom: Natural) -> None:
         """
         Инициализация рационального числа.

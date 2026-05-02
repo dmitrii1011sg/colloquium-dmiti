@@ -13,6 +13,8 @@ class Natural:
         length (int): Количество разрядов числа.
     """
 
+    __slots__ = ("digits", "length")
+
     def __init__(self, digits: list[int], need_reverse: bool = False) -> None:
         """
         Инициализация натурального числа из массива цифр.
@@ -36,7 +38,7 @@ class Natural:
 
         self.digits: list[int] = normalized
         self.length: int = len(normalized)
-
+    
     @classmethod
     def from_str(cls, value: str, need_reverse: bool = False) -> "Natural":
         """
