@@ -5,7 +5,6 @@ from core.modules.NModule.MUL_Nk_N import MUL_Nk_N
 
 # Лопатин Дмитрий 5381
 
-
 def MUL_NN_N(a: Natural, b: Natural) -> Natural:
     """
     Умножение двух натуральных чисел.
@@ -31,8 +30,7 @@ def MUL_NN_N(a: Natural, b: Natural) -> Natural:
     for i, digit in enumerate(b.digits):
         if digit == 0:
             continue
-        natural_digit = Natural.from_int(digit)
-        tmp = MUL_Nk_N(MUL_ND_N(a, natural_digit), Natural.from_int(i))
+        tmp = MUL_Nk_N(MUL_ND_N(a, digit), Natural.from_int(i))
         res = ADD_NN_N(res, tmp)
 
     return res

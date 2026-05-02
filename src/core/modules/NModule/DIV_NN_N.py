@@ -38,7 +38,7 @@ def DIV_NN_N(a: Natural, b: Natural) -> Natural:
         digit, power = DIV_NN_Dk(current, b)
         digit_num = Natural([digit], need_reverse=False)
         divisor_shifted = MUL_Nk_N(b, Natural.from_int(power))
-        current = SUB_NDN_N(current, divisor_shifted, digit_num)
+        current = SUB_NDN_N(current, divisor_shifted, digit)
         partial = MUL_Nk_N(digit_num, Natural.from_int(power))
         result = ADD_NN_N(result, partial)
 
