@@ -30,10 +30,10 @@ def test_trans_z_q_large():
 
 def test_trans_z_q_invalid():
     with pytest.raises(ValueError):
-        TRANS_Z_Q("not an integer")
+        TRANS_Z_Q("not an integer")  # type: ignore
 
     with pytest.raises(ValueError):
-        TRANS_Z_Q(None)
+        TRANS_Z_Q(None)  # type: ignore
 
 
 def test_trans_z_q_return_type():

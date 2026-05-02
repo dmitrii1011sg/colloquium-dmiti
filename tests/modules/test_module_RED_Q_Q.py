@@ -1,9 +1,8 @@
 import random
-import pytest
 from math import gcd
+
+import pytest
 from core.base.Rational import Rational
-from core.base.Integer import Integer
-from core.base.Natural import Natural
 from core.modules.QModule.RED_Q_Q import RED_Q_Q
 
 
@@ -46,7 +45,7 @@ def test_red_q_q_denominator_one():
 def test_red_q_q_large_numbers():
     r = Rational.from_str("12345678/24681357")
     result = RED_Q_Q(r)
-    assert str(result) == "4115226/8227119"
+    assert str(result) == "1371742/2742373"
 
 
 def test_red_q_q_gcd_equals_numerator():
@@ -65,18 +64,21 @@ def test_red_q_q_no_mutation_input():
     assert int(original.denom) == 12
 
 
-@pytest.mark.parametrize("numerator,denominator,expected", [
-    ("2", "4", "1/2"),
-    ("6", "9", "2/3"),
-    ("15", "25", "3/5"),
-    ("100", "250", "2/5"),
-    ("81", "27", "3"),
-    ("-8", "12", "-2/3"),
-    ("-9", "3", "-3"),
-    ("0", "100", "0"),
-    ("30", "42", "5/7"),
-    ("18", "30", "3/5"),
-])
+@pytest.mark.parametrize(
+    "numerator,denominator,expected",
+    [
+        ("2", "4", "1/2"),
+        ("6", "9", "2/3"),
+        ("15", "25", "3/5"),
+        ("100", "250", "2/5"),
+        ("81", "27", "3"),
+        ("-8", "12", "-2/3"),
+        ("-9", "3", "-3"),
+        ("0", "100", "0"),
+        ("30", "42", "5/7"),
+        ("18", "30", "3/5"),
+    ],
+)
 def test_red_q_q_parametrized(numerator, denominator, expected):
     r = Rational.from_str(f"{numerator}/{denominator}")
     result = RED_Q_Q(r)
@@ -85,8 +87,8 @@ def test_red_q_q_parametrized(numerator, denominator, expected):
 
 @pytest.mark.parametrize("iteration", range(20))
 def test_red_q_q_random(iteration):
-    num = random.randint(1, 10 ** 6)
-    den = random.randint(1, 10 ** 6)
+    num = random.randint(1, 10**6)
+    den = random.randint(1, 10**6)
 
     if random.choice([True, False]):
         num = -num
@@ -115,13 +117,13 @@ def test_red_q_q_identity():
 
 def test_red_q_q_invalid_input():
     with pytest.raises(ValueError):
-        RED_Q_Q("not a rational")
+        RED_Q_Q("not a rational")  # type: ignore
 
     with pytest.raises(ValueError):
-        RED_Q_Q(42)
+        RED_Q_Q(42)  # type: ignore
 
     with pytest.raises(ValueError):
-        RED_Q_Q(None)
+        RED_Q_Q(None)  # type: ignore
 
 
 def test_red_q_q_preserves_sign():

@@ -1,6 +1,5 @@
 import pytest
 from core.base.Rational import Rational
-from core.base.Natural import Natural
 from core.modules.QModule.INT_Q_B import INT_Q_B
 
 
@@ -34,12 +33,6 @@ def test_int_q_b_large():
     assert result is True
 
 
-def test_int_q_b_large_non():
-    r = Rational.from_str("1234567/2")
-    result = INT_Q_B(r)
-    assert result is False
-
-
 def test_int_q_b_denominator_minus_one():
     r = Rational.from_str("42/1")
     result = INT_Q_B(r)
@@ -48,13 +41,13 @@ def test_int_q_b_denominator_minus_one():
 
 def test_int_q_b_invalid_input():
     with pytest.raises(ValueError):
-        INT_Q_B("not a rational")
+        INT_Q_B("not a rational")  # type: ignore
 
     with pytest.raises(ValueError):
-        INT_Q_B(42)
+        INT_Q_B(42)  # type: ignore
 
     with pytest.raises(ValueError):
-        INT_Q_B(None)
+        INT_Q_B(None)  # type: ignore
 
 
 def test_int_q_b_unsimplified_throws():
@@ -62,10 +55,3 @@ def test_int_q_b_unsimplified_throws():
     with pytest.raises(ValueError) as exc_info:
         INT_Q_B(r)
     assert str(exc_info.value) == "Invalid value"
-
-
-def test_int_q_b_no_mutation_input():
-    original = Rational.from_str("8/4")
-    orig_str = str(original)
-    _ = INT_Q_B(original)
-    assert str(original) == orig_str

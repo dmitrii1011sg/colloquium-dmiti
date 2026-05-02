@@ -1,11 +1,8 @@
-from core.base.Rational import Rational
-from core.base.Natural import Natural
 from core.base.Integer import Integer
-from core.modules.ZModule.ABS_Z_N import ABS_Z_N
+from core.base.Rational import Rational
 from core.modules.NModule.GCF_NN_N import GCF_NN_N
-from core.modules.NModule.COM_NN_D import COM_NN_D
+from core.modules.ZModule.ABS_Z_N import ABS_Z_N
 from core.modules.ZModule.DIV_ZZ_Z import DIV_ZZ_Z
-from core.modules.ZModule.POZ_Z_D import POZ_Z_D
 
 # Помаскин Макар 5381
 
@@ -28,12 +25,13 @@ def RED_Q_Q(n: Rational) -> Rational:
 
     numer = n.numer
     denom = n.denom
-    if numer == Integer.from_int(0):
+    if numer.number.digits[0] == 0 and numer.number.length == 1:
         return Rational.from_str("0")
 
     abs_numer = ABS_Z_N(numer)
     GCD_num_denom = GCF_NN_N(abs_numer, denom)
-    if COM_NN_D(GCD_num_denom, Natural.from_int(1)) == 0:
+
+    if GCD_num_denom.length == 1 and GCD_num_denom.digits[0] == 1:
         return n
 
     integer_GCD = Integer(GCD_num_denom)
@@ -42,5 +40,4 @@ def RED_Q_Q(n: Rational) -> Rational:
     res_numer = DIV_ZZ_Z(numer, integer_GCD)
     res_denom = DIV_ZZ_Z(integer_denom, integer_GCD)
 
-    res_n = Rational(res_numer, ABS_Z_N(res_denom))
-    return res_n
+    return Rational(res_numer, ABS_Z_N(res_denom))
