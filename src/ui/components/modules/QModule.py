@@ -1,4 +1,8 @@
 import flet as ft
+from core.modules.QModule.RED_Q_Q import RED_Q_Q
+from core.modules.QModule.INT_Q_B import INT_Q_B
+from core.modules.QModule.TRANS_Z_Q import TRANS_Z_Q
+from core.modules.QModule.TRANS_Q_Z import TRANS_Q_Z
 from ui.components.forms.dynamic_func_form import DynamicFuncForm
 
 
@@ -7,7 +11,12 @@ class QModule(ft.Column):
         super().__init__()
         self.expand = True
 
-        self.registry = {}
+        self.registry = {
+            "Q-1: Получение несократимой обыкновенной дроби (RED_Q_Q)": RED_Q_Q,
+            "Q-2: Проверка сокращенного дробного на целое (INT_Q_B)": INT_Q_B,
+            "Q-3: Преобразование целого в дробное (TRANS_Z_Q)": TRANS_Z_Q,
+            "Q-4: Преобразование сокращенного дробного в целое (TRANS_Q_Z)": TRANS_Q_Z,
+        }
 
         self.controls = [
             ft.Text("Рациональные числа (Q)", size=28, weight=ft.FontWeight.BOLD),

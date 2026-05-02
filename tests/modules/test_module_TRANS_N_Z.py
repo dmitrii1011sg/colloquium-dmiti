@@ -43,4 +43,4 @@ def test_invalid_input():
     n1 = Integer.from_int(-1025)
 
     with pytest.raises(ValueError, match="Invalid value"):
-        TRANS_N_Z(n1)
+        TRANS_N_Z(n1)  # type: ignore

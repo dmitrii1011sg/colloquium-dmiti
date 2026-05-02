@@ -115,13 +115,13 @@ def test_add_zz_z_no_mutation():
 
 def test_add_zz_z_invalid_input():
     with pytest.raises(ValueError):
-        ADD_ZZ_Z("not integer", Integer.from_str("5"))
+        ADD_ZZ_Z("not integer", Integer.from_str("5"))  # type: ignore
 
     with pytest.raises(ValueError):
-        ADD_ZZ_Z(Integer.from_str("5"), "not integer")
+        ADD_ZZ_Z(Integer.from_str("5"), "not integer")  # type: ignore
 
     with pytest.raises(ValueError):
-        ADD_ZZ_Z(None, Integer.from_str("5"))
+        ADD_ZZ_Z(None, Integer.from_str("5"))  # type: ignore
 
 
 def test_add_zz_z_commutative():
