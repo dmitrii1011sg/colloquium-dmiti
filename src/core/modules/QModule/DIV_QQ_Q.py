@@ -1,7 +1,7 @@
-from core.base.Integer import Integer
 from core.base.Rational import Rational
 from core.modules.QModule.RED_Q_Q import RED_Q_Q
 from core.modules.ZModule.MUL_ZZ_Z import MUL_ZZ_Z
+from core.modules.ZModule.TRANS_N_Z import TRANS_N_Z
 
 # Кацеба Андрей 5381
 
@@ -33,11 +33,11 @@ def DIV_QQ_Q(n: Rational, m: Rational) -> Rational:
     m_num = m.numer
     m_dem = m.denom
 
-    if str(m) == "0":
+    if m_num.number.digits[0] == 0 and m_num.number.length == 1:
         raise ZeroDivisionError("invalid value")
 
-    new_num = MUL_ZZ_Z(n_num, Integer(m_dem))
-    new_dem = MUL_ZZ_Z(Integer(n_dem), m_num)
+    new_num = MUL_ZZ_Z(n_num, TRANS_N_Z(m_dem))
+    new_dem = MUL_ZZ_Z(TRANS_N_Z(n_dem), m_num)
 
     if new_dem.sign == 1:
         new_num.sign = 1 if new_num.sign == 0 else 0

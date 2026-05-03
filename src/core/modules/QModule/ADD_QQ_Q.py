@@ -1,10 +1,10 @@
-from core.base.Integer import Integer
 from core.base.Rational import Rational
 from core.modules.NModule.DIV_NN_N import DIV_NN_N
 from core.modules.NModule.LCM_NN_N import LCM_NN_N
 from core.modules.QModule.RED_Q_Q import RED_Q_Q
 from core.modules.ZModule.ADD_ZZ_Z import ADD_ZZ_Z
 from core.modules.ZModule.MUL_ZZ_Z import MUL_ZZ_Z
+from core.modules.ZModule.TRANS_N_Z import TRANS_N_Z
 
 # Кацеба Андрей 5381
 
@@ -37,8 +37,8 @@ def ADD_QQ_Q(n: Rational, m: Rational) -> Rational:
 
     new_dem = LCM_NN_N(n_dem, m_dem)
 
-    mp_n = Integer(DIV_NN_N(new_dem, n_dem))
-    mp_m = Integer(DIV_NN_N(new_dem, m_dem))
+    mp_n = TRANS_N_Z(DIV_NN_N(new_dem, n_dem))
+    mp_m = TRANS_N_Z(DIV_NN_N(new_dem, m_dem))
     new_num = ADD_ZZ_Z(MUL_ZZ_Z(n_num, mp_n), MUL_ZZ_Z(m_num, mp_m))
 
     result = Rational(new_num, new_dem)

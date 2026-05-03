@@ -26,13 +26,7 @@ def MUL_QQ_Q(n: Rational, m: Rational) -> Rational:
     if not isinstance(m, Rational):
         raise ValueError("Invalid value")
 
-    n_num = n.numer
-    n_dem = n.denom
-
-    m_num = m.numer
-    m_dem = m.denom
-
-    result = Rational(MUL_ZZ_Z(n_num, m_num), MUL_NN_N(n_dem, m_dem))
+    result = Rational(MUL_ZZ_Z(n.numer, m.numer), MUL_NN_N(n.denom, m.denom))
     result = RED_Q_Q(result)
 
     return result
