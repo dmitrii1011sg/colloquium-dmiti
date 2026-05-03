@@ -1,5 +1,4 @@
 import pytest
-from core.base.Integer import Integer
 from core.base.Rational import Rational
 from core.modules.QModule.TRANS_Q_Z import TRANS_Q_Z
 

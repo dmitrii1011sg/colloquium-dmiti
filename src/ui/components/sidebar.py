@@ -2,6 +2,8 @@ import flet as ft
 from ui.components.dialogs.help_dialog import HelpDialog
 from ui.components.dialogs.settings_dialog import SettingsDialog
 
+# Горшков Дмитрий 5381
+
 
 class Sidebar(ft.Container):
     def __init__(self, initial_index: int, on_change_tab):

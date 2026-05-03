@@ -15,6 +15,8 @@ from core.modules.NModule.SUB_NDN_N import SUB_NDN_N
 from core.modules.NModule.SUB_NN_N import SUB_NN_N
 from ui.components.forms.dynamic_func_form import DynamicFuncForm
 
+# Горшков Дмитрий 5381
+
 
 class NModule(ft.Column):
     def __init__(self):
@@ -40,9 +42,23 @@ class NModule(ft.Column):
 
         self.controls = [
             ft.Text("Натуральные числа (N)", size=28, weight=ft.FontWeight.BOLD),
-            ft.Text(
-                "Выберите функцию из списка ниже для выполнения операции.",
-                color=ft.Colors.GREY_400,
+            ft.Container(
+                content=ft.Column(
+                    [
+                        ft.Text(
+                            "Формат ввода данных:",
+                            size=16,
+                            weight=ft.FontWeight.W_600,
+                            color=ft.Colors.PRIMARY,
+                        ),
+                        ft.Text(
+                            "Последовательность цифр без знака (напр. 123).",
+                            size=14,
+                            color=ft.Colors.ON_SURFACE_VARIANT,
+                        ),
+                    ],
+                    spacing=5,
+                )
             ),
             ft.Divider(height=20, color=ft.Colors.TRANSPARENT),
             DynamicFuncForm(functions_registry=self.registry, module_name="Модуль N"),

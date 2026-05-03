@@ -6,6 +6,8 @@ from core.modules.ZModule.TRANS_N_Z import TRANS_N_Z
 from core.modules.ZModule.TRANS_Z_N import TRANS_Z_N
 from ui.components.forms.dynamic_func_form import DynamicFuncForm
 
+# Горшков Дмитрий 5381
+
 
 class ZModule(ft.Column):
     def __init__(self):
@@ -22,9 +24,23 @@ class ZModule(ft.Column):
 
         self.controls = [
             ft.Text("Целые числа (Z)", size=28, weight=ft.FontWeight.BOLD),
-            ft.Text(
-                "Выберите функцию из списка ниже для выполнения операции.",
-                color=ft.Colors.GREY_400,
+            ft.Container(
+                content=ft.Column(
+                    [
+                        ft.Text(
+                            "Формат ввода данных:",
+                            size=16,
+                            weight=ft.FontWeight.W_600,
+                            color=ft.Colors.PRIMARY,
+                        ),
+                        ft.Text(
+                            "Числа со знаком или без (напр. -42, 58).",
+                            size=14,
+                            color=ft.Colors.ON_SURFACE_VARIANT,
+                        ),
+                    ],
+                    spacing=5,
+                ),
             ),
             ft.Divider(height=20, color=ft.Colors.TRANSPARENT),
             DynamicFuncForm(functions_registry=self.registry, module_name="Модуль Z"),

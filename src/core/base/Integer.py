@@ -13,7 +13,7 @@ class Integer:
     """
 
     __slots__ = ("number", "sign")
-    
+
     def __init__(self, number: Natural, sign: int = 0) -> None:
         """
         Инициализация целого числа.
@@ -33,7 +33,7 @@ class Integer:
 
         self.sign = 0 if number.length == 1 and number.digits[0] == 0 else sign
         self.number = number
-    
+
     @classmethod
     def from_str(cls, value: str) -> "Integer":
         """

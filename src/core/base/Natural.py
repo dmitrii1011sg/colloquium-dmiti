@@ -38,7 +38,7 @@ class Natural:
 
         self.digits: list[int] = normalized
         self.length: int = len(normalized)
-    
+
     @classmethod
     def from_str(cls, value: str, need_reverse: bool = False) -> "Natural":
         """
