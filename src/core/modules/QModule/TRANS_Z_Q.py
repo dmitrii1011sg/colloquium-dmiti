@@ -1,6 +1,6 @@
-from core.base.Rational import Rational
-from core.base.Natural import Natural
 from core.base.Integer import Integer
+from core.base.Natural import Natural
+from core.base.Rational import Rational
 
 # Помаскин Макар 5381
 

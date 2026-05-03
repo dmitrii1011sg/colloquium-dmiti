@@ -2,6 +2,7 @@ from core.base.Natural import Natural
 
 # Лопатин Дмитрий 5381
 
+
 def MUL_ND_N(a: Natural, d: int) -> Natural:
     """
     Умножение натурального числа на цифру.

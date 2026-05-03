@@ -3,8 +3,8 @@ from core.modules.NModule.COM_NN_D import COM_NN_D
 from core.modules.NModule.MUL_ND_N import MUL_ND_N
 from core.modules.NModule.SUB_NN_N import SUB_NN_N
 
-
 # Жулин Максим 5381
+
 
 def SUB_NDN_N(a: Natural, b: Natural, d: int):
     """
@@ -25,9 +25,7 @@ def SUB_NDN_N(a: Natural, b: Natural, d: int):
     Returns:
         Natural: Неотрицательное число, равное a - (b * d)
     """
-    if not (
-        isinstance(a, Natural) and isinstance(b, Natural) and isinstance(d, int)
-    ):
+    if not (isinstance(a, Natural) and isinstance(b, Natural) and isinstance(d, int)):
         raise ValueError("Invalid Value")
 
     if d < 0 or d > 9:

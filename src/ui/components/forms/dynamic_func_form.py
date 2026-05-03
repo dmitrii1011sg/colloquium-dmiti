@@ -8,6 +8,8 @@ from core.base.Natural import Natural
 from core.base.Polynom import Polynom
 from core.base.Rational import Rational
 
+# Горшков Дмитрий 5381
+
 
 class DynamicFuncForm(ft.Column):
     """
@@ -43,6 +45,7 @@ class DynamicFuncForm(ft.Column):
             border_radius=10,
             expand=True,
             text_style=ft.TextStyle(weight=ft.FontWeight.W_500),
+            menu_height=250,
         )
 
         self.title_text = ft.Text(
@@ -51,6 +54,32 @@ class DynamicFuncForm(ft.Column):
             weight=ft.FontWeight.W_500,
             color=ft.Colors.PRIMARY,
         )
+
+        self.placeholder = ft.Container(
+            content=ft.Column(
+                [
+                    ft.Icon(
+                        ft.Icons.FUNCTIONS_ROUNDED,
+                        size=80,
+                        color=ft.Colors.OUTLINE_VARIANT,
+                    ),
+                    ft.Text(
+                        "Выберите функцию из списка выше,\nчтобы начать работу",
+                        size=16,
+                        color=ft.Colors.OUTLINE_VARIANT,
+                        text_align=ft.TextAlign.CENTER,
+                        weight=ft.FontWeight.W_300,
+                    ),
+                ],
+                alignment=ft.MainAxisAlignment.CENTER,
+                horizontal_alignment=ft.CrossAxisAlignment.CENTER,
+                expand=True,
+            ),
+            expand=True,
+            alignment=ft.Alignment.CENTER,
+            visible=True,
+        )
+
         self.inputs_container = ft.Column(spacing=12)
 
         self.loader = ft.ProgressBar(
@@ -133,6 +162,7 @@ class DynamicFuncForm(ft.Column):
             self.title_text,
             ft.Row([self.dropdown]),
             ft.Divider(height=1, color=ft.Colors.OUTLINE_VARIANT),
+            self.placeholder,
             self.inputs_container,
             self.loader,
             ft.Row([self.calc_button], alignment=ft.MainAxisAlignment.END),
@@ -195,10 +225,16 @@ class DynamicFuncForm(ft.Column):
         """
         func_name = self.dropdown.value
         if not func_name:
+            self.placeholder.visible = True
+            self.inputs_container.visible = False
+            self.calc_button.visible = False
+            self.update()
             return
 
         self.active_function = self.functions_registry[func_name]
 
+        self.placeholder.visible = False
+        self.inputs_container.visible = True
         self.inputs_container.controls.clear()
         self.input_fields.clear()
         self.title_text.value = func_name

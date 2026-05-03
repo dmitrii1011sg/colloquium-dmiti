@@ -5,6 +5,7 @@ from core.modules.NModule.MUL_Nk_N import MUL_Nk_N
 
 # Лопатин Дмитрий 5381
 
+
 def MUL_NN_N(a: Natural, b: Natural) -> Natural:
     """
     Умножение двух натуральных чисел.

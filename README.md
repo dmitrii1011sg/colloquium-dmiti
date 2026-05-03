@@ -20,11 +20,28 @@
 
 ## 🖼 Интерфейс
 
-<p align="center">
+<!-- <p align="center">
   <img src="docs/screenshots/main_window.png" alt="Main Window" width="600px">
   <br>
   <em>Пример работы интерфейса системы</em>
-</p>
+</p> -->
+
+<table align="center">
+  <tr>
+    <td align="center">
+      <img src="docs/screenshots/main_wind.png" alt="Главное окно" width="300px"><br>
+      <em>Главное окно</em>
+    </td>
+    <td align="center">
+      <img src="docs/screenshots/calc.png" alt="Калькулятор" width="300px"><br>
+      <em>Калькулятор</em>
+    </td>
+    <td align="center">
+      <img src="docs/screenshots/cli.png" alt="CLI" width="300px"><br>
+      <em>Интерфейс CLI</em>
+    </td>
+  </tr>
+</table>
 
 ---
 

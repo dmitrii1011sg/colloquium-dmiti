@@ -1,13 +1,15 @@
 import flet as ft
+from core.modules.QModule.INT_Q_B import INT_Q_B
+from core.modules.QModule.RED_Q_Q import RED_Q_Q
 from core.modules.QModule.ADD_QQ_Q import ADD_QQ_Q
 from core.modules.QModule.DIV_QQ_Q import DIV_QQ_Q
-from core.modules.QModule.INT_Q_B import INT_Q_B
 from core.modules.QModule.MUL_QQ_Q import MUL_QQ_Q
-from core.modules.QModule.RED_Q_Q import RED_Q_Q
 from core.modules.QModule.SUB_QQ_Q import SUB_QQ_Q
 from core.modules.QModule.TRANS_Q_Z import TRANS_Q_Z
 from core.modules.QModule.TRANS_Z_Q import TRANS_Z_Q
 from ui.components.forms.dynamic_func_form import DynamicFuncForm
+
+# Горшков Дмитрий 5381
 
 
 class QModule(ft.Column):
@@ -28,9 +30,23 @@ class QModule(ft.Column):
 
         self.controls = [
             ft.Text("Рациональные числа (Q)", size=28, weight=ft.FontWeight.BOLD),
-            ft.Text(
-                "Выберите функцию из списка ниже для выполнения операции.",
-                color=ft.Colors.GREY_400,
+            ft.Container(
+                content=ft.Column(
+                    [
+                        ft.Text(
+                            "Формат ввода данных:",
+                            size=16,
+                            weight=ft.FontWeight.W_600,
+                            color=ft.Colors.PRIMARY,
+                        ),
+                        ft.Text(
+                            "Дроби через косую черту (напр. -3/4, 7/1).",
+                            size=14,
+                            color=ft.Colors.ON_SURFACE_VARIANT,
+                        ),
+                    ],
+                    spacing=5,
+                )
             ),
             ft.Divider(height=20, color=ft.Colors.TRANSPARENT),
             DynamicFuncForm(functions_registry=self.registry, module_name="Модуль Q"),
