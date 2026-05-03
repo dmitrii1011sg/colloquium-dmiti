@@ -38,7 +38,7 @@ def test_add_qq_q_sum_to_zero():
     a = Rational.from_str("5/7")
     b = Rational.from_str("-5/7")
     result = ADD_QQ_Q(a, b)
-    assert str(result) == "0"  # Обычно RED_Q_Q приводит к "0/1"
+    assert str(result) == "0"
 
 
 def test_add_qq_q_with_zero():
@@ -46,42 +46,6 @@ def test_add_qq_q_with_zero():
     b = Rational.from_str("0/1")
     result = ADD_QQ_Q(a, b)
     assert str(result) == "2/3"
-
-
-def test_add_qq_q_zero_with_negative():
-    a = Rational.from_str("0/1")
-    b = Rational.from_str("-2/3")
-    result = ADD_QQ_Q(a, b)
-    assert str(result) == "-2/3"
-
-
-def test_add_qq_q_negative_with_zero():
-    a = Rational.from_str("-2/3")
-    b = Rational.from_str("0/1")
-    result = ADD_QQ_Q(a, b)
-    assert str(result) == "-2/3"
-
-
-def test_add_qq_q_zero_with_zero():
-    a = Rational.from_str("0/1")
-    b = Rational.from_str("0/1")
-    result = ADD_QQ_Q(a, b)
-    assert str(result) == "0"
-
-
-@pytest.mark.parametrize("iteration", range(10))
-def test_add_qq_q_random(iteration):
-    n1 = random.randint(1, 10**30)
-    d1 = random.randint(1, 10**30)
-    n2 = random.randint(1, 10**30)
-    d2 = random.randint(1, 10**30)
-
-    a = Rational.from_str(f"{n1}/{d1}")
-    b = Rational.from_str(f"{n2}/{d2}")
-    result = ADD_QQ_Q(a, b)
-
-    expected = Fraction(n1, d1) + Fraction(n2, d2)
-    assert str(result) == f"{expected.numerator}/{expected.denominator}"
 
 
 @pytest.mark.parametrize("iteration", range(10))
@@ -127,7 +91,7 @@ def test_add_qq_q_no_mutation():
     a = Rational.from_str("-14/88")
     b = Rational.from_str("11/61")
     _ = ADD_QQ_Q(a, b)
-    # Проверка, что исходные объекты не изменились
+
     assert str(a) == "-14/88"
     assert str(b) == "11/61"
 

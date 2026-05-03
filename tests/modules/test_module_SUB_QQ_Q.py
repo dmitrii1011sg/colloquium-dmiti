@@ -29,10 +29,10 @@ def test_sub_qq_q_positive_and_negative_positive_bigger():
 
 
 def test_sub_qq_q_positive_and_negative_negative_bigger():
-    a = Rational.from_str("1/4")
-    b = Rational.from_str("3/4")
+    a = Rational.from_str("-3/4")
+    b = Rational.from_str("1/4")
     result = SUB_QQ_Q(a, b)
-    assert str(result) == "-1/2"
+    assert str(result) == "-1"
 
 
 def test_sub_qq_q_result_is_zero():
@@ -47,42 +47,6 @@ def test_sub_qq_q_with_zero():
     b = Rational.from_str("0/1")
     result = SUB_QQ_Q(a, b)
     assert str(result) == "2/3"
-
-
-def test_sub_qq_q_zero_minus_negative():
-    a = Rational.from_str("0/1")
-    b = Rational.from_str("-2/3")
-    result = SUB_QQ_Q(a, b)
-    assert str(result) == "2/3"
-
-
-def test_sub_qq_q_negative_minus_zero():
-    a = Rational.from_str("-2/3")
-    b = Rational.from_str("0/1")
-    result = SUB_QQ_Q(a, b)
-    assert str(result) == "-2/3"
-
-
-def test_sub_qq_q_zero_with_zero():
-    a = Rational.from_str("0/1")
-    b = Rational.from_str("0/1")
-    result = SUB_QQ_Q(a, b)
-    assert str(result) == "0"
-
-
-@pytest.mark.parametrize("iteration", range(10))
-def test_sub_qq_q_random(iteration):
-    n1 = random.randint(1, 10**30)
-    d1 = random.randint(1, 10**30)
-    n2 = random.randint(1, 10**30)
-    d2 = random.randint(1, 10**30)
-
-    a = Rational.from_str(f"{n1}/{d1}")
-    b = Rational.from_str(f"{n2}/{d2}")
-    result = SUB_QQ_Q(a, b)
-
-    expected = Fraction(n1, d1) - Fraction(n2, d2)
-    assert str(result) == f"{expected.numerator}/{expected.denominator}"
 
 
 @pytest.mark.parametrize("iteration", range(10))

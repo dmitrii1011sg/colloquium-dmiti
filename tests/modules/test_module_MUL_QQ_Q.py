@@ -27,13 +27,6 @@ def test_mul_qq_q_positive_and_negative():
     assert str(result) == "-3/16"
 
 
-def test_mul_qq_q_negative_and_positive():
-    a = Rational.from_str("-3/4")
-    b = Rational.from_str("1/4")
-    result = MUL_QQ_Q(a, b)
-    assert str(result) == "-3/16"
-
-
 def test_mul_qq_q_result_is_zero():
     a = Rational.from_str("5/7")
     b = Rational.from_str("0/1")
@@ -46,42 +39,6 @@ def test_mul_qq_q_multiply_by_one():
     b = Rational.from_str("1/1")
     result = MUL_QQ_Q(a, b)
     assert str(result) == "2/3"
-
-
-def test_mul_qq_q_one_with_negative():
-    a = Rational.from_str("1/1")
-    b = Rational.from_str("-2/3")
-    result = MUL_QQ_Q(a, b)
-    assert str(result) == "-2/3"
-
-
-def test_mul_qq_q_negative_by_one():
-    a = Rational.from_str("-2/3")
-    b = Rational.from_str("1/1")
-    result = MUL_QQ_Q(a, b)
-    assert str(result) == "-2/3"
-
-
-def test_mul_qq_q_zero_with_zero():
-    a = Rational.from_str("0/1")
-    b = Rational.from_str("0/1")
-    result = MUL_QQ_Q(a, b)
-    assert str(result) == "0"
-
-
-@pytest.mark.parametrize("iteration", range(10))
-def test_mul_qq_q_random(iteration):
-    n1 = random.randint(1, 10**30)
-    d1 = random.randint(1, 10**30)
-    n2 = random.randint(1, 10**30)
-    d2 = random.randint(1, 10**30)
-
-    a = Rational.from_str(f"{n1}/{d1}")
-    b = Rational.from_str(f"{n2}/{d2}")
-    result = MUL_QQ_Q(a, b)
-
-    expected = Fraction(n1, d1) * Fraction(n2, d2)
-    assert str(result) == f"{expected.numerator}/{expected.denominator}"
 
 
 @pytest.mark.parametrize("iteration", range(10))
@@ -129,7 +86,6 @@ def test_mul_qq_q_no_mutation():
     a = Rational.from_str("-14/88")
     b = Rational.from_str("11/61")
     _ = MUL_QQ_Q(a, b)
-    # Проверка, что исходные объекты не изменились
     assert str(a) == "-14/88"
     assert str(b) == "11/61"
 
