@@ -45,6 +45,7 @@ class DynamicFuncForm(ft.Column):
             border_radius=10,
             expand=True,
             text_style=ft.TextStyle(weight=ft.FontWeight.W_500),
+            menu_height=250,
         )
 
         self.title_text = ft.Text(
