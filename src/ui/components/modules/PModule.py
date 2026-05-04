@@ -1,4 +1,5 @@
 import flet as ft
+from core.modules.PModule import ADD_PP_P, MUL_PQ_P, SUB_PP_P, MUL_Pxk_P
 from ui.components.forms.dynamic_func_form import DynamicFuncForm
 
 # Горшков Дмитрий 5381
@@ -9,7 +10,12 @@ class PModule(ft.Column):
         super().__init__()
         self.expand = True
 
-        self.registry = {}
+        self.registry = {
+            "P-1: Cложение многочленов (ADD_PP_P)": ADD_PP_P,
+            "P-2: Вычитание многочленов (SUB_PP_P)": SUB_PP_P,
+            "P-3: Умножение многочлена на рациональное число (MUL_PQ_P)": MUL_PQ_P,
+            "P-4: Умножение многочлена на x^k (MUL_Pxk_P)": MUL_Pxk_P,
+        }
 
         self.controls = [
             ft.Text("Многочлены (P)", size=28, weight=ft.FontWeight.BOLD),
