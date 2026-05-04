@@ -1,9 +1,10 @@
 # Литвиненко Владимир 5381
 
+from core.base.Natural import Natural
 from core.base.Polynom import Polynom
 
 
-def DEG_P_N(p: Polynom) -> int:
+def DEG_P_N(p: Polynom) -> Natural:
     """
     Нахождение степени многочлена.
 
@@ -14,10 +15,10 @@ def DEG_P_N(p: Polynom) -> int:
         ValueError: Параметры не соответствуют типам.
 
     Returns:
-        Int : Целое число, являющееся степенью многочлена.
+        Natural : Натуральное число, являющееся степенью многочлена.
     """
 
     if not isinstance(p, Polynom):
         raise ValueError("Invalid value")
 
-    return p.degree
+    return Natural.from_int(p.degree)
