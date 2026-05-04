@@ -10,6 +10,12 @@ from core.modules.NModule.DIV_NN_N import DIV_NN_N
 from core.modules.NModule.MOD_NN_N import MOD_NN_N
 from core.modules.NModule.MUL_NN_N import MUL_NN_N
 from core.modules.NModule.SUB_NN_N import SUB_NN_N
+from core.modules.PModule.ADD_PP_P import ADD_PP_P
+from core.modules.PModule.SUB_PP_P import SUB_PP_P
+from core.modules.QModule.ADD_QQ_Q import ADD_QQ_Q
+from core.modules.QModule.DIV_QQ_Q import DIV_QQ_Q
+from core.modules.QModule.MUL_QQ_Q import MUL_QQ_Q
+from core.modules.QModule.SUB_QQ_Q import SUB_QQ_Q
 from core.modules.QModule.TRANS_Z_Q import TRANS_Z_Q
 from core.modules.ZModule.ADD_ZZ_Z import ADD_ZZ_Z
 from core.modules.ZModule.DIV_ZZ_Z import DIV_ZZ_Z
@@ -33,15 +39,37 @@ TYPE_PRIORITY = [
 ADD_FUNC = {
     Natural.__name__: ADD_NN_N,
     Integer.__name__: ADD_ZZ_Z,
+    Rational.__name__: ADD_QQ_Q,
+    Polynom.__name__: ADD_PP_P,
 }
 
-SUB_FUNC = {Natural.__name__: SUB_NN_N, Integer.__name__: SUB_ZZ_Z}
+SUB_FUNC = {
+    Natural.__name__: SUB_NN_N,
+    Integer.__name__: SUB_ZZ_Z,
+    Rational.__name__: SUB_QQ_Q,
+    Polynom.__name__: SUB_PP_P,
+}
 
-MUL_FUNC = {Natural.__name__: MUL_NN_N, Integer.__name__: MUL_ZZ_Z}
+MUL_FUNC = {
+    Natural.__name__: MUL_NN_N,
+    Integer.__name__: MUL_ZZ_Z,
+    Rational.__name__: MUL_QQ_Q,
+    # Polynom.__name__: MUL_PP_P,
+}
 
-DIV_FUNC = {Natural.__name__: DIV_NN_N, Integer.__name__: DIV_ZZ_Z}
+DIV_FUNC = {
+    Natural.__name__: DIV_NN_N,
+    Integer.__name__: DIV_ZZ_Z,
+    Rational.__name__: DIV_QQ_Q,
+    # Polynom.__name__: DIV_PP_P,
+}
 
-MOD_FUNC = {Natural.__name__: MOD_NN_N, Integer.__name__: MOD_ZZ_Z}
+MOD_FUNC = {
+    Natural.__name__: MOD_NN_N,
+    Integer.__name__: MOD_ZZ_Z,
+    # Rational.__name__: ADD_QQ_Q,
+    # Polynom.__name__: ADD_PP_P,
+}
 
 OPERATIONS_MAP = {
     "+": ADD_FUNC,
