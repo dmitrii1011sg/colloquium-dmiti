@@ -1,5 +1,8 @@
 import flet as ft
-from core.modules.PModule import ADD_PP_P, MUL_PQ_P, SUB_PP_P, MUL_Pxk_P
+from core.modules.PModule.ADD_PP_P import ADD_PP_P
+from core.modules.PModule.MUL_PQ_P import MUL_PQ_P
+from core.modules.PModule.MUL_Pxk_P import MUL_Pxk_P
+from core.modules.PModule.SUB_PP_P import SUB_PP_P
 from ui.components.forms.dynamic_func_form import DynamicFuncForm
 
 # Горшков Дмитрий 5381
