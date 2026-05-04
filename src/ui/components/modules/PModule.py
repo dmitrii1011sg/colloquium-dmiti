@@ -1,6 +1,10 @@
 import flet as ft
+from core.modules.PModule.ADD_PP_P import ADD_PP_P
 from core.modules.PModule.DEG_P_N import DEG_P_N
 from core.modules.PModule.LED_P_Q import LED_P_Q
+from core.modules.PModule.MUL_PQ_P import MUL_PQ_P
+from core.modules.PModule.MUL_Pxk_P import MUL_Pxk_P
+from core.modules.PModule.SUB_PP_P import SUB_PP_P
 from ui.components.forms.dynamic_func_form import DynamicFuncForm
 
 # Горшков Дмитрий 5381
@@ -12,6 +16,10 @@ class PModule(ft.Column):
         self.expand = True
 
         self.registry = {
+            "P-1: Cложение многочленов (ADD_PP_P)": ADD_PP_P,
+            "P-2: Вычитание многочленов (SUB_PP_P)": SUB_PP_P,
+            "P-3: Умножение многочлена на рациональное число (MUL_PQ_P)": MUL_PQ_P,
+            "P-4: Умножение многочлена на x^k (MUL_Pxk_P)": MUL_Pxk_P,
             "P-5: Старший коэффициент многочлена (LED_P_Q)": LED_P_Q,
             "P-6: Степень многочлена (DEG_P_N)": DEG_P_N,
         }
