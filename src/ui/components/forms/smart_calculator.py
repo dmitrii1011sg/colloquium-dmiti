@@ -11,6 +11,9 @@ from core.modules.NModule.MOD_NN_N import MOD_NN_N
 from core.modules.NModule.MUL_NN_N import MUL_NN_N
 from core.modules.NModule.SUB_NN_N import SUB_NN_N
 from core.modules.PModule.ADD_PP_P import ADD_PP_P
+from core.modules.PModule.DIV_PP_P import DIV_PP_P
+from core.modules.PModule.MOD_PP_P import MOD_PP_P
+from core.modules.PModule.MUL_PP_P import MUL_PP_P
 from core.modules.PModule.SUB_PP_P import SUB_PP_P
 from core.modules.QModule.ADD_QQ_Q import ADD_QQ_Q
 from core.modules.QModule.DIV_QQ_Q import DIV_QQ_Q
@@ -54,21 +57,21 @@ MUL_FUNC = {
     Natural.__name__: MUL_NN_N,
     Integer.__name__: MUL_ZZ_Z,
     Rational.__name__: MUL_QQ_Q,
-    # Polynom.__name__: MUL_PP_P,
+    Polynom.__name__: MUL_PP_P,
 }
 
 DIV_FUNC = {
     Natural.__name__: DIV_NN_N,
     Integer.__name__: DIV_ZZ_Z,
     Rational.__name__: DIV_QQ_Q,
-    # Polynom.__name__: DIV_PP_P,
+    Polynom.__name__: DIV_PP_P,
 }
 
 MOD_FUNC = {
     Natural.__name__: MOD_NN_N,
     Integer.__name__: MOD_ZZ_Z,
-    # Rational.__name__: ADD_QQ_Q,
-    # Polynom.__name__: ADD_PP_P,
+    # Rational.__name__: MOD_QQ_Q,
+    Polynom.__name__: MOD_PP_P,
 }
 
 OPERATIONS_MAP = {
