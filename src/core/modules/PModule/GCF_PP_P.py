@@ -22,18 +22,18 @@ def GCF_PP_P(a: Polynom, b: Polynom) -> Polynom:
     if not (isinstance(a, Polynom) and isinstance(b, Polynom)):
         raise ValueError("Invalid value")
 
-    if str(a) == "0" and str(b) == "0":
+    if a.is_zero() and b.is_zero():
         return a
 
-    if str(a) == "0":
+    if a.is_zero():
         lead_coeff = Polynom.from_str(str(b.coefficients[-1]))
         return DIV_PP_P(b, lead_coeff)
 
-    if str(b) == "0":
+    if b.is_zero():
         lead_coeff = Polynom.from_str(str(a.coefficients[-1]))
         return DIV_PP_P(a, lead_coeff)
 
-    while str(b) != "0":
+    while not b.is_zero():
         temp = MOD_PP_P(a, b)
         a = b
         b = temp

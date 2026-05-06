@@ -25,7 +25,7 @@ def RED_Q_Q(n: Rational) -> Rational:
 
     numer = n.numer
     denom = n.denom
-    if numer.number.digits[0] == 0 and numer.number.length == 1:
+    if numer.is_zero():
         return Rational.from_str("0")
 
     abs_numer = ABS_Z_N(numer)

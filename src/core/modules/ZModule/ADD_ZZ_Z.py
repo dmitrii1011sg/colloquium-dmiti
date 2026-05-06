@@ -46,6 +46,5 @@ def ADD_ZZ_Z(a: Integer, b: Integer) -> Integer:
         res = SUB_NN_N(N_a, N_b)
         return Integer(res, sign=a.sign)
 
-    if com == 1:
-        res = SUB_NN_N(N_b, N_a)
-        return Integer(res, sign=b.sign)
+    res = SUB_NN_N(N_b, N_a)
+    return Integer(res, sign=b.sign)

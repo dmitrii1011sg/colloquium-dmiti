@@ -24,11 +24,8 @@ def MOD_PP_P(a: Polynom, b: Polynom) -> Polynom:
 
     if not (isinstance(a, Polynom) and isinstance(b, Polynom)):
         raise ValueError("Invalid value")
-
-    if (
-        b.coefficients[-1].numer.number.digits[0] == 0
-        and b.coefficients[-1].numer.number.length == 1
-    ):
+    print(b)
+    if b.is_zero():
         raise ZeroDivisionError("invalid value")
 
     temp = DIV_PP_P(a, b)

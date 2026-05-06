@@ -39,6 +39,9 @@ class Natural:
         self.digits: list[int] = normalized
         self.length: int = len(normalized)
 
+    def is_zero(self) -> bool:
+        return self.length == 1 and self.digits[0] == 0
+
     @classmethod
     def from_str(cls, value: str, need_reverse: bool = False) -> "Natural":
         """

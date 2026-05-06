@@ -24,7 +24,7 @@ def MOD_NN_N(a: Natural, b: Natural) -> Natural:
     if not isinstance(a, Natural) or not isinstance(b, Natural):
         raise ValueError("Invalid value")
 
-    if b.length == 1 and b.digits[0] == 0:
+    if b.is_zero():
         raise ValueError("Division by zero")
 
     if COM_NN_D(a, b) == 1:

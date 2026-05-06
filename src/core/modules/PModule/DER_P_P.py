@@ -26,7 +26,7 @@ def DER_P_P(a: Polynom) -> Polynom:
 
     lead = DEG_P_N(a)
 
-    if str(lead) == "0":
+    if lead.is_zero():
         return Polynom([Rational.from_str("0")])
 
     a_coeffs = a.coefficients
@@ -35,4 +35,5 @@ def DER_P_P(a: Polynom) -> Polynom:
         degree = Rational(Integer.from_int(i), Natural.from_int(1))
         derivative_coeff = MUL_QQ_Q(a_coeffs[i], degree)
         derivative.append(derivative_coeff)
+
     return Polynom(derivative)

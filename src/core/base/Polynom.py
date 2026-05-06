@@ -41,6 +41,9 @@ class Polynom:
         self.coefficients: list[Rational] = normalized
         self.degree: int = len(normalized) - 1
 
+    def is_zero(self) -> bool:
+        return self.degree == 0 and self.coefficients[0].is_zero()
+
     @staticmethod
     def _strip_leading_zeros(coeffs: list[Rational]) -> list[Rational]:
         """
@@ -54,23 +57,9 @@ class Polynom:
                 Для нуль-многочлена вернёт список с одним нулевым элементом.
         """
         result = list(coeffs)
-        while len(result) > 1 and Polynom._is_zero(result[-1]):
+        while len(result) > 1 and result[-1].is_zero():
             result.pop()
         return result
-
-    @staticmethod
-    def _is_zero(r: Rational) -> bool:
-        """
-        Проверка рационального числа на равенство нулю.
-
-        Args:
-            r (Rational): Рациональное число.
-
-        Returns:
-            bool: True, если числитель равен нулю.
-        """
-        n = r.numer.number
-        return n.length == 1 and n.digits[0] == 0
 
     @staticmethod
     def from_str(s: str) -> Polynom:
@@ -132,13 +121,13 @@ class Polynom:
         Returns:
             str: Многочлен в обычной записи.
         """
-        if self.degree == 0 and self._is_zero(self.coefficients[0]):
+        if self.is_zero():
             return "0"
 
         parts: list[str] = []
         for power in range(self.degree, -1, -1):
             coef = self.coefficients[power]
-            if self._is_zero(coef):
+            if coef.is_zero():
                 continue
 
             coef_str = str(coef)

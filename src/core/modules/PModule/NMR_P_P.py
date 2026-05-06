@@ -1,5 +1,4 @@
 from core.base.Polynom import Polynom
-from core.modules.PModule.DEG_P_N import DEG_P_N
 from core.modules.PModule.DER_P_P import DER_P_P
 from core.modules.PModule.DIV_PP_P import DIV_PP_P
 from core.modules.PModule.GCF_PP_P import GCF_PP_P
@@ -24,13 +23,10 @@ def NMR_P_P(a: Polynom) -> Polynom:
     if not (isinstance(a, Polynom)):
         raise ValueError("Invalid value")
 
-    if str(a) == "0":
-        return 0
+    if a.is_zero():
+        return a
 
     derivative = DER_P_P(a)
     gcd = GCF_PP_P(a, derivative)
-
-    if str(DEG_P_N(gcd)) == "0":
-        return a
 
     return DIV_PP_P(a, gcd)

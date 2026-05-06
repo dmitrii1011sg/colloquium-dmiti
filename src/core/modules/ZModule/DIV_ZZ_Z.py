@@ -27,10 +27,10 @@ def DIV_ZZ_Z(a: Integer, b: Integer) -> Integer:
     if not isinstance(a, Integer) or not isinstance(b, Integer):
         raise ValueError("Invalid Value")
 
-    if b.number.length == 1 and b.number.digits[0] == 0:
+    if b.is_zero():
         raise ValueError("Division by zero")
 
-    if a.number.length == 1 and a.number.digits[0] == 0:
+    if a.is_zero():
         return Integer.from_int(0)
 
     abs_a = ABS_Z_N(a)

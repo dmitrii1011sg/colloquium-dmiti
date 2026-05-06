@@ -20,7 +20,7 @@ def POZ_Z_D(n: Integer) -> int:
     if not isinstance(n, Integer):
         raise ValueError("Invalid value")
 
-    if n.number.length == 1 and n.number.digits[0] == 0:
+    if n.is_zero():
         return 0
 
     return 1 if n.sign == 1 else 2
