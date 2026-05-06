@@ -23,7 +23,7 @@ def MUL_NN_N(a: Natural, b: Natural) -> Natural:
     if not isinstance(a, Natural) or not isinstance(b, Natural):
         raise ValueError("Invalid Value")
 
-    if (a.digits[0] == 0 and a.length == 1) or (b.digits[0] == 0 and b.length == 1):
+    if a.is_zero() or b.is_zero():
         return Natural([0])
 
     res = Natural([0])

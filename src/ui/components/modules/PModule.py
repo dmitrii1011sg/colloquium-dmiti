@@ -1,12 +1,15 @@
 import flet as ft
 from core.modules.PModule.ADD_PP_P import ADD_PP_P
 from core.modules.PModule.DEG_P_N import DEG_P_N
+from core.modules.PModule.DER_P_P import DER_P_P
 from core.modules.PModule.DIV_PP_P import DIV_PP_P
+from core.modules.PModule.GCF_PP_P import GCF_PP_P
 from core.modules.PModule.LED_P_Q import LED_P_Q
 from core.modules.PModule.MOD_PP_P import MOD_PP_P
 from core.modules.PModule.MUL_PP_P import MUL_PP_P
 from core.modules.PModule.MUL_PQ_P import MUL_PQ_P
 from core.modules.PModule.MUL_Pxk_P import MUL_Pxk_P
+from core.modules.PModule.NMR_P_P import NMR_P_P
 from core.modules.PModule.SUB_PP_P import SUB_PP_P
 from ui.components.forms.dynamic_func_form import DynamicFuncForm
 
@@ -28,6 +31,9 @@ class PModule(ft.Column):
             "P-8: Умножение многочленов (MUL_PP_P)": MUL_PP_P,
             "P-9: Частное от деления многочленов (DIV_PP_P)": DIV_PP_P,
             "P-10: Остаток от деления многочленов (MOD_PP_P)": MOD_PP_P,
+            "P-11: НОД многочленов (GCF_PP_P)": GCF_PP_P,
+            "P-12: Производная многочлена (DER_P_P)": DER_P_P,
+            "P-13: Преобразование многочлена к простым корням (NMR_P_P)": NMR_P_P,
         }
 
         self.controls = [

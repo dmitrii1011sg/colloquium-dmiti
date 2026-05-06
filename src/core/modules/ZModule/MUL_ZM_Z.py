@@ -20,7 +20,7 @@ def MUL_ZM_Z(n: Integer) -> Integer:
     if not isinstance(n, Integer):
         raise ValueError("Invalid value")
 
-    if n.number.length == 1 and n.number.digits[0] == 0:
+    if n.is_zero():
         return Integer(n.number, sign=0)
 
     new_sign = 1 if n.sign == 0 else 0

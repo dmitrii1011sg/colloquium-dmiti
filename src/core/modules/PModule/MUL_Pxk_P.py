@@ -22,7 +22,7 @@ def MUL_Pxk_P(a: Polynom, k: Natural) -> Polynom:
     if not (isinstance(a, Polynom) and isinstance(k, Natural)):
         raise ValueError("Invalid value")
 
-    k_int = int(str(k))
+    k_int = int(k)
     zero = Rational.from_str("0")
     max_degree = a.degree + k_int
     result_coefficients = [zero] * (max_degree + 1)

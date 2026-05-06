@@ -37,6 +37,9 @@ class Rational:
         self.numer: Integer = numer
         self.denom: Natural = denom
 
+    def is_zero(self) -> bool:
+        return self.numer.is_zero()
+
     @classmethod
     def from_str(cls, value: str) -> "Rational":
         """

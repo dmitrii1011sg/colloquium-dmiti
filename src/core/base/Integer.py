@@ -34,6 +34,9 @@ class Integer:
         self.sign = 0 if number.length == 1 and number.digits[0] == 0 else sign
         self.number = number
 
+    def is_zero(self) -> bool:
+        return self.number.is_zero()
+
     @classmethod
     def from_str(cls, value: str) -> "Integer":
         """

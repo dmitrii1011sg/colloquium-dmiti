@@ -33,7 +33,7 @@ def DIV_QQ_Q(n: Rational, m: Rational) -> Rational:
     m_num = m.numer
     m_dem = m.denom
 
-    if m_num.number.digits[0] == 0 and m_num.number.length == 1:
+    if m_num.is_zero():
         raise ZeroDivisionError("invalid value")
 
     new_num = MUL_ZZ_Z(n_num, TRANS_N_Z(m_dem))
