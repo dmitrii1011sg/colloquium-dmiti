@@ -43,20 +43,32 @@ def DIV_PP_P(a: Polynom, b: Polynom) -> Polynom:
     if COM_NN_D(DEG_P_N(temp_pol), DEG_P_N(b)) == 1:
         return Polynom.from_str("0")
 
-    exp_l = int(SUB_NN_N(DEG_P_N(a), DEG_P_N(b))) + 1
+    current_k = int(SUB_NN_N(DEG_P_N(a), DEG_P_N(b)))
 
     while COM_NN_D(DEG_P_N(temp_pol), DEG_P_N(b)) != 1:
-        if str(LED_P_Q(temp_pol)) == "0":
+        lead = LED_P_Q(temp_pol)
+        if lead == Rational.from_str("0") or str(lead) in ("0", "0/1"):
+            break
+
+        lead = LED_P_Q(temp_pol)
+        if lead == Rational.from_str("0") or str(lead) in ("0", "0/1"):
             break
 
         k = SUB_NN_N(DEG_P_N(temp_pol), DEG_P_N(b))
         c = DIV_QQ_Q(LED_P_Q(temp_pol), LED_P_Q(b))
 
+        while current_k > int(k):
+            fin_coeffs.append(Rational.from_str("0"))
+            current_k -= 1
+
         fin_coeffs.append(c)
+        current_k -= 1
+
         t = [Rational.from_str("0")] * int(k) + [c]
         temp_pol = SUB_PP_P(temp_pol, MUL_PP_P(b, Polynom(t)))
 
-    while len(fin_coeffs) < exp_l:
+    while current_k >= 0:
         fin_coeffs.append(Rational.from_str("0"))
+        current_k -= 1
 
     return Polynom(fin_coeffs[::-1])
