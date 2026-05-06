@@ -49,6 +49,16 @@ def test_DIV_PP_P_degree_less():
     assert str(result) == "0"
 
 
+def test_DIV_PP_P_skip_degree():
+    # (x^2 + 1) / 1 = x^2 + 1
+    a = Polynom(
+        [Rational.from_str("1"), Rational.from_str("0"), Rational.from_str("1")]
+    )
+    b = Polynom([Rational.from_str("1")])
+    result = DIV_PP_P(a, b)
+    assert str(result) == "x^2 + 1"
+
+
 def test_DIV_PP_P_by_constant():
     # (2x^2 + 4x) / 2 = x^2 + 2x
     a = Polynom(
