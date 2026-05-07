@@ -23,9 +23,7 @@ def test_deg_p_n_zero_polynomial():
 
 
 def test_deg_p_n_quadratic():
-    p = Polynom(
-        [Rational.from_str("1"), Rational.from_str("0"), Rational.from_str("5")]
-    )
+    p = Polynom([Rational.from_str("1"), Rational.from_str("0"), Rational.from_str("5")])
     result = DEG_P_N(p)
     assert str(result) == "2"
 
@@ -38,9 +36,7 @@ def test_deg_p_n_high_degree():
 
 
 def test_deg_p_n_fractional_coeffs():
-    p = Polynom(
-        [Rational.from_str("1/2"), Rational.from_str("3/4"), Rational.from_str("5/6")]
-    )
+    p = Polynom([Rational.from_str("1/2"), Rational.from_str("3/4"), Rational.from_str("5/6")])
     result = DEG_P_N(p)
     assert str(result) == "2"
 

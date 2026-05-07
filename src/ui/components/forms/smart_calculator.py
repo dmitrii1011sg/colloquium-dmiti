@@ -107,9 +107,7 @@ class SmartCalculator(ft.Container):
             no_wrap=True,
         )
 
-        self.info_icon = ft.Icon(
-            ft.Icons.INFO_OUTLINE, size=14, color="outline", visible=False
-        )
+        self.info_icon = ft.Icon(ft.Icons.INFO_OUTLINE, size=14, color="outline", visible=False)
         self.info_text = ft.Text("", size=12, color="outline", italic=True)
         self.log_row = ft.Row(
             [self.info_icon, self.info_text],
@@ -199,9 +197,7 @@ class SmartCalculator(ft.Container):
         )
 
         content = (
-            ft.Icon(icon, size=20)
-            if icon
-            else ft.Text(data, size=18, weight=ft.FontWeight.W_500)
+            ft.Icon(icon, size=20) if icon else ft.Text(data, size=18, weight=ft.FontWeight.W_500)
         )
 
         return ft.ElevatedButton(
@@ -223,21 +219,13 @@ class SmartCalculator(ft.Container):
         )
 
     @overload
-    def cast_to_type(
-        self, obj: CASObject, target_type_name: Literal["Natural"]
-    ) -> Natural: ...
+    def cast_to_type(self, obj: CASObject, target_type_name: Literal["Natural"]) -> Natural: ...
     @overload
-    def cast_to_type(
-        self, obj: CASObject, target_type_name: Literal["Integer"]
-    ) -> Integer: ...
+    def cast_to_type(self, obj: CASObject, target_type_name: Literal["Integer"]) -> Integer: ...
     @overload
-    def cast_to_type(
-        self, obj: CASObject, target_type_name: Literal["Rational"]
-    ) -> Rational: ...
+    def cast_to_type(self, obj: CASObject, target_type_name: Literal["Rational"]) -> Rational: ...
     @overload
-    def cast_to_type(
-        self, obj: CASObject, target_type_name: Literal["Polynom"]
-    ) -> Polynom: ...
+    def cast_to_type(self, obj: CASObject, target_type_name: Literal["Polynom"]) -> Polynom: ...
 
     def cast_to_type(self, obj: CASObject, target_type_name: str) -> CASObject:
         current_type = type(obj).__name__
@@ -284,9 +272,7 @@ class SmartCalculator(ft.Container):
         func = func_dict.get(target_type)
 
         if not func:
-            raise NotImplementedError(
-                f"Операция '{op}' для типа {target_type} пока не подключена."
-            )
+            raise NotImplementedError(f"Операция '{op}' для типа {target_type} пока не подключена.")
         return func(a_c, b_c)
 
     def parse_input(self, val: str) -> CASObject:

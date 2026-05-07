@@ -5,17 +5,13 @@ from core.modules.PModule.LED_P_Q import LED_P_Q
 
 
 def test_led_p_q_simple():
-    p = Polynom(
-        [Rational.from_str("3"), Rational.from_str("0"), Rational.from_str("5")]
-    )
+    p = Polynom([Rational.from_str("3"), Rational.from_str("0"), Rational.from_str("5")])
     result = LED_P_Q(p)
     assert str(result) == "5"
 
 
 def test_led_p_q_negative():
-    p = Polynom(
-        [Rational.from_str("1/2"), Rational.from_str("-7/1"), Rational.from_str("0")]
-    )
+    p = Polynom([Rational.from_str("1/2"), Rational.from_str("-7/1"), Rational.from_str("0")])
     result = LED_P_Q(p)
     assert str(result) == "-7"
 
@@ -34,9 +30,7 @@ def test_led_p_q_linear():
 
 def test_led_p_q_high_degree():
     p = Polynom(
-        [Rational.from_str("1/1")]
-        + [Rational.from_str("0")] * 9
-        + [Rational.from_str("5/2")]
+        [Rational.from_str("1/1")] + [Rational.from_str("0")] * 9 + [Rational.from_str("5/2")]
     )
     result = LED_P_Q(p)
     assert str(result) == "5/2"

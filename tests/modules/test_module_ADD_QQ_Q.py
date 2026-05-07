@@ -80,9 +80,7 @@ def test_add_qq_q_huge_numbers_opposite_signs():
 
     a = Rational.from_str(f"{big_num}/{common_den}")
     b = Rational.from_str(f"-{small_num}/{common_den}")
-    expected = Fraction(int(big_num), int(common_den)) - Fraction(
-        int(small_num), int(common_den)
-    )
+    expected = Fraction(int(big_num), int(common_den)) - Fraction(int(small_num), int(common_den))
     result = ADD_QQ_Q(a, b)
     assert str(result) == f"{expected.numerator}/{expected.denominator}"
 

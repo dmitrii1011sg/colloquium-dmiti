@@ -9,9 +9,7 @@ from core.modules.PModule.MOD_PP_P import MOD_PP_P
 
 def test_MOD_PP_P_exact_division():
     # (x^2 - 1) % (x - 1) = 0
-    a = Polynom(
-        [Rational.from_str("-1"), Rational.from_str("0"), Rational.from_str("1")]
-    )
+    a = Polynom([Rational.from_str("-1"), Rational.from_str("0"), Rational.from_str("1")])
     b = Polynom([Rational.from_str("-1"), Rational.from_str("1")])
     result = MOD_PP_P(a, b)
     expected = Polynom([Rational.from_str("0")])
@@ -20,9 +18,7 @@ def test_MOD_PP_P_exact_division():
 
 def test_MOD_PP_P_with_remainder():
     # (x^2 + 2x + 1) % (x + 2) = 1
-    a = Polynom(
-        [Rational.from_str("1"), Rational.from_str("2"), Rational.from_str("1")]
-    )
+    a = Polynom([Rational.from_str("1"), Rational.from_str("2"), Rational.from_str("1")])
     b = Polynom([Rational.from_str("2"), Rational.from_str("1")])
     result = MOD_PP_P(a, b)
     expected = Polynom([Rational.from_str("1")])
@@ -32,9 +28,7 @@ def test_MOD_PP_P_with_remainder():
 def test_MOD_PP_P_degree_less():
     # (x + 1) % (x^2 + 1) = x + 1 (остаток равен делимому)
     a = Polynom([Rational.from_str("1"), Rational.from_str("1")])
-    b = Polynom(
-        [Rational.from_str("1"), Rational.from_str("0"), Rational.from_str("1")]
-    )
+    b = Polynom([Rational.from_str("1"), Rational.from_str("0"), Rational.from_str("1")])
     result = MOD_PP_P(a, b)
     expected = Polynom([Rational.from_str("1"), Rational.from_str("1")])
     assert str(result) == str(expected)
@@ -42,9 +36,7 @@ def test_MOD_PP_P_degree_less():
 
 def test_MOD_PP_P_by_constant():
     # (2x^2 + 4x) % 2 = 0
-    a = Polynom(
-        [Rational.from_str("0"), Rational.from_str("4"), Rational.from_str("2")]
-    )
+    a = Polynom([Rational.from_str("0"), Rational.from_str("4"), Rational.from_str("2")])
     b = Polynom([Rational.from_str("2")])
     result = MOD_PP_P(a, b)
     expected = Polynom([Rational.from_str("0")])
@@ -112,9 +104,7 @@ def test_MOD_PP_P_property_deg_remainder_less():
             Rational.from_str("1"),
         ]
     )
-    b = Polynom(
-        [Rational.from_str("-1"), Rational.from_str("2"), Rational.from_str("1")]
-    )
+    b = Polynom([Rational.from_str("-1"), Rational.from_str("2"), Rational.from_str("1")])
     r = MOD_PP_P(a, b)
 
     # Проверяем, что результат либо ноль, либо его длина коэффициентов меньше, чем у b
@@ -142,9 +132,7 @@ def test_MOD_PP_P_division_by_zero():
 
 
 def test_MOD_PP_P_no_mutation():
-    a = Polynom(
-        [Rational.from_str("1"), Rational.from_str("2"), Rational.from_str("3")]
-    )
+    a = Polynom([Rational.from_str("1"), Rational.from_str("2"), Rational.from_str("3")])
     b = Polynom([Rational.from_str("1"), Rational.from_str("1")])
     _ = MOD_PP_P(a, b)
     # Проверка, что исходные многочлены не изменились

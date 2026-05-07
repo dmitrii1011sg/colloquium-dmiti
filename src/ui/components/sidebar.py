@@ -40,9 +40,7 @@ class Sidebar(ft.Container):
                 padding=ft.padding.all(10),
                 mouse_cursor=ft.MouseCursor.CLICK,
             ),
-            content=ft.Container(
-                content=self.header_row, alignment=ft.Alignment.CENTER_LEFT
-            ),
+            content=ft.Container(content=self.header_row, alignment=ft.Alignment.CENTER_LEFT),
             on_click=self.toggle_sidebar,
         )
 
@@ -132,9 +130,7 @@ class Sidebar(ft.Container):
         for idx, btn in enumerate(self.nav_buttons):
             is_selected = self.selected_index == idx
             btn.style.bgcolor = ft.Colors.PRIMARY if is_selected else None
-            btn.style.color = (
-                ft.Colors.ON_PRIMARY if is_selected else ft.Colors.ON_SURFACE
-            )
+            btn.style.color = ft.Colors.ON_PRIMARY if is_selected else ft.Colors.ON_SURFACE
         self.update()
 
     def toggle_sidebar(self, e):
@@ -151,9 +147,7 @@ class Sidebar(ft.Container):
         for txt, row in zip(self.text_elements, self.row_elements, strict=False):
             txt.visible = self.extended
             row.alignment = (
-                ft.MainAxisAlignment.START
-                if self.extended
-                else ft.MainAxisAlignment.CENTER
+                ft.MainAxisAlignment.START if self.extended else ft.MainAxisAlignment.CENTER
             )
             row.spacing = 10 if self.extended else 0
 
