@@ -11,6 +11,7 @@ from core.modules.PModule.MUL_PQ_P import MUL_PQ_P
 from core.modules.PModule.MUL_Pxk_P import MUL_Pxk_P
 from core.modules.PModule.NMR_P_P import NMR_P_P
 from core.modules.PModule.SUB_PP_P import SUB_PP_P
+from core.modules.PModule.FAC_P_Q import FAC_P_Q
 from ui.components.forms.dynamic_func_form import DynamicFuncForm
 
 # Горшков Дмитрий 5381
@@ -28,6 +29,7 @@ class PModule(ft.Column):
             "P-4: Умножение многочлена на x^k (MUL_Pxk_P)": MUL_Pxk_P,
             "P-5: Старший коэффициент многочлена (LED_P_Q)": LED_P_Q,
             "P-6: Степень многочлена (DEG_P_N)": DEG_P_N,
+            "P-7: Вынесение из многочлена НОК знаменателей и НОД числителей": FAC_P_Q,
             "P-8: Умножение многочленов (MUL_PP_P)": MUL_PP_P,
             "P-9: Частное от деления многочленов (DIV_PP_P)": DIV_PP_P,
             "P-10: Остаток от деления многочленов (MOD_PP_P)": MOD_PP_P,
