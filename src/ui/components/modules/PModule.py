@@ -3,6 +3,7 @@ from core.modules.PModule.ADD_PP_P import ADD_PP_P
 from core.modules.PModule.DEG_P_N import DEG_P_N
 from core.modules.PModule.DER_P_P import DER_P_P
 from core.modules.PModule.DIV_PP_P import DIV_PP_P
+from core.modules.PModule.FAC_P_Q import FAC_P_Q
 from core.modules.PModule.GCF_PP_P import GCF_PP_P
 from core.modules.PModule.LED_P_Q import LED_P_Q
 from core.modules.PModule.MOD_PP_P import MOD_PP_P
@@ -28,6 +29,7 @@ class PModule(ft.Column):
             "P-4: Умножение многочлена на x^k (MUL_Pxk_P)": MUL_Pxk_P,
             "P-5: Старший коэффициент многочлена (LED_P_Q)": LED_P_Q,
             "P-6: Степень многочлена (DEG_P_N)": DEG_P_N,
+            "P-7: Вынесение из многочлена НОК знаменателей и НОД числителей": FAC_P_Q,
             "P-8: Умножение многочленов (MUL_PP_P)": MUL_PP_P,
             "P-9: Частное от деления многочленов (DIV_PP_P)": DIV_PP_P,
             "P-10: Остаток от деления многочленов (MOD_PP_P)": MOD_PP_P,
