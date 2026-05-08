@@ -1,16 +1,16 @@
-from core.base.Natural import Natural
 from core.base.Integer import Integer
+from core.base.Natural import Natural
 from core.base.Polynom import Polynom
 from core.base.Rational import Rational
+from core.modules.NModule.GCF_NN_N import GCF_NN_N
 from core.modules.NModule.LCM_NN_N import LCM_NN_N
 from core.modules.ZModule.ABS_Z_N import ABS_Z_N
-from core.modules.ZModule.TRANS_Z_N import TRANS_Z_N
 from core.modules.ZModule.TRANS_N_Z import TRANS_N_Z
-from core.modules.ZModule.DIV_ZZ_Z import DIV_ZZ_Z
-from core.modules.NModule.GCF_NN_N import GCF_NN_N
+
 # Чугунников Валерий 5382
 
-def FAC_P_Q(a:Polynom) -> Rational:
+
+def FAC_P_Q(a: Polynom) -> Rational:
     """
     Вынесение из многочлена НОК знаменателей коэффицентов и НОД числителей
 
@@ -21,7 +21,7 @@ def FAC_P_Q(a:Polynom) -> Rational:
         ValueError: Параметр не соответствует типу.
 
     Returns:
-        Rational : Рациональное число, где числитель - НОД числителей, знаменатель - НОК знаменателей
+        Rational : Рациональное число, числитель: НОД числителей, знаменатель: НОК знаменателей
     """
 
     if not isinstance(a, Polynom):
@@ -32,17 +32,15 @@ def FAC_P_Q(a:Polynom) -> Rational:
     denom = []
     for i in coefficients:
         if not i.is_zero():
-            numer.append(i.numer)
+            numer.append(ABS_Z_N(i.numer))
             denom.append(i.denom)
 
     if not numer:
         return Rational(Integer.from_int(0), Natural.from_int(1))
 
-    gcf_num = ABS_Z_N(numer[0])
+    gcf_num = numer[0]
     for i in numer[1:]:
-        if not i.is_zero():
-            new_num = ABS_Z_N(i)
-            gcf_num = GCF_NN_N(gcf_num, new_num)
+        gcf_num = GCF_NN_N(gcf_num, i)
 
     lcm_den = denom[0]
     for i in denom[1:]:

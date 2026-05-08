@@ -3,6 +3,7 @@ from core.modules.PModule.ADD_PP_P import ADD_PP_P
 from core.modules.PModule.DEG_P_N import DEG_P_N
 from core.modules.PModule.DER_P_P import DER_P_P
 from core.modules.PModule.DIV_PP_P import DIV_PP_P
+from core.modules.PModule.FAC_P_Q import FAC_P_Q
 from core.modules.PModule.GCF_PP_P import GCF_PP_P
 from core.modules.PModule.LED_P_Q import LED_P_Q
 from core.modules.PModule.MOD_PP_P import MOD_PP_P
@@ -11,7 +12,6 @@ from core.modules.PModule.MUL_PQ_P import MUL_PQ_P
 from core.modules.PModule.MUL_Pxk_P import MUL_Pxk_P
 from core.modules.PModule.NMR_P_P import NMR_P_P
 from core.modules.PModule.SUB_PP_P import SUB_PP_P
-from core.modules.PModule.FAC_P_Q import FAC_P_Q
 from ui.components.forms.dynamic_func_form import DynamicFuncForm
 
 # Горшков Дмитрий 5381

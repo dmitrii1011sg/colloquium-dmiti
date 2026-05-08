@@ -9,9 +9,7 @@ from core.modules.PModule.FAC_P_Q import FAC_P_Q
 
 def test_FAC_P_Q_simple():
     # 2/3x + 1/6
-    a = Polynom(
-        [Rational.from_str("1/6"), Rational.from_str("2/3")]
-    )
+    a = Polynom([Rational.from_str("1/6"), Rational.from_str("2/3")])
     result = FAC_P_Q(a)
     expected = Rational.from_str("1/6")
     assert str(result) == str(expected)
@@ -19,9 +17,7 @@ def test_FAC_P_Q_simple():
 
 def test_FAC_P_Q_all_int():
     # 4x^2 + 2x + 6
-    a = Polynom(
-        [Rational.from_str("6"), Rational.from_str("2"), Rational.from_str("4")]
-    )
+    a = Polynom([Rational.from_str("6"), Rational.from_str("2"), Rational.from_str("4")])
     result = FAC_P_Q(a)
     expected = Rational.from_str("2")
     assert str(result) == str(expected)
@@ -29,9 +25,7 @@ def test_FAC_P_Q_all_int():
 
 def test_FAC_P_Q_negative_coefficients():
     # -3/7x + 2/5
-    a = Polynom(
-        [Rational.from_str("2/5"), Rational.from_str("-3/7")]
-    )
+    a = Polynom([Rational.from_str("2/5"), Rational.from_str("-3/7")])
     result = FAC_P_Q(a)
     expected = Rational.from_str("1/35")
     assert str(result) == str(expected)
@@ -55,9 +49,7 @@ def test_FAC_P_Q_zero_polynom():
 
 def test_FAC_P_Q_same_denominators():
     # 2/3x + 4/3
-    a = Polynom(
-        [Rational.from_str("4/3"), Rational.from_str("2/3")]
-    )
+    a = Polynom([Rational.from_str("4/3"), Rational.from_str("2/3")])
     result = FAC_P_Q(a)
     expected = Rational.from_str("2/3")
     assert str(result) == str(expected)
@@ -65,9 +57,7 @@ def test_FAC_P_Q_same_denominators():
 
 def test_FAC_P_Q_same_numerators():
     # 3/4x + 3/5
-    a = Polynom(
-        [Rational.from_str("3/5"), Rational.from_str("3/4")]
-    )
+    a = Polynom([Rational.from_str("3/5"), Rational.from_str("3/4")])
     result = FAC_P_Q(a)
     expected = Rational.from_str("3/20")
     assert str(result) == str(expected)
@@ -91,6 +81,7 @@ def test_FAC_P_Q_random(iteration):
     a = Polynom(coeffs)
 
     import math
+
     expected_gcd = numerators[0]
     for n in numerators[1:]:
         expected_gcd = math.gcd(expected_gcd, n)
@@ -106,6 +97,7 @@ def test_FAC_P_Q_random(iteration):
     result_as_fraction = Fraction(int(result.numer), int(result.denom))
     assert result_as_fraction == expected_fraction
 
+
 def test_FAC_P_Q_invalid_input():
     with pytest.raises(ValueError):
         FAC_P_Q("not polynom")  # type: ignore
@@ -115,9 +107,7 @@ def test_FAC_P_Q_invalid_input():
 
 
 def test_FAC_P_Q_no_mutation():
-    a = Polynom(
-        [Rational.from_str("1/2"), Rational.from_str("3/4")]
-    )
+    a = Polynom([Rational.from_str("1/2"), Rational.from_str("3/4")])
     original_str = str(a)
     _ = FAC_P_Q(a)
     # Проверка, что исходный многочлен не изменился
