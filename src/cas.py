@@ -57,18 +57,14 @@ def cast_argument(value_str: str, target_type):
         return value_str
     if target_type in (int, str, float):
         return target_type(value_str)
-    if target_type in (Natural, Integer, Rational, Polynom) and hasattr(
-        target_type, "from_str"
-    ):
+    if target_type in (Natural, Integer, Rational, Polynom) and hasattr(target_type, "from_str"):
         return target_type.from_str(value_str)
     raise TypeError(f"Неизвестный тип для конвертации: {target_type}")
 
 
 def execute_function(func_name: str, args_list: list):
     if func_name not in AVAILABLE_FUNCTIONS:
-        raise ValueError(
-            f"Функция '{func_name}' не зарегистрирована в AVAILABLE_FUNCTIONS."
-        )
+        raise ValueError(f"Функция '{func_name}' не зарегистрирована в AVAILABLE_FUNCTIONS.")
 
     func = AVAILABLE_FUNCTIONS[func_name]
     sig = inspect.signature(func)

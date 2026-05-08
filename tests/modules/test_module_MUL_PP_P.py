@@ -12,16 +12,12 @@ def test_MUL_PP_P_simple():
     p1 = Polynom([Rational.from_str("2"), Rational.from_str("1")])
     p2 = Polynom([Rational.from_str("-1"), Rational.from_str("1")])
     result = MUL_PP_P(p1, p2)
-    expected = Polynom(
-        [Rational.from_str("-2"), Rational.from_str("1"), Rational.from_str("1")]
-    )
+    expected = Polynom([Rational.from_str("-2"), Rational.from_str("1"), Rational.from_str("1")])
     assert str(result) == str(expected)
 
 
 def test_MUL_PP_P_by_zero():
-    p1 = Polynom(
-        [Rational.from_str("5"), Rational.from_str("2"), Rational.from_str("1")]
-    )
+    p1 = Polynom([Rational.from_str("5"), Rational.from_str("2"), Rational.from_str("1")])
     p2 = Polynom([Rational.from_str("0")])
     result = MUL_PP_P(p1, p2)
     expected = Polynom([Rational.from_str("0")])
@@ -29,14 +25,10 @@ def test_MUL_PP_P_by_zero():
 
 
 def test_MUL_PP_P_by_one():
-    p1 = Polynom(
-        [Rational.from_str("3"), Rational.from_str("-2"), Rational.from_str("4")]
-    )
+    p1 = Polynom([Rational.from_str("3"), Rational.from_str("-2"), Rational.from_str("4")])
     p2 = Polynom([Rational.from_str("1")])
     result = MUL_PP_P(p1, p2)
-    expected = Polynom(
-        [Rational.from_str("3"), Rational.from_str("-2"), Rational.from_str("4")]
-    )
+    expected = Polynom([Rational.from_str("3"), Rational.from_str("-2"), Rational.from_str("4")])
     assert str(result) == str(expected)
 
 
@@ -54,12 +46,8 @@ def test_MUL_PP_P_random(iteration):
     deg_b = random.randint(0, 5)
 
     # Генерируем коэффициенты (порядок: от x^0 к x^n)
-    coeffs_a = [
-        Rational.from_str(f"{random.randint(-5, 5)}/1") for _ in range(deg_a + 1)
-    ]
-    coeffs_b = [
-        Rational.from_str(f"{random.randint(-5, 5)}/1") for _ in range(deg_b + 1)
-    ]
+    coeffs_a = [Rational.from_str(f"{random.randint(-5, 5)}/1") for _ in range(deg_a + 1)]
+    coeffs_b = [Rational.from_str(f"{random.randint(-5, 5)}/1") for _ in range(deg_b + 1)]
 
     p1 = Polynom(coeffs_a)
     p2 = Polynom(coeffs_b)
@@ -74,9 +62,7 @@ def test_MUL_PP_P_random(iteration):
             exp_coeffs[i + j] += va * vb
 
     # Собираем ожидаемый Polynom
-    exp_rationals = [
-        Rational.from_str(f"{c.numerator}/{c.denominator}") for c in exp_coeffs
-    ]
+    exp_rationals = [Rational.from_str(f"{c.numerator}/{c.denominator}") for c in exp_coeffs]
     expected = Polynom(exp_rationals)
 
     result = MUL_PP_P(p1, p2)
@@ -84,9 +70,7 @@ def test_MUL_PP_P_random(iteration):
 
 
 def test_MUL_PP_P_commutative():
-    p1 = Polynom(
-        [Rational.from_str("1"), Rational.from_str("2"), Rational.from_str("3")]
-    )
+    p1 = Polynom([Rational.from_str("1"), Rational.from_str("2"), Rational.from_str("3")])
     p2 = Polynom([Rational.from_str("4"), Rational.from_str("-1")])
     res1 = MUL_PP_P(p1, p2)
     res2 = MUL_PP_P(p2, p1)
@@ -114,9 +98,7 @@ def test_MUL_PP_P_invalid_input():
 
 def test_MUL_PP_P_high_degree():
     # (x^2 + 1) * (x^3 + x) = x^5 + x^3 + x^3 + x = x^5 + 2x^3 + x
-    p1 = Polynom(
-        [Rational.from_str("1"), Rational.from_str("0"), Rational.from_str("1")]
-    )
+    p1 = Polynom([Rational.from_str("1"), Rational.from_str("0"), Rational.from_str("1")])
     p2 = Polynom(
         [
             Rational.from_str("0"),

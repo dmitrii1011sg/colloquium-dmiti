@@ -8,9 +8,7 @@ from core.modules.QModule.MUL_QQ_Q import MUL_QQ_Q
 
 
 def test_MUL_PQ_P_simple():
-    p = Polynom(
-        [Rational.from_str("1"), Rational.from_str("2"), Rational.from_str("3")]
-    )
+    p = Polynom([Rational.from_str("1"), Rational.from_str("2"), Rational.from_str("3")])
     r = Rational.from_str("3")
     result = MUL_PQ_P(p, r)
     assert str(result) == "9x^2 + 6x + 3"
@@ -28,9 +26,7 @@ def test_MUL_PQ_P_random(iteration):
     degree1 = random.randint(0, 10)
     r = random.randint(0, 10**50)
 
-    coeffs1 = [
-        Rational.from_str(f"{random.randint(-10, 10)}/1") for _ in range(degree1 + 1)
-    ]
+    coeffs1 = [Rational.from_str(f"{random.randint(-10, 10)}/1") for _ in range(degree1 + 1)]
 
     p1 = Polynom(coeffs1)
     r = Rational.from_str(str(r))

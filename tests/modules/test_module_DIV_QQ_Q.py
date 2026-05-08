@@ -69,9 +69,7 @@ def test_div_qq_q_huge_numbers():
     base_den = "7" * 50
     a = Rational.from_str(f"{int(base_num) * 2}/{base_den}")
     b = Rational.from_str(f"{base_num}/{base_den}")
-    expected = Fraction(int(base_num) * 2, int(base_den)) / Fraction(
-        int(base_num), int(base_den)
-    )
+    expected = Fraction(int(base_num) * 2, int(base_den)) / Fraction(int(base_num), int(base_den))
     result = DIV_QQ_Q(a, b)
     assert str(result) == f"{expected.numerator}"  # expected.denominator = 1
 
@@ -83,9 +81,7 @@ def test_div_qq_q_huge_numbers_opposite_signs():
 
     a = Rational.from_str(f"{big_num}/{common_den}")
     b = Rational.from_str(f"-{small_num}/{common_den}")
-    expected = Fraction(int(big_num), int(common_den)) / Fraction(
-        -int(small_num), int(common_den)
-    )
+    expected = Fraction(int(big_num), int(common_den)) / Fraction(-int(small_num), int(common_den))
     result = DIV_QQ_Q(a, b)
     assert str(result) == f"{expected.numerator}/{expected.denominator}"
 

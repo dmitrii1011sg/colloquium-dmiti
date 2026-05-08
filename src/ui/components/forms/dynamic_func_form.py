@@ -107,15 +107,9 @@ class DynamicFuncForm(ft.Column):
             visible=False,
             spacing=20,
             controls=[
-                self._create_metric_item(
-                    ft.Icons.TIMER_OUTLINED, "Время", "0 ms", "time"
-                ),
-                self._create_metric_item(
-                    ft.Icons.NUMBERS_ROUNDED, "Разрядность", "0", "size"
-                ),
-                self._create_metric_item(
-                    ft.Icons.DATA_OBJECT_ROUNDED, "Тип", "-", "type"
-                ),
+                self._create_metric_item(ft.Icons.TIMER_OUTLINED, "Время", "0 ms", "time"),
+                self._create_metric_item(ft.Icons.NUMBERS_ROUNDED, "Разрядность", "0", "size"),
+                self._create_metric_item(ft.Icons.DATA_OBJECT_ROUNDED, "Тип", "-", "type"),
             ],
         )
 
@@ -202,9 +196,7 @@ class DynamicFuncForm(ft.Column):
         Обновляет значения метрик после выполнения вычисления.
         """
         time_str = (
-            f"{exec_time*1000:.3f} ms"
-            if exec_time > 0.001
-            else f"{exec_time*1000000:.0f} μs"
+            f"{exec_time*1000:.3f} ms" if exec_time > 0.001 else f"{exec_time*1000000:.0f} μs"
         )
 
         size_val = "-"
@@ -243,9 +235,7 @@ class DynamicFuncForm(ft.Column):
 
         for param_name, param in sig.parameters.items():
             type_hint = param.annotation
-            type_str = (
-                type_hint.__name__ if hasattr(type_hint, "__name__") else str(type_hint)
-            )
+            type_str = type_hint.__name__ if hasattr(type_hint, "__name__") else str(type_hint)
 
             display_type = type_str if type_str != "_empty" else "Any"
 

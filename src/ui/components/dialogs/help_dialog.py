@@ -44,9 +44,7 @@ class HelpDialog(ft.AlertDialog):
             content=ft.Column(
                 [
                     ft.Text("О системе СКА", size=20, weight=ft.FontWeight.BOLD),
-                    ft.Text(
-                        "Система Компьютерной Алгебры для работы с модулями N, Z, Q, P."
-                    ),
+                    ft.Text("Система Компьютерной Алгебры для работы с модулями N, Z, Q, P."),
                     ft.Divider(height=10, color=ft.Colors.TRANSPARENT),
                     ft.Text("Репозиторий", weight=ft.FontWeight.BOLD),
                     ft.TextButton(
@@ -72,9 +70,7 @@ class HelpDialog(ft.AlertDialog):
     def _create_table(self, title, functions):
         return ft.Column(
             [
-                ft.Text(
-                    title, size=18, weight=ft.FontWeight.BOLD, color=ft.Colors.PRIMARY
-                ),
+                ft.Text(title, size=18, weight=ft.FontWeight.BOLD, color=ft.Colors.PRIMARY),
                 ft.DataTable(
                     heading_row_color="surfacevariant",
                     border=ft.border.all(1, ft.Colors.OUTLINE_VARIANT),
@@ -88,9 +84,7 @@ class HelpDialog(ft.AlertDialog):
                         ft.DataRow(
                             cells=[
                                 ft.DataCell(ft.Text(f["id"])),
-                                ft.DataCell(
-                                    ft.Text(f["name"], weight=ft.FontWeight.W_500)
-                                ),
+                                ft.DataCell(ft.Text(f["name"], weight=ft.FontWeight.W_500)),
                                 ft.DataCell(ft.Text(f["desc"])),
                             ]
                         )
@@ -115,16 +109,12 @@ class HelpDialog(ft.AlertDialog):
             ]
 
             if filtered:
-                self.results_container.controls.append(
-                    self._create_table(module, filtered)
-                )
+                self.results_container.controls.append(self._create_table(module, filtered))
 
         if not self.results_container.controls:
             self.results_container.controls.append(
                 ft.Container(
-                    content=ft.Text(
-                        "Ничего не найдено", italic=True, color=ft.Colors.GREY_500
-                    ),
+                    content=ft.Text("Ничего не найдено", italic=True, color=ft.Colors.GREY_500),
                     alignment=ft.Alignment.CENTER,
                     padding=20,
                 )

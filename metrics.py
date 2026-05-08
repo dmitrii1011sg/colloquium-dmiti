@@ -12,9 +12,7 @@ EXTENSIONS = (".py",)
 
 def get_author(content):
     """Ищет ФИО автора в комментариях (Фамилия Имя Отчество)."""
-    match = re.search(
-        r'(?:#|""").*?([А-Я][а-я]+\s+[А-Я][а-я]+(?:\s+[А-Я][а-я]+)?)', content
-    )
+    match = re.search(r'(?:#|""").*?([А-Я][а-я]+\s+[А-Я][а-я]+(?:\s+[А-Я][а-я]+)?)', content)
     return match.group(1).strip() if match else "Неизвестный автор"
 
 
