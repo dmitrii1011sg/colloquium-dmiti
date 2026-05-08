@@ -9,85 +9,85 @@ FUNCTIONS_DATA = {
             "id": "N-1",
             "name": "COM_NN_D",
             "desc": "Сравнение натуральных",
-            "args": ("a: Натуральное(с 0), " "b: Натуральное(с 0)"),
+            "args": ("a: Натуральное (с 0), " "b: Натуральное (с 0)"),
         },
         {
             "id": "N-2",
             "name": "NZER_N_B",
             "desc": "Проверка на ноль",
-            "args": "n: Натуральное(с 0)",
+            "args": "n: Натуральное (с 0)",
         },
         {
             "id": "N-3",
             "name": "ADD_1N_N",
             "desc": "Прибавить единицу",
-            "args": "n: Натуральное(с 0)",
+            "args": "n: Натуральное (с 0)",
         },
         {
             "id": "N-4",
             "name": "ADD_NN_N",
             "desc": "Сложение натуральных",
-            "args": ("a: Натуральное(с 0), " "b: Натуральное(с 0)"),
+            "args": ("a: Натуральное (с 0), " "b: Натуральное (с 0)"),
         },
         {
             "id": "N-5",
             "name": "SUB_NN_N",
             "desc": "Вычитание (первое не меньше)",
-            "args": ("a: Натуральное(с 0), " "b: Натуральное(с 0)"),
+            "args": ("a: Натуральное (с 0), " "b: Натуральное (с 0)"),
         },
         {
             "id": "N-6",
             "name": "MUL_ND_N",
             "desc": "Умножение на цифру",
-            "args": "n: Натуральное(с 0), d: Цифра",
+            "args": "n: Натуральное (с 0), d: Цифра",
         },
         {
             "id": "N-7",
             "name": "MUL_Nk_N",
             "desc": "Умножение на 10^k",
-            "args": ("n: Натуральное(с 0), " "k: Натуральное(с 0)"),
+            "args": ("n: Натуральное (с 0), " "k: Натуральное (с 0)"),
         },
         {
             "id": "N-8",
             "name": "MUL_NN_N",
             "desc": "Умножение натуральных",
-            "args": ("a: Натуральное(с 0), " "b: Натуральное(с 0)"),
+            "args": ("a: Натуральное (с 0), " "b: Натуральное (с 0)"),
         },
         {
             "id": "N-9",
             "name": "SUB_NDN_N",
             "desc": ("Вычитание b * d из a " "без отрицательного результата"),
-            "args": ("a: Натуральное(с 0), " "b: Натуральное(с 0), " "n: Цифра"),
+            "args": ("a: Натуральное (с 0), " "b: Натуральное (с 0), " "n: Цифра"),
         },
         {
             "id": "N-10",
             "name": "DIV_NN_Dk",
             "desc": ("Определение первой цифры частного " "и степени 10^k"),
-            "args": ("a: Натуральное(с 0), " "b: Натуральное(с 0)"),
+            "args": ("a: Натуральное (с 0), " "b: Натуральное (с 0)"),
         },
         {
             "id": "N-11",
             "name": "DIV_NN_N",
             "desc": "Неполное частное",
-            "args": ("a: Натуральное(с 0), " "b: Натуральное(не 0)"),
+            "args": ("a: Натуральное (с 0), " "b: Натуральное (не 0)"),
         },
         {
             "id": "N-12",
             "name": "MOD_NN_N",
             "desc": "Остаток от деления",
-            "args": ("a: Натуральное(с 0), " "b: Натуральное(не 0)"),
+            "args": ("a: Натуральное (с 0), " "b: Натуральное (не 0)"),
         },
         {
             "id": "N-13",
             "name": "GCF_NN_N",
             "desc": "Наибольший общий делитель",
-            "args": ("a: Натуральное(не 0), " "b: Натуральное(не 0)"),
+            "args": ("a: Натуральное (не 0), " "b: Натуральное (не 0)"),
         },
         {
             "id": "N-14",
             "name": "LCM_NN_N",
             "desc": "Наименьшее общее кратное",
-            "args": ("a: Натуральное(не 0), " "b: Натуральное(не 0)"),
+            "args": ("a: Натуральное (не 0), " "b: Натуральное (не 0)"),
         },
     ],
     "Z (Целые числа)": [
@@ -113,7 +113,7 @@ FUNCTIONS_DATA = {
             "id": "Z-4",
             "name": "TRANS_N_Z",
             "desc": "Преобразование в целое",
-            "args": "n: Натуральное(с 0)",
+            "args": "n: Натуральное (с 0)",
         },
         {
             "id": "Z-5",
@@ -143,13 +143,13 @@ FUNCTIONS_DATA = {
             "id": "Z-9",
             "name": "DIV_ZZ_Z",
             "desc": "Частное от деления",
-            "args": ("a: Целое, " "b: Целое(не 0)"),
+            "args": ("a: Целое, " "b: Целое (не 0)"),
         },
         {
             "id": "Z-10",
             "name": "MOD_ZZ_Z",
             "desc": "Остаток от деления",
-            "args": ("a: Целое, " "b: Целое(не 0)"),
+            "args": ("a: Целое, " "b: Целое (не 0)"),
         },
     ],
     "Q (Рациональные числа)": [
@@ -199,7 +199,7 @@ FUNCTIONS_DATA = {
             "id": "Q-8",
             "name": "DIV_QQ_Q",
             "desc": "Деление дробей",
-            "args": ("a: Рациональное, " "b: Рациональное(не 0)"),
+            "args": ("a: Рациональное, " "b: Рациональное (не 0)"),
         },
     ],
     "P (Многочлены)": [
@@ -225,7 +225,7 @@ FUNCTIONS_DATA = {
             "id": "P-4",
             "name": "MUL_Pxk_P",
             "desc": "Умножение на степень x",
-            "args": ("p: Многочлен, " "k: Натуральное(с 0)"),
+            "args": ("p: Многочлен, " "k: Натуральное (с 0)"),
         },
         {
             "id": "P-5",
@@ -338,51 +338,83 @@ class HelpDialog(ft.AlertDialog):
         self._filter_functions("")
 
     def _create_table(self, title, functions):
-        id_width = 55
-        name_width = 130
-        args_width = 185
-        desc_width = 210
+        id_width = 35
+        name_width = 90
+        args_width = 160
+        desc_width = 190
 
-        def cell(value, width, bold=False):
+        def cell(value, width, bold=False, monospace=False, is_args=False):
             return ft.DataCell(
                 ft.Container(
-                    width=width,
                     content=ft.Text(
                         value,
+                        size=11,
                         weight=ft.FontWeight.W_500 if bold else ft.FontWeight.NORMAL,
+                        font_family="Roboto Mono" if monospace else None,
                     ),
+                    width=width,
+                    padding=ft.padding.symmetric(vertical=10),
+                    alignment=ft.Alignment.TOP_LEFT,
                 )
             )
 
-        return ft.Column(
-            [
-                ft.Text(title, size=18, weight=ft.FontWeight.BOLD, color=ft.Colors.PRIMARY),
-                ft.DataTable(
-                    heading_row_color="surfacevariant",
-                    border=ft.border.all(1, ft.Colors.OUTLINE_VARIANT),
-                    border_radius=10,
-                    column_spacing=2,
-                    horizontal_margin=6,
-                    columns=[
-                        ft.DataColumn(label=ft.Text("ID")),
-                        ft.DataColumn(label=ft.Text("Функция")),
-                        ft.DataColumn(label=ft.Text("Аргументы")),
-                        ft.DataColumn(label=ft.Text("Описание")),
-                    ],
-                    rows=[
-                        ft.DataRow(
-                            cells=[
-                                cell(f["id"], id_width),
-                                cell(f["name"], name_width, bold=True),
-                                cell(f["args"].replace(", ", "\n"), args_width, bold=True),
-                                cell(f["desc"], desc_width, bold=True),
-                            ]
-                        )
-                        for f in functions
-                    ],
-                    width=float("inf"),
+        data_table = ft.DataTable(
+            data_row_min_height=40,
+            data_row_max_height=float("inf"),
+            heading_row_height=40,
+            column_spacing=15,
+            divider_thickness=0.5,
+            border=ft.border.all(1, ft.Colors.OUTLINE_VARIANT),
+            border_radius=8,
+            columns=[
+                ft.DataColumn(
+                    label=ft.Container(
+                        ft.Text("ID", size=12, weight=ft.FontWeight.BOLD), width=id_width
+                    )
+                ),
+                ft.DataColumn(
+                    label=ft.Container(
+                        ft.Text("Функция", size=12, weight=ft.FontWeight.BOLD), width=name_width
+                    )
+                ),
+                ft.DataColumn(
+                    label=ft.Container(
+                        ft.Text("Аргументы", size=12, weight=ft.FontWeight.BOLD), width=args_width
+                    )
+                ),
+                ft.DataColumn(
+                    label=ft.Container(
+                        ft.Text("Описание", size=12, weight=ft.FontWeight.BOLD), width=desc_width
+                    )
                 ),
             ],
+            rows=[
+                ft.DataRow(
+                    cells=[
+                        cell(f["id"], id_width, monospace=True),
+                        cell(f["name"], name_width, bold=True),
+                        cell(f["args"].replace(", ", "\n"), args_width, is_args=True),
+                        cell(f["desc"], desc_width),
+                    ],
+                )
+                for f in functions
+            ],
+        )
+
+        return ft.Column(
+            [
+                ft.Container(
+                    content=ft.Text(
+                        title, size=16, weight=ft.FontWeight.BOLD, color=ft.Colors.PRIMARY
+                    ),
+                    margin=ft.margin.only(top=10, bottom=5),
+                ),
+                ft.Row(
+                    [data_table],
+                    scroll=ft.ScrollMode.AUTO,
+                ),
+            ],
+            spacing=0,
         )
 
     def _filter_functions(self, query):
