@@ -96,23 +96,26 @@ class SmartCalculator(ft.Container):
         self.operand1: CASObject | None = None
         self.operator: str | None = None
         self.new_operand = True
+        self.last_ans: CASObject | None = None
 
-        self.display = ft.Text(
-            value="0",
-            size=40,
-            weight=ft.FontWeight.W_300,
-            text_align=ft.TextAlign.RIGHT,
-            color="onsurfacevariant",
-            selectable=True,
-            no_wrap=True,
+        self.history_list = ft.ListView(
+            expand=True,
+            spacing=8,
+            height=140,
         )
 
-        self.info_icon = ft.Icon(ft.Icons.INFO_OUTLINE, size=14, color="outline", visible=False)
-        self.info_text = ft.Text("", size=12, color="outline", italic=True)
-        self.log_row = ft.Row(
-            [self.info_icon, self.info_text],
-            spacing=6,
-            alignment=ft.MainAxisAlignment.START,
+        self.display = ft.TextField(
+            value="0",
+            width=600,
+            text_size=32,
+            text_align=ft.TextAlign.RIGHT,
+            color=ft.Colors.ON_SURFACE,
+            border=ft.InputBorder.NONE,
+            cursor_color=ft.Colors.PRIMARY,
+            content_padding=ft.padding.symmetric(vertical=15, horizontal=10),
+            multiline=False,
+            on_change=self.on_input_change,
+            on_submit=lambda e: self.calculate_result(),
         )
 
         self.content = ft.Column(
@@ -120,13 +123,23 @@ class SmartCalculator(ft.Container):
                 ft.Container(
                     content=ft.Column(
                         [
-                            self.display,
-                            ft.Divider(height=1, color="outlinevariant"),
-                            self.log_row,
+                            ft.Container(
+                                content=self.history_list,
+                                padding=10,
+                                border_radius=12,
+                                bgcolor="surfacevariant",
+                            ),
+                            ft.Container(
+                                content=self.display,
+                                border=ft.border.only(
+                                    bottom=ft.border.BorderSide(2, ft.Colors.PRIMARY)
+                                ),
+                                margin=ft.Margin.only(top=8, bottom=16),
+                                expand=True,
+                            ),
                         ],
-                        spacing=8,
+                        spacing=0,
                     ),
-                    padding=ft.padding.only(bottom=16),
                 ),
                 self._build_keypad(),
             ],
@@ -134,44 +147,92 @@ class SmartCalculator(ft.Container):
             expand=True,
         )
 
+    def log_action(self, text: str, is_error: bool = False, is_system: bool = False):
+        if is_error:
+            bg_color = ft.Colors.ERROR_CONTAINER
+            text_color = ft.Colors.ON_ERROR_CONTAINER
+            icon = ft.Icons.ERROR_OUTLINE
+            align = ft.MainAxisAlignment.START
+        elif is_system:
+            bg_color = ft.Colors.TRANSPARENT
+            text_color = ft.Colors.OUTLINE
+            icon = ft.Icons.INFO_OUTLINE
+            align = ft.MainAxisAlignment.START
+        else:
+            bg_color = ft.Colors.SECONDARY_CONTAINER
+            text_color = ft.Colors.ON_SECONDARY_CONTAINER
+            icon = ft.Icons.CALCULATE_OUTLINED
+            align = ft.MainAxisAlignment.END
+
+        log_item = ft.Row(
+            [
+                ft.Container(
+                    content=ft.Row(
+                        [
+                            ft.Icon(icon, size=16, color=text_color),
+                            ft.Text(
+                                text,
+                                size=14,
+                                color=text_color,
+                                selectable=True,
+                                font_family="monospace",
+                            ),
+                        ],
+                        alignment=align,
+                        spacing=8,
+                    ),
+                    padding=ft.padding.symmetric(horizontal=12, vertical=8),
+                    border_radius=12,
+                    bgcolor=bg_color,
+                )
+            ],
+            alignment=align,
+        )
+
+        if len(self.history_list.controls) > 50:
+            self.history_list.controls.pop(-1)
+
+        self.history_list.controls.insert(0, log_item)
+        self.history_list.update()
+        self.update()
+
     def _build_keypad(self) -> ft.Control:
-        """Сборка резиновой клавиатуры из строк и колонок"""
         rows_data = [
             [
                 ("C", "error", None, "C"),
+                ("Ans", "tertiary", None, "Ans"),
                 ("⌫", "surfacevariant", ft.Icons.BACKSPACE_OUTLINED, "BACK"),
-                ("x", "tertiary", None, "x"),
-                ("^", "tertiary", None, "^"),
+                ("÷", "tertiary", None, "÷"),
             ],
             [
+                ("x", "surfacevariant", None, "x"),
+                ("^", "surfacevariant", None, "^"),
                 ("(", "surfacevariant", None, "("),
                 (")", "surfacevariant", None, ")"),
-                ("/", "tertiary", None, "/"),
-                ("mod", "tertiary", None, "mod"),
             ],
             [
                 ("7", "surfacevariant", None, "7"),
                 ("8", "surfacevariant", None, "8"),
                 ("9", "surfacevariant", None, "9"),
-                ("÷", "tertiary", None, "÷"),
+                ("×", "tertiary", ft.Icons.CLOSE, "×"),
             ],
             [
                 ("4", "surfacevariant", None, "4"),
                 ("5", "surfacevariant", None, "5"),
                 ("6", "surfacevariant", None, "6"),
-                ("×", "tertiary", ft.Icons.CLOSE, "×"),
+                ("−", "tertiary", ft.Icons.REMOVE, "-"),
             ],
             [
                 ("1", "surfacevariant", None, "1"),
                 ("2", "surfacevariant", None, "2"),
                 ("3", "surfacevariant", None, "3"),
-                ("−", "tertiary", ft.Icons.REMOVE, "-"),
+                ("+", "tertiary", ft.Icons.ADD, "+"),
             ],
             [
-                ("±", "tertiary", ft.Icons.EXPOSURE, "±"),
+                ("±", "surfacevariant", ft.Icons.EXPOSURE, "±"),
                 ("0", "surfacevariant", None, "0"),
+                ("/", "surfacevariant", None, "/"),
                 ("=", "primary", ft.CupertinoIcons.EQUAL, "="),
-                ("+", "tertiary", ft.Icons.ADD, "+"),
             ],
         ]
 
@@ -217,6 +278,96 @@ class SmartCalculator(ft.Container):
             ),
             on_click=self.on_button_click,
         )
+
+    def on_input_change(self, e):
+        self.new_operand = False
+
+    def on_button_click(self, e):
+        data = e.control.data
+        try:
+            if data in tuple("0123456789x^/(") or data == ")":
+                if self.new_operand:
+                    self.display.value = data if data != "/" else "0/"
+                    self.new_operand = False
+                else:
+                    if self.display.value == "0" and data not in ("/", "x", "^"):
+                        self.display.value = data
+                    else:
+                        self.display.value += data
+
+            elif data == "Ans":
+                if self.last_ans is not None:
+                    ans_str = str(self.last_ans)
+                    if type(self.last_ans).__name__ == "Polynom":
+                        ans_str = f"({ans_str})"
+
+                    if self.new_operand or self.display.value == "0":
+                        self.display.value = ans_str
+                        self.new_operand = False
+                    else:
+                        self.display.value += ans_str
+                else:
+                    self.log_action("Память Ans пуста", is_system=True)
+
+            elif data == "±":
+                if self.display.value.startswith("-"):
+                    self.display.value = self.display.value[1:]
+                elif self.display.value != "0":
+                    self.display.value = "-" + self.display.value
+
+            elif data == "BACK":
+                if len(self.display.value) > 1:
+                    self.display.value = self.display.value[:-1]
+                else:
+                    self.display.value = "0"
+                    self.new_operand = True
+
+            elif data in OPERATIONS_MAP.keys():
+                self.operand1 = self.parse_input(self.display.value)
+                self.operator = data
+                self.new_operand = True
+
+                op1_type = type(self.operand1).__name__
+                self.log_action(f"[{op1_type}] {self.operand1} {data} ...", is_system=True)
+
+            elif data == "=":
+                self.calculate_result()
+
+            elif data == "C":
+                self.display.value = "0"
+                self.operand1 = None
+                self.operator = None
+                self.new_operand = True
+                self.history_list.controls.clear()
+                self.log_action("Память очищена", is_system=True)
+
+        except Exception as ex:
+            self.log_action(f"Ошибка: {str(ex)}", is_error=True)
+            self.new_operand = True
+
+        self.update()
+
+    def calculate_result(self):
+        if self.operator and self.operand1 is not None:
+            try:
+                operand2 = self.parse_input(self.display.value)
+                # op1_type = type(self.operand1).__name__
+                # op2_type = type(operand2).__name__
+                old_op1_str = str(self.operand1)
+
+                res = self.smart_calculate(self.operand1, operand2, self.operator)
+                # res_type = type(res).__name__
+                self.last_ans = res
+                self.display.value = str(res)
+                self.log_action(f"{old_op1_str} {self.operator} {operand2} = {res}")
+
+                self.operand1 = res
+                self.operator = None
+                self.new_operand = True
+            except Exception as ex:
+                self.log_action(f"Ошибка вычисления: {str(ex)}", is_error=True)
+                self.new_operand = True
+        self.update()
 
     @overload
     def cast_to_type(self, obj: CASObject, target_type_name: Literal["Natural"]) -> Natural: ...
@@ -288,81 +439,3 @@ class SmartCalculator(ft.Container):
             return Integer.from_str(val)
         else:
             return Natural.from_str(val)
-
-    def on_button_click(self, e):
-        data = e.control.data
-        try:
-            if data in tuple("0123456789x^/(") or data == ")":
-                if self.new_operand:
-                    self.display.value = data if data != "/" else "0/"
-                    self.new_operand = False
-                    self.info_text.value = ""
-                    self.info_icon.visible = False
-                else:
-                    if self.display.value == "0":
-                        self.display.value = data
-                    else:
-                        self.display.value += data
-
-            elif data == "±":
-                if self.display.value.startswith("-"):
-                    self.display.value = self.display.value[1:]
-                elif self.display.value != "0":
-                    self.display.value = "-" + self.display.value
-
-            elif data == "BACK":
-                if len(self.display.value) > 1:
-                    self.display.value = self.display.value[:-1]
-                else:
-                    self.display.value = "0"
-                    self.new_operand = True
-
-            elif data in OPERATIONS_MAP.keys():
-                self.operand1 = self.parse_input(self.display.value)
-                self.operator = data
-                self.new_operand = True
-
-                op1_type = type(self.operand1).__name__
-                self.info_text.value = f"[{op1_type}] {self.operand1} {data} ..."
-                self.info_icon.visible = True
-
-            elif data == "=":
-                if self.operator and self.operand1 is not None:
-                    operand2 = self.parse_input(self.display.value)
-                    op1_type = type(self.operand1).__name__
-                    op2_type = type(operand2).__name__
-                    old_op1_str = str(self.operand1)
-
-                    res = self.smart_calculate(self.operand1, operand2, self.operator)
-                    res_type = type(res).__name__
-
-                    self.display.value = str(res)
-
-                    self.info_text.value = (
-                        f"[{op1_type}] {old_op1_str} {self.operator}"
-                        f"[{op2_type}] {operand2} ➔ [{res_type}] {res}"
-                    )
-                    self.info_icon.visible = True
-
-                    self.operand1 = res
-                    self.operator = None
-                    self.new_operand = True
-
-            elif data == "C":
-                self.display.value = "0"
-                self.operand1 = None
-                self.operator = None
-                self.new_operand = True
-                self.info_text.value = "Очищено"
-                self.info_icon.visible = True
-
-            else:
-                self.info_text.value = f"Кнопка '{data}' пока не поддерживается"
-                self.info_icon.visible = True
-
-        except Exception as ex:
-            self.info_text.value = f"Ошибка: {str(ex)}"
-            self.info_icon.visible = True
-            self.new_operand = True
-
-        self.update()
