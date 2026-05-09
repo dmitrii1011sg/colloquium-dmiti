@@ -17,19 +17,29 @@ class Rational:
 
     __slots__ = ("numer", "denom")
 
-    def __init__(self, numer: Integer, denom: Natural) -> None:
+    def __init__(self, numer: Integer, denom) -> None:
         """
         Инициализация рационального числа.
 
         Args:
             numer (Integer): Числитель.
-            denom (Natural): Знаменатель (не равен нулю).
+            denom (Natural | Integer): Знаменатель (не равен нулю).
+                Если передан Integer и он отрицателен, знак переносится
+                на числитель, а в качестве знаменателя сохраняется его модуль.
 
         Raises:
             ValueError: Параметры не соответствуют типам или знаменатель равен нулю.
         """
-        if not isinstance(numer, Integer) or not isinstance(denom, Natural):
+        if not isinstance(numer, Integer):
             raise ValueError("Invalid value")
+        if not isinstance(denom, (Natural, Integer)):
+            raise ValueError("Invalid value")
+
+        if isinstance(denom, Integer):
+            if denom.sign == 1:
+                new_sign = 0 if numer.sign == 1 else 1
+                numer = Integer(numer.number, new_sign)
+            denom = denom.number
 
         if denom.length == 1 and denom.digits[0] == 0:
             raise ValueError("Denominator must not be zero")
@@ -70,7 +80,7 @@ class Rational:
             numer_str, denom_str = value, "1"
 
         numer = Integer.from_str(numer_str)
-        denom = Natural.from_str(denom_str)
+        denom = Integer.from_str(denom_str)
 
         return cls(numer, denom)
 
