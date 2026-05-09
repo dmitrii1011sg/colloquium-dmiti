@@ -8,6 +8,7 @@ from core.modules.ZModule.POZ_Z_D import POZ_Z_D
 from core.modules.ZModule.SUB_ZZ_Z import SUB_ZZ_Z
 from core.modules.ZModule.TRANS_N_Z import TRANS_N_Z
 from core.modules.ZModule.TRANS_Z_N import TRANS_Z_N
+from core.modules.ZModule.ADD_ZZ_Z import ADD_ZZ_Z
 from ui.components.forms.dynamic_func_form import DynamicFuncForm
 
 # Горшков Дмитрий 5381
@@ -24,6 +25,7 @@ class ZModule(ft.Column):
             "Z-3: Умножение целого на (-1) (MUL_ZM_Z)": MUL_ZM_Z,
             "Z-4: Преобразование натурального в целое (TRANS_N_Z)": TRANS_N_Z,
             "Z-5: Преобразование целого неотриц. в натуральное (TRANS_Z_N)": TRANS_Z_N,
+            "Z-6: Умножение целых чисел (ADD_ZZ_Z)": ADD_ZZ_Z,
             "Z-7: Вычитание целых чисел (SUB_ZZ_Z)": SUB_ZZ_Z,
             "Z-8: Умножение целых чисел (MUL_ZZ_Z)": MUL_ZZ_Z,
             "Z-9: Частное от деления целого на целое (DIV_ZZ_Z)": DIV_ZZ_Z,
