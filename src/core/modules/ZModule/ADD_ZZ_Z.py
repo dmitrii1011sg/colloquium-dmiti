@@ -11,7 +11,7 @@ from core.modules.ZModule.POZ_Z_D import POZ_Z_D
 
 def ADD_ZZ_Z(a: Integer, b: Integer) -> Integer:
     """
-    Абсолютная величина числа, результат - натуральное
+    Сложение целых чисел
 
     Args:
         a (Integer): Целое число
