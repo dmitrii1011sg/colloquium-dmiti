@@ -50,7 +50,11 @@ class PModule(ft.Column):
                             color=ft.Colors.PRIMARY,
                         ),
                         ft.Text(
-                            "TODO: сделать описание",
+                            (
+                                "Используйте формат ax^n + bx + c."
+                                "Дроби пишите через /, степени через ^, переменная только x."
+                                "(напр. 2x^3 + 1/4x - 7)"
+                            ),
                             size=14,
                             color=ft.Colors.ON_SURFACE_VARIANT,
                         ),

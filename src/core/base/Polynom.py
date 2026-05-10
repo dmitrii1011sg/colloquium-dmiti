@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import re
+
 from core.base.Rational import Rational
 
 # Жуков Александр 5381
@@ -62,6 +64,112 @@ class Polynom:
         return result
 
     @staticmethod
+    def _expand_brackets(s: str) -> str:
+        """
+        Раскрытие группирующих скобок в строке многочлена.
+
+        Поддерживаются скобки любой глубины вложенности и унарный минус
+        перед скобкой: "-(2x+1)" -> "-2x-1", "3x-(x-1)" -> "3x-x+1".
+        Умножение на скобку (вида "2(x+1)" или "(x+1)(x-1)") не поддерживается.
+
+        Args:
+            s (str): Строка без пробелов.
+
+        Raises:
+            ValueError: Скобки несбалансированы или перед скобкой стоит
+                символ, означающий умножение.
+
+        Returns:
+            str: Строка без скобок.
+        """
+        if s.count("(") != s.count(")"):
+            raise ValueError("Unbalanced brackets")
+
+        inner = re.compile(r"\(([^()]*)\)")
+
+        while "(" in s:
+            match = inner.search(s)
+            if match is None:
+                raise ValueError("Unbalanced brackets")
+
+            start, end = match.span()
+            content = match.group(1)
+
+            if len(content) == 0:
+                raise ValueError("Empty brackets")
+
+            left_char = s[start - 1] if start > 0 else ""
+            right_char = s[end] if end < len(s) else ""
+
+            sign_char = "+"
+            prefix_end = start
+            if left_char in ("+", "-"):
+                sign_char = left_char
+                prefix_end = start - 1
+            elif left_char not in ("", "("):
+                raise ValueError(
+                    f"Multiplication by bracketed group is not supported: "
+                    f"'{left_char}('"
+                )
+
+            if right_char not in ("", "+", "-", ")"):
+                raise ValueError(
+                    f"Multiplication by bracketed group is not supported: "
+                    f"')${right_char}'"
+                )
+
+            if sign_char == "-":
+                expanded = Polynom._flip_signs(content)
+            else:
+                expanded = content
+
+            need_plus_glue = (
+                prefix_end > 0
+                and s[prefix_end - 1] not in "+-("
+                and expanded
+                and expanded[0] not in "+-"
+            )
+            if need_plus_glue:
+                expanded = "+" + expanded
+            elif (prefix_end == 0 or s[prefix_end - 1] == "(") and expanded.startswith("+"):
+                expanded = expanded[1:]
+
+            s = s[:prefix_end] + expanded + s[end:]
+
+        return s
+
+    @staticmethod
+    def _flip_signs(expr: str) -> str:
+        """
+        Инверсия знаков всех слагаемых в выражении без скобок.
+
+        Args:
+            expr (str): Выражение без скобок, например "2x-1" или "-x+3".
+
+        Returns:
+            str: Выражение с инвертированными знаками: "-2x+1", "x-3".
+        """
+        if len(expr) == 0:
+            return expr
+
+        if expr[0] not in "+-":
+            expr = "+" + expr
+
+        flipped_chars: list[str] = []
+        for ch in expr:
+            if ch == "+":
+                flipped_chars.append("-")
+            elif ch == "-":
+                flipped_chars.append("+")
+            else:
+                flipped_chars.append(ch)
+
+        result = "".join(flipped_chars)
+        if result.startswith("+"):
+            result = result[1:]
+        return result
+
+    @staticmethod
     def from_str(s: str) -> Polynom:
         """
         Создание многочлена из строки.
@@ -75,7 +183,9 @@ class Polynom:
         Returns:
             Polynom: Многочлен.
         """
-        s = s.replace(" ", "").replace("-", "+-")
+        s = s.replace(" ", "")
+        s = Polynom._expand_brackets(s)
+        s = s.replace("-", "+-")
         parts = s.split("+")
 
         poly_dict = {}
@@ -102,6 +212,10 @@ class Polynom:
             else:
                 coeff = Rational.from_str(coeff_part)
 
+            if degree in poly_dict:
+                raise ValueError(
+                    f"Duplicate degree {degree} is not supported"
+                )
             poly_dict[degree] = coeff
             max_degree = max(max_degree, degree)
 

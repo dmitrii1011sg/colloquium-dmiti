@@ -202,6 +202,8 @@ class DynamicFuncForm(ft.Column):
         size_val = "-"
         if hasattr(result, "length"):
             size_val = str(result.length)
+        elif isinstance(result, Integer):
+            size_val = str(result.number.length)
         elif isinstance(result, (int, str)):
             size_val = str(len(str(result)))
 
