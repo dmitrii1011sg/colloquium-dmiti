@@ -239,6 +239,8 @@ class DynamicFuncForm(ft.Column):
             size_val = str(result.length)
         elif isinstance(result, Integer):
             size_val = str(result.number.length)
+        elif isinstance(result, Polynom):
+            size_val = str(len(result.coefficients))
         elif isinstance(result, (int, str)):
             size_val = str(len(str(result)))
 
