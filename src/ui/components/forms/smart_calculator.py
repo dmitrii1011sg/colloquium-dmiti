@@ -204,12 +204,12 @@ class SmartCalculator(ft.Container):
                 ("⌫", "surfacevariant", ft.Icons.BACKSPACE_OUTLINED, "BACK"),
                 ("÷", "tertiary", None, "÷"),
             ],
-            [
-                ("x", "surfacevariant", None, "x"),
-                ("^", "surfacevariant", None, "^"),
-                ("(", "surfacevariant", None, "("),
-                (")", "surfacevariant", None, ")"),
-            ],
+            # [
+            #     ("x", "surfacevariant", None, "x"),
+            #     ("^", "surfacevariant", None, "^"),
+            #     ("(", "surfacevariant", None, "("),
+            #     (")", "surfacevariant", None, ")"),
+            # ],
             [
                 ("7", "surfacevariant", None, "7"),
                 ("8", "surfacevariant", None, "8"),

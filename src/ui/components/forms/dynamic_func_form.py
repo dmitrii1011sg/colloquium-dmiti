@@ -1,5 +1,4 @@
 import inspect
-import threading
 import time
 
 import flet as ft
@@ -288,12 +287,9 @@ class DynamicFuncForm(ft.Column):
         self.result_card.visible = False
         self.update()
 
-        threading.Thread(target=self._background_compute_task, daemon=True).start()
+        self.page.run_task(self._background_compute_task)  # type: ignore
 
-    def _background_compute_task(self):
-        """
-        Фоновая задача для выполнения выбранной функции.
-        """
+    async def _background_compute_task(self):
         if not self.active_function:
             return
 
@@ -306,7 +302,12 @@ class DynamicFuncForm(ft.Column):
                 kwargs[param_name] = self._parse_value(tf.value.strip(), expected_type)
 
             start_time = time.perf_counter()
-            result = self.active_function(**kwargs)
+
+            import asyncio
+
+            loop = asyncio.get_running_loop()
+            result = await loop.run_in_executor(None, lambda: self.active_function(**kwargs))  # type: ignore
+
             duration = time.perf_counter() - start_time
 
             self.result_text.value = str(result)
@@ -323,11 +324,7 @@ class DynamicFuncForm(ft.Column):
         finally:
             self.loader.visible = False
             self.calc_button.disabled = False
-
-            if self.page:
-                self.page.update()
-            else:
-                self.update()
+            self.page.update()
 
     async def _copy_result(self, _):
         await ft.Clipboard().set(self.result_text.value)
