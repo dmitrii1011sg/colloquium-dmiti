@@ -1,4 +1,5 @@
 import flet as ft
+import multiprocessing
 from ui.views.app_layout import AppLayout
 
 
@@ -21,4 +22,5 @@ def main(page: ft.Page):
 
 
 if __name__ == "__main__":
+    multiprocessing.set_start_method("spawn", force=True)
     ft.run(main)
