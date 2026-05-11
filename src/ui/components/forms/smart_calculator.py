@@ -416,6 +416,10 @@ class SmartCalculator(ft.Container):
         return ADD_FUNC[type(a_c).__name__](a_c, b_c)
 
     def smart_calculate(self, a: CASObject, b: CASObject, op: str) -> CASObject:
+        if op == "-" and type(a).__name__ == "Natural" and type(b).__name__ == "Natural":
+            a = self.cast_to_type(a, "Integer")
+            b = self.cast_to_type(b, "Integer")
+
         a_c, b_c = self.to_common_type(a, b)
         target_type = type(a_c).__name__
 
