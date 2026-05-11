@@ -1,5 +1,7 @@
 import inspect
 import time
+import asyncio
+import multiprocessing
 
 import flet as ft
 from core.base.Integer import Integer
@@ -9,6 +11,12 @@ from core.base.Rational import Rational
 
 # Горшков Дмитрий 5381
 
+def worker_func(func, kwargs, result_queue):
+    try:
+        res = func(**kwargs)
+        result_queue.put(("success", res))
+    except Exception as e:
+        result_queue.put(("error", str(e)))
 
 class DynamicFuncForm(ft.Column):
     """
@@ -34,6 +42,7 @@ class DynamicFuncForm(ft.Column):
 
         self.active_function = None
         self.input_fields = {}
+        self.compute_process = None
 
         self.dropdown = ft.Dropdown(
             label="Выберите функцию",
@@ -86,6 +95,19 @@ class DynamicFuncForm(ft.Column):
             visible=False,
             color=ft.Colors.PRIMARY,
             bgcolor="SURFACE_CONTAINER_HIGHEST",
+        )
+
+        self.stop_button = ft.FilledButton(
+            content=ft.Text("Стоп"),
+            icon=ft.Icons.STOP_ROUNDED,
+            on_click=self._on_stop_click,
+            visible=False,
+            bgcolor=ft.Colors.ERROR_CONTAINER,
+            color=ft.Colors.ERROR,
+            style=ft.ButtonStyle(
+                mouse_cursor=ft.MouseCursor.CLICK,
+                shape=ft.RoundedRectangleBorder(radius=10)
+            ),
         )
 
         self.calc_button = ft.FilledButton(
@@ -158,10 +180,24 @@ class DynamicFuncForm(ft.Column):
             self.placeholder,
             self.inputs_container,
             self.loader,
-            ft.Row([self.calc_button], alignment=ft.MainAxisAlignment.END),
+            ft.Row([self.stop_button, self.calc_button], alignment=ft.MainAxisAlignment.END),
             self.result_card,
             self.stats_row,
         ]
+
+    def _on_stop_click(self, _):
+        if self.compute_process and self.compute_process.is_alive():
+            self.compute_process.terminate()
+            self.compute_process.join()
+            
+        self.loader.visible = False
+        self.stop_button.visible = False
+        self.calc_button.disabled = False
+        self.result_text.value = "Процесс прерван пользователем"
+        self.result_text.color = ft.Colors.ORANGE_700
+        self.result_card.visible = True
+        self.stats_row.visible = False
+        self.update()
 
     def _create_metric_item(self, icon, label, value, key):
         """
@@ -249,6 +285,7 @@ class DynamicFuncForm(ft.Column):
             self.input_fields[param_name] = tf
 
         self.calc_button.visible = True
+        self.stop_button.visible = False
         self.update()
 
     def _parse_value(self, value: str, expected_type):
@@ -284,36 +321,52 @@ class DynamicFuncForm(ft.Column):
 
         self.loader.visible = True
         self.calc_button.disabled = True
+        self.stop_button.visible = True
         self.result_card.visible = False
         self.update()
 
         self.page.run_task(self._background_compute_task)  # type: ignore
 
     async def _background_compute_task(self):
-        if not self.active_function:
-            return
+        if not self.active_function: return
 
         sig = inspect.signature(self.active_function)
         kwargs = {}
-
+        
         try:
             for param_name, tf in self.input_fields.items():
                 expected_type = sig.parameters[param_name].annotation
                 kwargs[param_name] = self._parse_value(tf.value.strip(), expected_type)
 
+            result_queue = multiprocessing.Queue()
             start_time = time.perf_counter()
 
-            import asyncio
+            self.compute_process = multiprocessing.Process(
+                target=worker_func, 
+                args=(self.active_function, kwargs, result_queue)
+            )
+            self.compute_process.start()
 
-            loop = asyncio.get_running_loop()
-            result = await loop.run_in_executor(None, lambda: self.active_function(**kwargs))  # type: ignore
+            while self.compute_process.is_alive():
+                if result_queue.empty():
+                    await asyncio.sleep(0.1)
+                else:
+                    break
 
+            if not self.compute_process.is_alive() and result_queue.empty():
+                return 
+
+            status, result = result_queue.get()
             duration = time.perf_counter() - start_time
 
-            self.result_text.value = str(result)
-            self.result_text.color = ft.Colors.ON_SURFACE
+            if status == "success":
+                self.result_text.value = str(result)
+                self.result_text.color = ft.Colors.ON_SURFACE
+                self._update_metrics(duration, result)
+            else:
+                raise Exception(result)
+
             self.result_card.visible = True
-            self._update_metrics(duration, result)
 
         except Exception as ex:
             self.result_text.value = f"Ошибка: {ex}"
@@ -324,6 +377,7 @@ class DynamicFuncForm(ft.Column):
         finally:
             self.loader.visible = False
             self.calc_button.disabled = False
+            self.stop_button.visible = False
             self.page.update()
 
     async def _copy_result(self, _):
