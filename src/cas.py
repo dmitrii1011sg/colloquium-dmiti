@@ -15,6 +15,7 @@ try:
 except ImportError:
     RICH_AVAILABLE = False
 
+from core.base.Formula import FormulaTree, PostfixFormula, PrefixFormula
 from core.base.Integer import Integer
 from core.base.Natural import Natural
 from core.base.Polynom import Polynom
@@ -27,6 +28,7 @@ MODULES_PACKAGES = [
     "core.modules.ZModule",
     "core.modules.QModule",
     "core.modules.PModule",
+    "core.modules.FModule",
 ]
 
 console = Console() if RICH_AVAILABLE else None
@@ -57,7 +59,15 @@ def cast_argument(value_str: str, target_type):
         return value_str
     if target_type in (int, str, float):
         return target_type(value_str)
-    if target_type in (Natural, Integer, Rational, Polynom) and hasattr(target_type, "from_str"):
+    if target_type in (
+        Natural,
+        Integer,
+        Rational,
+        Polynom,
+        FormulaTree,
+        PostfixFormula,
+        PrefixFormula,
+    ) and hasattr(target_type, "from_str"):
         return target_type.from_str(value_str)
     raise TypeError(f"Неизвестный тип для конвертации: {target_type}")
 

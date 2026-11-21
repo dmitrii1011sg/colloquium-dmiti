@@ -1,9 +1,10 @@
-import inspect
-import time
 import asyncio
+import inspect
 import multiprocessing
+import time
 
 import flet as ft
+from core.base.Formula import FormulaTree, PostfixFormula, PrefixFormula
 from core.base.Integer import Integer
 from core.base.Natural import Natural
 from core.base.Polynom import Polynom
@@ -11,12 +12,14 @@ from core.base.Rational import Rational
 
 # Горшков Дмитрий 5381
 
+
 def worker_func(func, kwargs, result_queue):
     try:
         res = func(**kwargs)
         result_queue.put(("success", res))
     except Exception as e:
         result_queue.put(("error", str(e)))
+
 
 class DynamicFuncForm(ft.Column):
     """
@@ -105,8 +108,7 @@ class DynamicFuncForm(ft.Column):
             bgcolor=ft.Colors.ERROR_CONTAINER,
             color=ft.Colors.ERROR,
             style=ft.ButtonStyle(
-                mouse_cursor=ft.MouseCursor.CLICK,
-                shape=ft.RoundedRectangleBorder(radius=10)
+                mouse_cursor=ft.MouseCursor.CLICK, shape=ft.RoundedRectangleBorder(radius=10)
             ),
         )
 
@@ -189,7 +191,7 @@ class DynamicFuncForm(ft.Column):
         if self.compute_process and self.compute_process.is_alive():
             self.compute_process.terminate()
             self.compute_process.join()
-            
+
         self.loader.visible = False
         self.stop_button.visible = False
         self.calc_button.disabled = False
@@ -231,7 +233,7 @@ class DynamicFuncForm(ft.Column):
         Обновляет значения метрик после выполнения вычисления.
         """
         time_str = (
-            f"{exec_time*1000:.3f} ms" if exec_time > 0.001 else f"{exec_time*1000000:.0f} μs"
+            f"{exec_time * 1000:.3f} ms" if exec_time > 0.001 else f"{exec_time * 1000000:.0f} μs"
         )
 
         size_val = "-"
@@ -243,6 +245,10 @@ class DynamicFuncForm(ft.Column):
             size_val = str(len(result.coefficients))
         elif isinstance(result, (int, str)):
             size_val = str(len(str(result)))
+        elif isinstance(result, FormulaTree):
+            size_val = str(result.node_count())
+        elif isinstance(result, (PostfixFormula, PrefixFormula)):
+            size_val = str(len(result.tokens))
 
         self.metric_refs["time"].value = time_str
         self.metric_refs["size"].value = size_val
@@ -294,15 +300,17 @@ class DynamicFuncForm(ft.Column):
         """
         Умный парсинг введенной строки в нужный тип данных
         """
-        if expected_type == Natural:
-            return Natural.from_str(value)
-        elif expected_type == Integer:
-            return Integer.from_str(value)
-        elif expected_type == Rational:
-            return Rational.from_str(value)
-        elif expected_type == Polynom:
-            return Polynom.from_str(value)
-        elif expected_type == int:
+        if expected_type in (
+            Natural,
+            Integer,
+            Rational,
+            Polynom,
+            FormulaTree,
+            PostfixFormula,
+            PrefixFormula,
+        ):
+            return expected_type.from_str(value)
+        elif expected_type is int:
             return int(value)
 
         return value
@@ -330,11 +338,12 @@ class DynamicFuncForm(ft.Column):
         self.page.run_task(self._background_compute_task)  # type: ignore
 
     async def _background_compute_task(self):
-        if not self.active_function: return
+        if not self.active_function:
+            return
 
         sig = inspect.signature(self.active_function)
         kwargs = {}
-        
+
         try:
             for param_name, tf in self.input_fields.items():
                 expected_type = sig.parameters[param_name].annotation
@@ -344,8 +353,7 @@ class DynamicFuncForm(ft.Column):
             start_time = time.perf_counter()
 
             self.compute_process = multiprocessing.Process(
-                target=worker_func, 
-                args=(self.active_function, kwargs, result_queue)
+                target=worker_func, args=(self.active_function, kwargs, result_queue)
             )
             self.compute_process.start()
 
@@ -356,13 +364,18 @@ class DynamicFuncForm(ft.Column):
                     break
 
             if not self.compute_process.is_alive() and result_queue.empty():
-                return 
+                return
 
             status, result = result_queue.get()
             duration = time.perf_counter() - start_time
 
             if status == "success":
-                self.result_text.value = str(result)
+                if isinstance(result, FormulaTree):
+                    self.result_text.value = f"{result}\n\nДерево:\n{result.to_ascii_tree()}"
+                    self.result_text.font_family = "monospace"
+                else:
+                    self.result_text.value = str(result)
+                    self.result_text.font_family = None
                 self.result_text.color = ft.Colors.ON_SURFACE
                 self._update_metrics(duration, result)
             else:
