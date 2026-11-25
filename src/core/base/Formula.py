@@ -395,7 +395,7 @@ class FormulaTree:
 
 
 class _Notation:
-    """Базовый класс для линейных беcскобочных записей формулы (префиксной и постфиксной)."""
+    """Базовый класс для линейных бесскобочных записей формулы (префиксной и постфиксной)."""
 
     __slots__ = ("tokens",)
 
@@ -451,6 +451,41 @@ class _Notation:
 
 class PostfixFormula(_Notation):
     """Формула в постфиксной (обратной польской) записи."""
+
+    @classmethod
+    def from_tree(cls, a: FormulaTree) -> PostfixFormula:
+        """
+        Построение постфиксной записи формулы по дереву.
+
+        Args:
+            a (FormulaTree): Дерево формулы.
+
+        Raises:
+            ValueError: Параметр не соответствует типу.
+
+        Returns:
+            PostfixFormula: Формула в постфиксной записи.
+        """
+        if not isinstance(a, FormulaTree):
+            raise ValueError("Invalid value")
+
+        stack_tokens: list[Token] = []
+
+        def visit(node: FormulaNode) -> None:
+            for child in node.children:
+                visit(child)
+
+            kind = node.node_type.name
+            arity = len(node.children)
+            token = Token(kind=kind, value=node.value, arity=arity)
+            stack_tokens.append(token)
+
+        visit(a.root)
+        return cls(stack_tokens)
+
+    def to_tree(self) -> FormulaTree:
+        """Построение дерева формулы по постфиксной записи."""
+        return FormulaTree.from_postfix_tokens(self.tokens)
 
 
 class PrefixFormula(_Notation):

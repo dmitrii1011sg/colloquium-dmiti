@@ -197,12 +197,30 @@ def test_postfix_and_prefix_notation_roundtrip():
     assert pref != pf  # разные типы нотаций не равны даже при одинаковых токенах
 
 
+def test_postfix_formula_tree_roundtrip():
+    tree = FormulaTree.from_str("log(2, -x)")
+    postfix = PostfixFormula.from_tree(tree)
+
+    assert postfix.tokens == [
+        Token("NUMBER", Rational.from_str("2")),
+        Token("VARIABLE", "x"),
+        Token("OPERATOR", "u-", arity=1),
+        Token("FUNCTION", "log", arity=2),
+    ]
+    assert postfix.to_tree() == tree
+
+
+def test_postfix_formula_from_tree_invalid_input():
+    with pytest.raises(ValueError, match="Invalid value"):
+        PostfixFormula.from_tree("x")
+
+
 @pytest.mark.parametrize("cls", [PostfixFormula, PrefixFormula])
 def test_notation_invalid_inputs(cls):
     with pytest.raises(ValueError):
         cls([])
     with pytest.raises(ValueError):
-        cls(["not_a_token"])  # type: ignore[list-item]
+        cls(["not_a_token"])
     with pytest.raises(ValueError):
         cls.from_str("   ")
     with pytest.raises(ValueError):
