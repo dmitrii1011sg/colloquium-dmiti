@@ -2,212 +2,58 @@
 
 from __future__ import annotations
 
-import re
-from dataclasses import dataclass
 from enum import IntEnum, auto
 from typing import Iterable, Union
 
+from core.base.FormulaLexer import (
+    ALL_OPERATORS,
+    ALLOWED_FUNCTIONS,
+    BINARY_OPERATORS,
+    OPERATOR_PRECEDENCE,
+    RIGHT_ASSOCIATIVE,
+    UNARY_OPERATORS,
+    Token,
+    infix_tokens_to_postfix,
+    tokenize_infix,
+)
+from core.base.FormulaNotation import PostfixFormula, PrefixFormula
 from core.base.Rational import Rational
 from core.modules.QModule.RED_Q_Q import RED_Q_Q
 from core.modules.QModule.SUB_QQ_Q import SUB_QQ_Q
 
+__all__ = [
+    "ALL_OPERATORS",
+    "ALLOWED_FUNCTIONS",
+    "BINARY_OPERATORS",
+    "OPERATOR_PRECEDENCE",
+    "RIGHT_ASSOCIATIVE",
+    "UNARY_OPERATORS",
+    "FormulaNode",
+    "FormulaTree",
+    "NodeType",
+    "PostfixFormula",
+    "PrefixFormula",
+    "Token",
+    "infix_tokens_to_postfix",
+    "tokenize_infix",
+]
+
 
 class NodeType(IntEnum):
+    """
+    Перечисление типов узлов синтаксического дерева формулы.
+
+    Attributes:
+        NUMBER (int): Рациональное число (включая целые со знаменателем 1).
+        VARIABLE (int): Символьная переменная.
+        OPERATOR (int): Арифметический или степенной оператор.
+        FUNCTION (int): Элементарная математическая функция.
+    """
+
     NUMBER = auto()
     VARIABLE = auto()
     OPERATOR = auto()
     FUNCTION = auto()
-
-
-ALLOWED_FUNCTIONS: dict[str, int] = {
-    "sin": 1,
-    "cos": 1,
-    "tg": 1,
-    "ctg": 1,
-    "sqrt": 1,
-    "exp": 1,
-    "ln": 1,
-    "log": 2,
-}
-
-BINARY_OPERATORS = {"+", "-", "*", "/", "^"}
-UNARY_OPERATORS = {"u-"}
-ALL_OPERATORS = BINARY_OPERATORS | UNARY_OPERATORS
-
-OPERATOR_PRECEDENCE: dict[str, int] = {"+": 1, "-": 1, "*": 2, "/": 2, "u-": 3, "^": 4}
-RIGHT_ASSOCIATIVE = {"^", "u-"}
-
-_TOKEN_RE = re.compile(
-    r"\s*(?:(?P<NUMBER>\d+(?:/\d+)?)|(?P<IDENT>[A-Za-z_]\w*)|"
-    r"(?P<OP>u-|[\+\-\*/\^])|(?P<LPAREN>\()|(?P<RPAREN>\))|(?P<COMMA>,))"
-)
-
-
-@dataclass(frozen=True, slots=True)
-class Token:
-    """
-    Атомарный токен символьной формулы.
-
-    Attributes:
-        kind (str): Категория токена ("NUMBER", "VARIABLE", "OPERATOR",
-            "FUNCTION", "LPAREN", "RPAREN", "COMMA").
-        value (Rational | str): Значение токена.
-        arity (int): Арность операции или функции.
-    """
-
-    kind: str
-    value: Union[Rational, str]
-    arity: int = 0
-
-    def __eq__(self, other: object) -> bool:
-        """
-        Сравнение двух токенов с учётом равенства рациональных чисел
-
-        Args:
-            other (object): Токен с которым сравниваем.
-
-        Returns:
-            bool: Результат сравнения.
-        """
-        if not isinstance(other, Token) or self.kind != other.kind or self.arity != other.arity:
-            return False if isinstance(other, Token) else NotImplemented
-
-        if isinstance(self.value, Rational) and isinstance(other.value, Rational):
-            return SUB_QQ_Q(self.value, other.value).is_zero()
-
-        return self.value == other.value
-
-    def __str__(self) -> str:
-        """
-        Строковое представление токена.
-
-        Returns:
-            str: Представление токена.
-        """
-        return str(self.value)
-
-
-def tokenize_infix(expr: str) -> list[Token]:
-    """
-    Разбиение инфиксной строки формулы на список токенов с выделением унарного минуса.
-
-    Args:
-        expr (str): Строка формулы в инфиксной записи.
-
-    Raises:
-        ValueError: Если строка пуста или содержит неизвестные символы.
-
-    Returns:
-        list[Token]: Список токенов формулы.
-    """
-    if not isinstance(expr, str) or not expr.strip():
-        raise ValueError("Пустая строка формулы")
-
-    raw: list[Token] = []
-    pos = 0
-    while pos < len(expr):
-        if expr[pos].isspace():
-            pos += 1
-            continue
-
-        match = _TOKEN_RE.match(expr, pos)
-        if not match:
-            raise ValueError(f"Неожиданный символ на позиции {pos}: '{expr[pos:]}'")
-
-        pos = match.end()
-        group, text = match.lastgroup, match.group(match.lastgroup)  # type: ignore[arg-type]
-
-        if group == "NUMBER":
-            if "/" in text:
-                num_s, den_s = text.split("/", 1)
-                raw.extend(
-                    [
-                        Token("NUMBER", RED_Q_Q(Rational.from_str(num_s))),
-                        Token("OPERATOR", "/", arity=2),
-                        Token("NUMBER", RED_Q_Q(Rational.from_str(den_s))),
-                    ]
-                )
-            else:
-                raw.append(Token("NUMBER", RED_Q_Q(Rational.from_str(text))))
-        elif group == "IDENT":
-            if text in ALLOWED_FUNCTIONS:
-                raw.append(Token("FUNCTION", text, arity=ALLOWED_FUNCTIONS[text]))
-            else:
-                raw.append(Token("VARIABLE", text))
-        elif group == "OP":
-            raw.append(Token("OPERATOR", text, arity=1 if text == "u-" else 2))
-        else:
-            raw.append(Token(group, text))  # type: ignore[arg-type]
-
-    tokens: list[Token] = []
-    for tok in raw:
-        prev = tokens[-1] if tokens else None
-        unary_ctx = prev is None or prev.kind in ("OPERATOR", "LPAREN", "COMMA")
-        if tok.kind == "OPERATOR" and tok.value == "-" and unary_ctx:
-            tokens.append(Token("OPERATOR", "u-", arity=1))
-        elif not (tok.kind == "OPERATOR" and tok.value == "+" and unary_ctx):
-            tokens.append(tok)
-    return tokens
-
-
-def infix_tokens_to_postfix(tokens: list[Token]) -> list[Token]:
-    """
-    Перевод инфиксных токенов в обратную польскую запись (алгоритм сортировочной станции).
-
-    Args:
-        tokens (list[Token]): Токены в инфиксном порядке.
-
-    Raises:
-        ValueError: При нарушении баланса скобок или синтаксиса вызова функций.
-
-    Returns:
-        list[Token]: Токены в постфиксном порядке.
-    """
-    output: list[Token] = []
-    stack: list[Token] = []
-
-    for tok in tokens:
-        if tok.kind in ("NUMBER", "VARIABLE"):
-            output.append(tok)
-        elif tok.kind in ("FUNCTION", "LPAREN"):
-            stack.append(tok)
-        elif tok.kind == "COMMA":
-            while stack and stack[-1].kind != "LPAREN":
-                output.append(stack.pop())
-            if not stack:
-                raise ValueError("Некорректная расстановка скобок или запятой")
-        elif tok.kind == "OPERATOR":
-            op1 = str(tok.value)
-            p1 = OPERATOR_PRECEDENCE[op1]
-            while stack and stack[-1].kind in ("OPERATOR", "FUNCTION"):
-                top = stack[-1]
-                if top.kind == "FUNCTION":
-                    output.append(stack.pop())
-                else:
-                    p2 = OPERATOR_PRECEDENCE[str(top.value)]
-                    if (op1 not in RIGHT_ASSOCIATIVE and p1 <= p2) or (
-                        op1 in RIGHT_ASSOCIATIVE and p1 < p2
-                    ):
-                        output.append(stack.pop())
-                    else:
-                        break
-            stack.append(tok)
-        elif tok.kind == "RPAREN":
-            while stack and stack[-1].kind != "LPAREN":
-                output.append(stack.pop())
-            if not stack:
-                raise ValueError("Лишняя закрывающая скобка ')'")
-            stack.pop()
-            if stack and stack[-1].kind == "FUNCTION":
-                output.append(stack.pop())
-
-    while stack:
-        top = stack.pop()
-        if top.kind in ("LPAREN", "RPAREN"):
-            raise ValueError("Незакрытая скобка '('")
-        output.append(top)
-
-    return output
 
 
 class FormulaNode:
@@ -267,12 +113,35 @@ class FormulaNode:
             self.value = str(value)
 
     def copy(self) -> FormulaNode:
+        """
+        Создание глубокой копии поддерева с корнем в текущем узле.
+
+        Returns:
+            FormulaNode: Независимая копия поддерева.
+        """
         return FormulaNode(self.node_type, self.value, [c.copy() for c in self.children])
 
     def node_count(self) -> int:
+        """
+        Подсчёт общего количества узлов в поддереве.
+
+        Returns:
+            int: Количество узлов, включая текущий узел.
+        """
         return 1 + sum(c.node_count() for c in self.children)
 
     def to_ascii_tree(self, prefix: str = "", is_last: bool = True, is_root: bool = True) -> str:
+        """
+        Формирование псевдографического представления поддерева.
+
+        Args:
+            prefix (str): Строковый отступ текущего уровня.
+            is_last (bool): Флаг последнего потомка у родительского узла.
+            is_root (bool): Флаг корневого узла.
+
+        Returns:
+            str: Многострочное дерево с символами ветвления.
+        """
         conn = "" if is_root else ("└── " if is_last else "├── ")
         lines = [f"{prefix}{conn}{self.value}"]
         next_prefix = "" if is_root else prefix + ("    " if is_last else "│   ")
@@ -281,6 +150,15 @@ class FormulaNode:
         return "\n".join(lines)
 
     def __eq__(self, other: object) -> bool:
+        """
+        Структурное сравнение двух поддеревьев.
+
+        Args:
+            other (object): Объект для сравнения.
+
+        Returns:
+            bool: True, если типы, значения и все потомки узлов совпадают; иначе False.
+        """
         if not isinstance(other, FormulaNode) or self.node_type != other.node_type:
             return False if isinstance(other, FormulaNode) else NotImplemented
         if isinstance(self.value, Rational) and isinstance(other.value, Rational):
@@ -290,6 +168,12 @@ class FormulaNode:
         return same_val and self.children == other.children
 
     def __str__(self) -> str:
+        """
+        Формирование строковой записи поддерева с полной расстановкой скобок.
+
+        Returns:
+            str: Полная скобочная запись поддерева.
+        """
         if self.node_type in (NodeType.NUMBER, NodeType.VARIABLE):
             return str(self.value)
         if self.node_type == NodeType.OPERATOR:
@@ -299,6 +183,12 @@ class FormulaNode:
         return f"{self.value}({', '.join(str(c) for c in self.children)})"
 
     def __repr__(self) -> str:
+        """
+        Отладочное представление узла дерева.
+
+        Returns:
+            str: Строка вида "FormulaNode(OPERATOR, '+', children=[...])".
+        """
         return f"FormulaNode({self.node_type.name}, {self.value!r}, children={self.children!r})"
 
 
@@ -328,7 +218,18 @@ class FormulaTree:
 
     @classmethod
     def from_str(cls, expr: str) -> FormulaTree:
-        """Построение дерева формулы из инфиксной строки."""
+        """
+        Построение дерева формулы из инфиксной строки.
+
+        Args:
+            expr (str): Строка символьного выражения в инфиксной записи.
+
+        Raises:
+            ValueError: Если строка пуста или синтаксически некорректна.
+
+        Returns:
+            FormulaTree: Построенное синтаксическое дерево формулы.
+        """
         return cls.from_postfix_tokens(infix_tokens_to_postfix(tokenize_infix(expr)))
 
     @classmethod
@@ -370,88 +271,58 @@ class FormulaTree:
         return cls(stack[0])
 
     def copy(self) -> FormulaTree:
-        """Глубокое копирование дерева."""
+        """
+        Создание глубокой копии дерева формулы.
+
+        Returns:
+            FormulaTree: Независимая копия дерева.
+        """
         return FormulaTree(self.root.copy())
 
     def node_count(self) -> int:
-        """Количество узлов в дереве."""
+        """
+        Подсчёт общего количества узлов в дереве.
+
+        Returns:
+            int: Количество узлов в дереве.
+        """
         return self.root.node_count()
 
     def to_ascii_tree(self) -> str:
-        """Псевдографическое представление дерева."""
+        """
+        Получение псевдографического представления дерева.
+
+        Returns:
+            str: Строковое дерево с отступами и ветвлением.
+        """
         return self.root.to_ascii_tree()
 
     def __eq__(self, other: object) -> bool:
-        """Сравнение двух деревьев формул."""
+        """
+        Сравнение двух деревьев формул на структурное равенство.
+
+        Args:
+            other (object): Объект для сравнения.
+
+        Returns:
+            bool: True, если деревья идентичны по структуре и значениям; иначе False.
+        """
         return self.root == other.root if isinstance(other, FormulaTree) else NotImplemented
 
     def __str__(self) -> str:
-        """Полная скобочная запись формулы."""
+        """
+        Строковое представление дерева в полной скобочной записи.
+
+        Returns:
+            str: Полная скобочная запись формулы.
+        """
         return str(self.root)
 
     def __repr__(self) -> str:
-        """Отладочное представление дерева."""
+        """
+        Отладочное представление дерева формулы.
+
+        Returns:
+            str: Строка вида "FormulaTree((x + 1))".
+        """
         return f"FormulaTree({self})"
-
-
-class _Notation:
-    """Базовый класс для линейных беcскобочных записей формулы (префиксной и постфиксной)."""
-
-    __slots__ = ("tokens",)
-
-    def __init__(self, tokens: list[Token]) -> None:
-        """
-        Инициализация последовательности токенов.
-
-        Args:
-            tokens (list[Token]): Непустой список токенов.
-
-        Raises:
-            ValueError: Если список пуст или содержит некорректные элементы.
-        """
-        if (
-            not isinstance(tokens, list)
-            or not tokens
-            or not all(isinstance(t, Token) for t in tokens)
-        ):
-            raise ValueError("Требуется непустой список Token")
-        self.tokens: list[Token] = list(tokens)
-
-    @classmethod
-    def from_str(cls, text: str):
-        """Парсинг строки с токенами, разделёнными пробелами."""
-        if not isinstance(text, str) or not text.strip():
-            raise ValueError("Пустая строка записи")
-        tokens: list[Token] = []
-        for part in text.strip().split():
-            if part in ALL_OPERATORS:
-                tokens.append(Token("OPERATOR", part, arity=1 if part in UNARY_OPERATORS else 2))
-            elif part in ALLOWED_FUNCTIONS:
-                tokens.append(Token("FUNCTION", part, arity=ALLOWED_FUNCTIONS[part]))
-            elif re.fullmatch(r"[+-]?\d+(?:/\d+)?", part):
-                tokens.append(Token("NUMBER", RED_Q_Q(Rational.from_str(part))))
-            elif part.isidentifier():
-                tokens.append(Token("VARIABLE", part))
-            else:
-                raise ValueError(f"Неизвестный токен: '{part}'")
-        return cls(tokens)
-
-    def __eq__(self, other: object) -> bool:
-        """Сравнение двух записей одного типа."""
-        return self.tokens == other.tokens if type(other) is type(self) else NotImplemented
-
-    def __str__(self) -> str:
-        """Строковое представление (токены через пробел)."""
-        return " ".join(str(t) for t in self.tokens)
-
-    def __repr__(self) -> str:
-        """Отладочное представление."""
-        return f"{type(self).__name__}({str(self)!r})"
-
-
-class PostfixFormula(_Notation):
-    """Формула в постфиксной (обратной польской) записи."""
-
-
-class PrefixFormula(_Notation):
-    """Формула в префиксной (польской) записи."""
