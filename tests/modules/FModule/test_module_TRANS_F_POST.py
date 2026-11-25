@@ -2,6 +2,7 @@
 
 import pytest
 from core.base.Formula import FormulaTree
+from core.base.FormulaNotation import PostfixFormula
 from core.modules.FModule.TRANS_F_POST import TRANS_F_POST
 
 
@@ -15,7 +16,9 @@ from core.modules.FModule.TRANS_F_POST import TRANS_F_POST
 )
 def test_trans_f_post(expr, expected):
     tree = FormulaTree.from_str(expr)
-    assert TRANS_F_POST(tree) == expected
+    result = TRANS_F_POST(tree)
+    assert isinstance(result, PostfixFormula)
+    assert str(result) == expected
 
 
 def test_trans_f_post_invalid_input():

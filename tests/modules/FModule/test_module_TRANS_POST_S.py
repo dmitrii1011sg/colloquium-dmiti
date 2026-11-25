@@ -1,6 +1,7 @@
 # Помаскин Макар 5381
 
 import pytest
+from core.base.FormulaNotation import PostfixFormula
 from core.modules.FModule.TRANS_POST_S import TRANS_POST_S
 
 
@@ -13,15 +14,18 @@ from core.modules.FModule.TRANS_POST_S import TRANS_POST_S
     ],
 )
 def test_trans_post_s(postfix, expected):
-    assert TRANS_POST_S(postfix) == expected
+    formula = PostfixFormula.from_str(postfix)
+    assert TRANS_POST_S(formula) == expected
 
 
-@pytest.mark.parametrize("postfix", ["", "x +", "x y"])
+@pytest.mark.parametrize("postfix", ["x +", "x y"])
 def test_trans_post_s_invalid_notation(postfix):
+    formula = PostfixFormula.from_str(postfix)
     with pytest.raises(ValueError):
-        TRANS_POST_S(postfix)
+        TRANS_POST_S(formula)
 
 
-def test_trans_post_s_invalid_input():
+@pytest.mark.parametrize("value", [None, "x"])
+def test_trans_post_s_invalid_input(value):
     with pytest.raises(ValueError, match="Invalid value"):
-        TRANS_POST_S(None)
+        TRANS_POST_S(value)

@@ -1,9 +1,10 @@
-from core.base.Formula import FormulaTree, PostfixFormula
+from core.base.Formula import FormulaTree
+from core.base.FormulaNotation import PostfixFormula
 
 # Помаскин Макар 5381
 
 
-def TRANS_F_POST(a: FormulaTree) -> str:
+def TRANS_F_POST(a: FormulaTree) -> PostfixFormula:
     """
     Построение постфиксной записи формулы по дереву.
 
@@ -14,9 +15,9 @@ def TRANS_F_POST(a: FormulaTree) -> str:
         ValueError: Параметр не соответствует типу.
 
     Returns:
-        str: Постфиксная запись формулы с пробелами между элементами.
+        PostfixFormula: Формула в постфиксной записи.
     """
     if not isinstance(a, FormulaTree):
         raise ValueError("Invalid value")
 
-    return str(PostfixFormula.from_tree(a))
+    return PostfixFormula.from_tree(a)
