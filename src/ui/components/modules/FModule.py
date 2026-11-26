@@ -1,6 +1,9 @@
 # Горшков Дмитрий 5381
 
 import flet as ft
+from core.modules.FModule.TRANS_F_POST import TRANS_F_POST
+from core.modules.FModule.TRANS_F_S import TRANS_F_S
+from core.modules.FModule.TRANS_POST_S import TRANS_POST_S
 from ui.components.forms.dynamic_func_form import DynamicFuncForm
 
 
@@ -9,7 +12,11 @@ class FModule(ft.Column):
         super().__init__()
         self.expand = True
 
-        self.registry = {}
+        self.registry = {
+            "TO-4: Постфиксная запись по дереву (TRANS_F_POST)": TRANS_F_POST,
+            "TO-5: Скобочная запись по постфиксу (TRANS_POST_S)": TRANS_POST_S,
+            "TO-6: Скобочная запись по дереву (TRANS_F_S)": TRANS_F_S,
+        }
 
         self.controls = [
             ft.Text("Символьные формулы (F)", size=28, weight=ft.FontWeight.BOLD),

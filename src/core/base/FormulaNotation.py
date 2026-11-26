@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import re
+from typing import TYPE_CHECKING
 
 from core.base.FormulaLexer import (
     ALL_OPERATORS,
@@ -12,6 +13,9 @@ from core.base.FormulaLexer import (
 )
 from core.base.Rational import Rational
 from core.modules.QModule.RED_Q_Q import RED_Q_Q
+
+if TYPE_CHECKING:
+    from core.base.Formula import FormulaNode, FormulaTree
 
 
 class _Notation:
@@ -105,6 +109,50 @@ class _Notation:
 
 class PostfixFormula(_Notation):
     """Модель формулы в постфиксной (обратной польской) записи."""
+
+    @classmethod
+    def from_tree(cls, a: FormulaTree) -> PostfixFormula:
+        """
+        Построение постфиксной записи формулы по дереву.
+
+        Args:
+            a (FormulaTree): Дерево формулы.
+
+        Raises:
+            ValueError: Параметр не соответствует типу FormulaTree.
+
+        Returns:
+            PostfixFormula: Формула в постфиксной записи.
+        """
+        from core.base.Formula import FormulaTree
+
+        if not isinstance(a, FormulaTree):
+            raise ValueError("Invalid value")
+
+        stack_tokens: list[Token] = []
+
+        def visit(node: FormulaNode) -> None:
+            for child in node.children:
+                visit(child)
+
+            kind = node.node_type.name
+            arity = len(node.children)
+            token = Token(kind=kind, value=node.value, arity=arity)
+            stack_tokens.append(token)
+
+        visit(a.root)
+        return cls(stack_tokens)
+
+    def to_tree(self) -> FormulaTree:
+        """
+        Построение дерева формулы по постфиксной записи.
+
+        Returns:
+            FormulaTree: Синтаксическое дерево формулы.
+        """
+        from core.base.Formula import FormulaTree
+
+        return FormulaTree.from_postfix_tokens(self.tokens)
 
 
 class PrefixFormula(_Notation):
