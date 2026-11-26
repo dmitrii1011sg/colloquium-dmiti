@@ -157,3 +157,46 @@ class PostfixFormula(_Notation):
 
 class PrefixFormula(_Notation):
     """Модель формулы в префиксной (польской) записи."""
+
+    @classmethod
+    def from_tree(cls, a: FormulaTree) -> PrefixFormula:
+        """
+        Построение префиксной записи формулы по дереву.
+
+        Args:
+            a (FormulaTree): Дерево формулы.
+
+        Raises:
+            ValueError: Параметр не соответствует типу FormulaTree.
+
+        Returns:
+            PrefixFormula: Формула в постфиксной записи.
+        """
+        from core.base.Formula import FormulaTree
+
+        if not isinstance(a, FormulaTree):
+            raise ValueError("Invalid value")
+
+        tokens: list[Token] = []
+
+        def visit(node: FormulaNode) -> None:
+            tokens.append(Token(
+                kind=node.node_type.name,
+                value=node.value,
+                arity=len(node.children),
+            ))
+            for child in node.children:
+                visit(child)
+        visit(a.root)
+        return cls(tokens)
+
+    def to_tree(self) -> FormulaTree:
+        """
+        Построение дерева формулы по префиксной записи.
+
+        Returns:
+            FormulaTree: Синтаксическое дерево формулы.
+        """
+        from core.base.Formula import FormulaTree
+
+        return FormulaTree.from_prefix_tokens(self.tokens)
