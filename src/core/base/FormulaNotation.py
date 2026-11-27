@@ -118,6 +118,18 @@ class PrefixFormula(_Notation):
 
     @classmethod
     def from_tree(cls, tree: FormulaTree) -> PrefixFormula:
+        """
+        Построение префиксной записи формулы по дереву.
+
+        Args:
+            tree (FormulaTree): Дерево формулы.
+
+        Raises:
+            ValueError: Параметр не соответствует типу FormulaTree.
+
+        Returns:
+            PrefixFormula: Формула в префиксной записи.
+        """
         if not isinstance(tree, FormulaTree):
             raise ValueError("Invalid value")
 
@@ -132,3 +144,12 @@ class PrefixFormula(_Notation):
 
         visit(tree.root)
         return cls(tokens)
+
+    def to_tree(self) -> FormulaTree:
+        """
+        Построение дерева формулы по префиксной записи.
+
+        Returns:
+            FormulaTree: Синтаксическое дерево формулы.
+        """
+        return FormulaTree.from_prefix_tokens(self.tokens)

@@ -314,6 +314,49 @@ class FormulaTree:
             raise ValueError("Некорректная постфиксная запись")
         return cls(stack[0])
 
+    @classmethod
+    def from_prefix_tokens(cls, tokens: Iterable[Token]) -> FormulaTree:
+        """
+        Построение дерева формулы из последовательности префиксных токенов
+        (польская запись, пре-обход).
+
+        Args:
+            tokens (Iterable[Token]): Токены в префиксной записи.
+
+        Raises:
+            ValueError: При некорректной префиксной последовательности.
+
+        Returns:
+            FormulaTree: Построенное дерево.
+        """
+        it = iter(tokens)
+
+        def build() -> FormulaNode:
+            try:
+                tok = next(it)
+            except StopIteration as e:
+                raise ValueError("Неожидонный конец префиксной записи") from e
+
+            if tok.kind == "NUMBER":
+                return FormulaNode(NodeType.NUMBER, tok.value)
+            if tok.kind == "VARIABLE":
+                return FormulaNode(NodeType.VARIABLE, str(tok.value))
+            if tok.kind in ("OPERATOR", "FUNCTION"):
+                arity = (
+                    1
+                    if tok.value in UNARY_OPERATORS
+                    else (2 if tok.kind == "OPERATOR" else ALLOWED_FUNCTIONS[str(tok.value)])
+                )
+                args = [build() for _ in range(arity)]
+                ntype = NodeType.OPERATOR if tok.kind == "OPERATOR" else NodeType.FUNCTION
+                return FormulaNode(ntype, str(tok.value), args)
+            raise ValueError(f"Недопустимый токен: {tok}")
+
+        root = build()
+        for extra in it:
+            raise ValueError(f"Лишний токен: {extra}")
+        return cls(root)
+
     def copy(self) -> FormulaTree:
         """
         Создание глубокой копии дерева формулы.

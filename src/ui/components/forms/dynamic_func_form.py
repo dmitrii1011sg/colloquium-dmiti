@@ -311,6 +311,13 @@ class DynamicFuncForm(ft.Column):
             PrefixFormula,
         ):
             return expected_type.from_str(value)
+        elif expected_type is bool:
+            if value.lower() in ("true", "да", "1", "yes"):
+                return True
+            elif value.lower() in ("false", "нет", "0", "no"):
+                return True
+            else:
+                raise ValueError("Invalid bool type")
         elif expected_type is int:
             return int(value)
 
