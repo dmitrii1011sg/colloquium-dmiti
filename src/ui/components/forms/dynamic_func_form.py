@@ -4,7 +4,8 @@ import multiprocessing
 import time
 
 import flet as ft
-from core.base.Formula import FormulaTree, PostfixFormula, PrefixFormula
+from core.base.Formula import FormulaTree
+from core.base.FormulaNotation import PostfixFormula, PrefixFormula
 from core.base.Integer import Integer
 from core.base.Natural import Natural
 from core.base.Polynom import Polynom

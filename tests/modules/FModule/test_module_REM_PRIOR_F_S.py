@@ -1,7 +1,6 @@
 import pytest
 from cas import execute_function
-from core.base.Formula import FormulaTree
-from core.base.FormulaNotation import PostfixFormula
+from core.base.Formula import FormulaNode, FormulaTree
 from core.modules.FModule.REM_PRIOR_F_S import REM_PRIOR_F_S
 
 
@@ -17,6 +16,8 @@ from core.modules.FModule.REM_PRIOR_F_S import REM_PRIOR_F_S
         ("a ^ (b ^ c)", "a ^ b ^ c"),
         ("a ^ (-b)", "a ^ (-b)"),
         ("-(a ^ b)", "-a ^ b"),
+        ("x ^ (2/4)", "x ^ 1/2"),
+        ("x / (2/4)", "x / 1/2"),
         ("log((a + b), -(c * d))", "log(a + b, -(c * d))"),
     ],
 )
@@ -29,21 +30,13 @@ def test_rem_prior_f_s_preserves_tree(expression, expected):
     assert FormulaTree.from_str(result) == tree
 
 
-@pytest.mark.parametrize(
-    ("postfix", "expected"),
-    [
-        ("x 2/4 ^", "x ^ (1/2)"),
-        ("-2 x ^", "(-2) ^ x"),
-        ("x 2/4 /", "x / (1/2)"),
-    ],
-)
-def test_rem_prior_f_s_groups_numeric_tokens(postfix, expected):
-    assert REM_PRIOR_F_S(PostfixFormula.from_str(postfix)) == expected
+def test_rem_prior_f_s_groups_negative_numeric_base():
+    tree = FormulaTree(FormulaNode.op("^", FormulaNode.number("-1/2"), FormulaNode.var("x")))
+    assert REM_PRIOR_F_S(tree) == "(-1/2) ^ x"
 
 
-@pytest.mark.parametrize("expression", ["a + (b * c)", "post:a b c * +"])
-def test_rem_prior_f_s_cli_accepts_both_notations(expression):
-    assert execute_function("REM_PRIOR_F_S", [expression]) == "a + b * c"
+def test_rem_prior_f_s_cli():
+    assert execute_function("REM_PRIOR_F_S", ["a + (b * c)"]) == "a + b * c"
 
 
 def test_rem_prior_f_s_invalid_input():

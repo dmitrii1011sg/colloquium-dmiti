@@ -28,9 +28,9 @@ ALL_OPERATORS = BINARY_OPERATORS | UNARY_OPERATORS
 OPERATOR_PRECEDENCE: dict[str, int] = {"+": 1, "-": 1, "*": 2, "/": 2, "u-": 3, "^": 4}
 RIGHT_ASSOCIATIVE = {"^", "u-"}
 
-_TOKEN_RE = re.compile(
+_INFIX_TOKEN_RE = re.compile(
     r"\s*(?:(?P<NUMBER>\d+(?:/\d+)?)|(?P<IDENT>[A-Za-z_]\w*)|"
-    r"(?P<OP>u-|[\+\-\*/\^])|(?P<LPAREN>\()|(?P<RPAREN>\))|(?P<COMMA>,))"
+    r"(?P<OP>[\+\-\*/\^])|(?P<LPAREN>\()|(?P<RPAREN>\))|(?P<COMMA>,))"
 )
 
 
@@ -51,15 +51,6 @@ class Token:
     arity: int = 0
 
     def __eq__(self, other: object) -> bool:
-        """
-        Сравнение двух токенов с учётом равенства рациональных чисел.
-
-        Args:
-            other (object): Токен, с которым выполняется сравнение.
-
-        Returns:
-            bool: True, если токены совпадают по типу, значению и арности; иначе False.
-        """
         if not isinstance(other, Token) or self.kind != other.kind or self.arity != other.arity:
             return False if isinstance(other, Token) else NotImplemented
 
@@ -69,12 +60,6 @@ class Token:
         return self.value == other.value
 
     def __str__(self) -> str:
-        """
-        Строковое представление токена.
-
-        Returns:
-            str: Текстовое значение токена.
-        """
         return str(self.value)
 
 
@@ -101,7 +86,7 @@ def tokenize_infix(expr: str) -> list[Token]:
             pos += 1
             continue
 
-        match = _TOKEN_RE.match(expr, pos)
+        match = _INFIX_TOKEN_RE.match(expr, pos)
         if not match:
             raise ValueError(f"Неожиданный символ на позиции {pos}: '{expr[pos:]}'")
 
@@ -109,24 +94,14 @@ def tokenize_infix(expr: str) -> list[Token]:
         group, text = match.lastgroup, match.group(match.lastgroup)  # type: ignore[arg-type]
 
         if group == "NUMBER":
-            if "/" in text:
-                num_s, den_s = text.split("/", 1)
-                raw.extend(
-                    [
-                        Token("NUMBER", RED_Q_Q(Rational.from_str(num_s))),
-                        Token("OPERATOR", "/", arity=2),
-                        Token("NUMBER", RED_Q_Q(Rational.from_str(den_s))),
-                    ]
-                )
-            else:
-                raw.append(Token("NUMBER", RED_Q_Q(Rational.from_str(text))))
+            raw.append(Token("NUMBER", RED_Q_Q(Rational.from_str(text))))
         elif group == "IDENT":
             if text in ALLOWED_FUNCTIONS:
                 raw.append(Token("FUNCTION", text, arity=ALLOWED_FUNCTIONS[text]))
             else:
                 raw.append(Token("VARIABLE", text))
         elif group == "OP":
-            raw.append(Token("OPERATOR", text, arity=1 if text == "u-" else 2))
+            raw.append(Token("OPERATOR", text, arity=2))
         else:
             raw.append(Token(group, text))  # type: ignore[arg-type]
 
@@ -138,6 +113,25 @@ def tokenize_infix(expr: str) -> list[Token]:
             tokens.append(Token("OPERATOR", "u-", arity=1))
         elif not (tok.kind == "OPERATOR" and tok.value == "+" and unary_ctx):
             tokens.append(tok)
+    return tokens
+
+
+def parse_linear_tokens(text: str) -> list[Token]:
+    if not isinstance(text, str) or not text.strip():
+        raise ValueError("Пустая строка записи")
+
+    tokens: list[Token] = []
+    for part in text.strip().split():
+        if part in ALL_OPERATORS:
+            tokens.append(Token("OPERATOR", part, arity=1 if part in UNARY_OPERATORS else 2))
+        elif part in ALLOWED_FUNCTIONS:
+            tokens.append(Token("FUNCTION", part, arity=ALLOWED_FUNCTIONS[part]))
+        elif re.fullmatch(r"[+-]?\d+(?:/\d+)?", part):
+            tokens.append(Token("NUMBER", RED_Q_Q(Rational.from_str(part))))
+        elif part.isidentifier():
+            tokens.append(Token("VARIABLE", part))
+        else:
+            raise ValueError(f"Неизвестный токен: '{part}'")
     return tokens
 
 

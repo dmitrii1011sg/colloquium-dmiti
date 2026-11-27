@@ -1,6 +1,5 @@
 import pytest
 from core.base.Formula import FormulaTree
-from core.base.FormulaNotation import PostfixFormula
 from core.modules.FModule.SIMP_01_F_F import SIMP_01_F_F
 
 
@@ -27,7 +26,7 @@ def test_simp_01_f_f(expression, expected):
 
 
 def test_simp_01_f_f_normalized_rational_identity():
-    tree = PostfixFormula.from_str("0/5 x 3/3 * +").to_tree()
+    tree = FormulaTree.from_str("0/5 + x * 3/3")
     assert SIMP_01_F_F(tree) == FormulaTree.from_str("x")
 
 

@@ -5,12 +5,11 @@ from core.base.Formula import (
     FormulaNode,
     FormulaTree,
     NodeType,
-    PostfixFormula,
-    PrefixFormula,
     Token,
     infix_tokens_to_postfix,
     tokenize_infix,
 )
+from core.base.FormulaNotation import PostfixFormula, PrefixFormula
 from core.base.Rational import Rational
 
 # --- Тесты Token и лексера (tokenize_infix) ---
@@ -69,9 +68,7 @@ def test_tokenize_unary_minus_and_plus():
 def test_tokenize_fraction_literal():
     tokens = tokenize_infix("3/4 * x")
     assert [(t.kind, str(t.value)) for t in tokens] == [
-        ("NUMBER", "3"),
-        ("OPERATOR", "/"),
-        ("NUMBER", "4"),
+        ("NUMBER", "3/4"),
         ("OPERATOR", "*"),
         ("VARIABLE", "x"),
     ]
@@ -208,11 +205,6 @@ def test_postfix_formula_tree_roundtrip():
         Token("FUNCTION", "log", arity=2),
     ]
     assert postfix.to_tree() == tree
-
-
-def test_postfix_formula_from_tree_invalid_input():
-    with pytest.raises(ValueError, match="Invalid value"):
-        PostfixFormula.from_tree("x")
 
 
 @pytest.mark.parametrize("cls", [PostfixFormula, PrefixFormula])

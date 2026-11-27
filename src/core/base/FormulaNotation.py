@@ -2,20 +2,8 @@
 
 from __future__ import annotations
 
-import re
-from typing import TYPE_CHECKING
-
-from core.base.FormulaLexer import (
-    ALL_OPERATORS,
-    ALLOWED_FUNCTIONS,
-    UNARY_OPERATORS,
-    Token,
-)
-from core.base.Rational import Rational
-from core.modules.QModule.RED_Q_Q import RED_Q_Q
-
-if TYPE_CHECKING:
-    from core.base.Formula import FormulaNode, FormulaTree
+from core.base.Formula import FormulaNode, FormulaTree
+from core.base.FormulaLexer import Token, parse_linear_tokens
 
 
 class _Notation:
@@ -48,33 +36,7 @@ class _Notation:
 
     @classmethod
     def from_str(cls, text: str):
-        """
-        Создание линейной записи формулы из строки с токенами, разделёнными пробелами.
-
-        Args:
-            text (str): Строка токенов через пробел (например, "x 2 ^ 3 x * +").
-
-        Raises:
-            ValueError: Если строка пуста или содержит неизвестный токен.
-
-        Returns:
-            _Notation: Экземпляр соответствующего класса нотации.
-        """
-        if not isinstance(text, str) or not text.strip():
-            raise ValueError("Пустая строка записи")
-        tokens: list[Token] = []
-        for part in text.strip().split():
-            if part in ALL_OPERATORS:
-                tokens.append(Token("OPERATOR", part, arity=1 if part in UNARY_OPERATORS else 2))
-            elif part in ALLOWED_FUNCTIONS:
-                tokens.append(Token("FUNCTION", part, arity=ALLOWED_FUNCTIONS[part]))
-            elif re.fullmatch(r"[+-]?\d+(?:/\d+)?", part):
-                tokens.append(Token("NUMBER", RED_Q_Q(Rational.from_str(part))))
-            elif part.isidentifier():
-                tokens.append(Token("VARIABLE", part))
-            else:
-                raise ValueError(f"Неизвестный токен: '{part}'")
-        return cls(tokens)
+        return cls(parse_linear_tokens(text))
 
     def __eq__(self, other: object) -> bool:
         """
@@ -111,7 +73,7 @@ class PostfixFormula(_Notation):
     """Модель формулы в постфиксной (обратной польской) записи."""
 
     @classmethod
-    def from_tree(cls, a: FormulaTree) -> PostfixFormula:
+    def from_tree(cls, tree: FormulaTree) -> PostfixFormula:
         """
         Построение постфиксной записи формулы по дереву.
 
@@ -124,24 +86,20 @@ class PostfixFormula(_Notation):
         Returns:
             PostfixFormula: Формула в постфиксной записи.
         """
-        from core.base.Formula import FormulaTree
-
-        if not isinstance(a, FormulaTree):
+        if not isinstance(tree, FormulaTree):
             raise ValueError("Invalid value")
 
-        stack_tokens: list[Token] = []
+        tokens: list[Token] = []
 
         def visit(node: FormulaNode) -> None:
             for child in node.children:
                 visit(child)
+            tokens.append(
+                Token(kind=node.node_type.name, value=node.value, arity=len(node.children))
+            )
 
-            kind = node.node_type.name
-            arity = len(node.children)
-            token = Token(kind=kind, value=node.value, arity=arity)
-            stack_tokens.append(token)
-
-        visit(a.root)
-        return cls(stack_tokens)
+        visit(tree.root)
+        return cls(tokens)
 
     def to_tree(self) -> FormulaTree:
         """
@@ -157,3 +115,20 @@ class PostfixFormula(_Notation):
 
 class PrefixFormula(_Notation):
     """Модель формулы в префиксной (польской) записи."""
+
+    @classmethod
+    def from_tree(cls, tree: FormulaTree) -> PrefixFormula:
+        if not isinstance(tree, FormulaTree):
+            raise ValueError("Invalid value")
+
+        tokens: list[Token] = []
+
+        def visit(node: FormulaNode) -> None:
+            tokens.append(
+                Token(kind=node.node_type.name, value=node.value, arity=len(node.children))
+            )
+            for child in node.children:
+                visit(child)
+
+        visit(tree.root)
+        return cls(tokens)

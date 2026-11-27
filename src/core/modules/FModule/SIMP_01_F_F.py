@@ -1,21 +1,17 @@
-from core.base.Formula import FormulaNode, FormulaTree, NodeType
-from core.base.Rational import Rational
+from core.base.Formula import FormulaNode, FormulaTree
 
 # Жуков Александр 5381
-
-_ZERO = FormulaNode(NodeType.NUMBER, Rational.from_str("0"))
-_ONE = FormulaNode(NodeType.NUMBER, Rational.from_str("1"))
 
 
 def _simplify(node: FormulaNode) -> FormulaNode:
     """Упростить потомков перед проверкой нейтральных элементов в текущем узле."""
     children = [_simplify(child) for child in node.children]
-    if node.node_type == NodeType.OPERATOR and node.value in ("+", "*"):
+    if node.is_op and node.value in ("+", "*"):
         left, right = children
-        identity = _ZERO if node.value == "+" else _ONE
-        if left == identity:
+        is_neutral = FormulaNode.is_zero if node.value == "+" else FormulaNode.is_one
+        if is_neutral(left):
             return right
-        if right == identity:
+        if is_neutral(right):
             return left
 
     return FormulaNode(node.node_type, node.value, children)
