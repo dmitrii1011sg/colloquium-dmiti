@@ -5,6 +5,8 @@ import inspect
 import pkgutil
 from typing import Callable, Dict
 
+from core.base.FormulaNotation import PostfixFormula, PrefixFormula
+
 # TODO: посмотреть откуда rich, возможно стоит добавить в requirements
 try:
     from rich.console import Console
@@ -15,7 +17,7 @@ try:
 except ImportError:
     RICH_AVAILABLE = False
 
-from core.base.Formula import FormulaTree, PostfixFormula, PrefixFormula
+from core.base.Formula import FormulaTree
 from core.base.Integer import Integer
 from core.base.Natural import Natural
 from core.base.Polynom import Polynom
@@ -210,7 +212,7 @@ def run_repl():
 
         except Exception as e:
             if RICH_AVAILABLE:
-                console.print(
+                console.print(  # type: ignore
                     Panel(  # type: ignore
                         Text(str(e), style="bold red"),
                         title="Ошибка",

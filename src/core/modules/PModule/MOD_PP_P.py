@@ -24,7 +24,7 @@ def MOD_PP_P(a: Polynom, b: Polynom) -> Polynom:
 
     if not (isinstance(a, Polynom) and isinstance(b, Polynom)):
         raise ValueError("Invalid value")
-    print(b)
+
     if b.is_zero():
         raise ZeroDivisionError("invalid value")
 
