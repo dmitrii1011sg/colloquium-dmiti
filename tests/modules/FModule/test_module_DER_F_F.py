@@ -1,5 +1,3 @@
-# Литвиненко Владимир 5381
-
 import pytest
 from core.base.Formula import FormulaTree
 from core.modules.FModule.DER_F_F import DER_F_F
@@ -18,6 +16,13 @@ from core.modules.FModule.DER_F_F import DER_F_F
         ("ln(x)", "(1 / x)"),
         ("tg(x)", "(1 / (cos(x) ^ 2))"),
         ("sqrt(x)", "(1 / (2 * sqrt(x)))"),
+        ("cos(x)", "(-sin(x))"),
+        ("5 - sin(x)", "(-cos(x))"),
+        ("sin(0 + x)", "cos(x)"),
+        ("(2/4) * x", "1/2"),
+        ("log(2, x)", "(1 / (x * ln(2)))"),
+        ("2^x", "((2 ^ x) * ln(2))"),
+        ("x^x", "((x ^ x) * (ln(x) + 1))"),
     ],
 )
 def test_der_f_f(expr, expected):
@@ -29,16 +34,21 @@ def test_der_f_f(expr, expected):
 
 def test_der_f_f_var():
     tree = FormulaTree.from_str("z^2 + z")
-    assert str(DER_F_F(tree, var="z")) == "((2 * (z ^ 1)) + 1)"
+    assert str(DER_F_F(tree, var="z")) == "((2 * z) + 1)"
     assert str(DER_F_F(tree, var="x")) == "0"
+
+
+def test_der_f_f_no_simplify():
+    tree = FormulaTree.from_str("sin(x)")
+    assert str(DER_F_F(tree, simplify=False)) == "(cos(x) * 1)"
 
 
 def test_der_f_f_structural_equality():
     tree = FormulaTree.from_str("x^2 + 5*x")
-    expected = FormulaTree.from_str("2*x^1 + 5")
+    expected = FormulaTree.from_str("2*x + 5")
     assert DER_F_F(tree) == expected
 
 
 def test_der_f_f_invalid_input():
     with pytest.raises(ValueError, match="Invalid value"):
-        DER_F_F("x")    # type: ignore
+        DER_F_F("x")  # type: ignore

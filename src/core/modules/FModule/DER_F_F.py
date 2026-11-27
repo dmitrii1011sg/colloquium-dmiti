@@ -2,9 +2,9 @@
 
 from core.base.Formula import FormulaNode, FormulaTree, NodeType
 from core.base.Rational import Rational
-from core.modules.QModule.SUB_QQ_Q import SUB_QQ_Q
-from core.modules.QModule.MUL_QQ_Q import MUL_QQ_Q
 from core.modules.QModule.DIV_QQ_Q import DIV_QQ_Q
+from core.modules.QModule.MUL_QQ_Q import MUL_QQ_Q
+from core.modules.QModule.SUB_QQ_Q import SUB_QQ_Q
 
 Q0 = Rational.from_str("0")
 Q1 = Rational.from_str("1")
@@ -64,11 +64,7 @@ def _zero(n: FormulaNode) -> bool:
     Returns:
         bool: True, если узел — NUMBER и его значение равно нулю
     """
-    return (
-        n.node_type == NodeType.NUMBER
-        and isinstance(n.value, Rational)
-        and n.value.is_zero()
-    )
+    return n.node_type == NodeType.NUMBER and isinstance(n.value, Rational) and n.value.is_zero()
 
 
 def _diff(n: FormulaNode, var: str) -> FormulaNode:
@@ -121,8 +117,8 @@ def _diff(n: FormulaNode, var: str) -> FormulaNode:
                     _op(
                         "+",
                         _op("*", _diff(v, var), _fn("ln", u)),
-                        _op("*", v, _op("/", _diff(u, var), u))
-                    )
+                        _op("*", v, _op("/", _diff(u, var), u)),
+                    ),
                 )
         raise ValueError(f"Неподдерживаемый оператор: {op!r}")
 
@@ -134,19 +130,26 @@ def _diff(n: FormulaNode, var: str) -> FormulaNode:
             num = _op(
                 "-",
                 _op("*", _op("/", dv, v), _fn("ln", u)),
-                _op("*", _fn("ln", v), _op("/", du, u))
+                _op("*", _fn("ln", v), _op("/", du, u)),
             )
             den = _op("^", _fn("ln", u), TWO)
             return _op("/", num, den)
         u = n.children[0]
         du = _diff(u, var)
-        if f == "sin":  return _op("*", _fn("cos", u), du)
-        if f == "cos":  return _op("u-", _op("*", _fn("sin", u), du))
-        if f == "tg":   return _op("/", du, _op("^", _fn("cos", u), TWO))
-        if f == "ctg":  return _op("u-", _op("/", du, _op("^", _fn("sin", u), TWO)))
-        if f == "sqrt": return _op("/", du, _op("*", TWO, _fn("sqrt", u)))
-        if f == "exp":  return _op("*", _fn("exp", u), du)
-        if f == "ln":   return _op("/", du, u)
+        if f == "sin":
+            return _op("*", _fn("cos", u), du)
+        if f == "cos":
+            return _op("u-", _op("*", _fn("sin", u), du))
+        if f == "tg":
+            return _op("/", du, _op("^", _fn("cos", u), TWO))
+        if f == "ctg":
+            return _op("u-", _op("/", du, _op("^", _fn("sin", u), TWO)))
+        if f == "sqrt":
+            return _op("/", du, _op("*", TWO, _fn("sqrt", u)))
+        if f == "exp":
+            return _op("*", _fn("exp", u), du)
+        if f == "ln":
+            return _op("/", du, u)
         raise ValueError(f"Неподдерживаемая функция: {f!r}")
 
     raise ValueError(f"Неподдерживаемый тип узла: {n.node_type!r}")
@@ -164,7 +167,7 @@ def _fold(n: FormulaNode) -> FormulaNode:
     """
     if n.node_type == NodeType.FUNCTION:
         return _fn(str(n.value), *[_fold(c) for c in n.children])
-    
+
     if n.node_type != NodeType.OPERATOR:
         return n
     k = [_fold(c) for c in n.children]
@@ -185,29 +188,61 @@ def _fold(n: FormulaNode) -> FormulaNode:
         and isinstance(u.value, Rational)
         and isinstance(v.value, Rational)
     ):
-        if op == "+": return _num(SUB_QQ_Q(u.value, SUB_QQ_Q(Q0, v.value)))
-        if op == "-": return _num(SUB_QQ_Q(u.value, v.value))
-        if op == "*": return _num(MUL_QQ_Q(u.value, v.value))
-        if op == "/" and not v.value.is_zero(): return _num(DIV_QQ_Q(u.value, v.value))
+        if op == "+":
+            return _num(SUB_QQ_Q(u.value, SUB_QQ_Q(Q0, v.value)))
+        if op == "-":
+            return _num(SUB_QQ_Q(u.value, v.value))
+        if op == "*":
+            return _num(MUL_QQ_Q(u.value, v.value))
+        if op == "/" and not v.value.is_zero():
+            return _num(DIV_QQ_Q(u.value, v.value))
 
     if op == "+":
-        if _zero(u): return v
-        if _zero(v): return u
+        if _zero(u):
+            return v
+        if _zero(v):
+            return u
     elif op == "-":
-        if _zero(u): return _op("u-", v)
-        if _zero(v): return u
+        if _zero(u):
+            return _op("u-", v)
+        if _zero(v):
+            return u
     elif op == "*":
-        if _zero(u) or _zero(v): return ZERO
-        if u == ONE: return v
-        if v == ONE: return u
+        if _zero(u) or _zero(v):
+            return ZERO
+        if u == ONE:
+            return v
+        if v == ONE:
+            return u
+        if v.node_type == NodeType.OPERATOR and v.value == "/" and v.children[0] == ONE:
+            if u == v.children[1]:
+                return ONE
+        if u.node_type == NodeType.OPERATOR and u.value == "/" and u.children[0] == ONE:
+            if v == u.children[1]:
+                return ONE
     elif op == "/":
-        if _zero(u): return ZERO
-        if v == ONE: return u
+        if _zero(u):
+            return ZERO
+        if v == ONE:
+            return u
+        if v.node_type == NodeType.OPERATOR and v.value == "^" and v.children[1] == TWO:
+            b_node = v.children[0]
+            if u.node_type == NodeType.OPERATOR and u.value == "*":
+                if u.children[0] == b_node:
+                    return _fold(_op("/", u.children[1], b_node))
+                if u.children[1] == b_node:
+                    return _fold(_op("/", u.children[0], b_node))
+        if u.node_type == NodeType.OPERATOR and u.value == "/":
+            return _fold(_op("/", u.children[0], _op("*", u.children[1], v)))
     elif op == "^":
-        if v == ONE: return u
-        if _zero(v): return ONE
-        if _zero(u): return ZERO
-        if u == ONE: return ONE
+        if v == ONE:
+            return u
+        if _zero(v):
+            return ONE
+        if _zero(u):
+            return ZERO
+        if u == ONE:
+            return ONE
 
     return _op(op, u, v)
 
