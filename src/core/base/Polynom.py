@@ -108,14 +108,12 @@ class Polynom:
                 prefix_end = start - 1
             elif left_char not in ("", "("):
                 raise ValueError(
-                    f"Multiplication by bracketed group is not supported: "
-                    f"'{left_char}('"
+                    f"Multiplication by bracketed group is not supported: '{left_char}('"
                 )
 
             if right_char not in ("", "+", "-", ")"):
                 raise ValueError(
-                    f"Multiplication by bracketed group is not supported: "
-                    f"')${right_char}'"
+                    f"Multiplication by bracketed group is not supported: ')${right_char}'"
                 )
 
             if sign_char == "-":
@@ -213,9 +211,7 @@ class Polynom:
                 coeff = Rational.from_str(coeff_part)
 
             if degree in poly_dict:
-                raise ValueError(
-                    f"Duplicate degree {degree} is not supported"
-                )
+                raise ValueError(f"Duplicate degree {degree} is not supported")
             poly_dict[degree] = coeff
             max_degree = max(max_degree, degree)
 

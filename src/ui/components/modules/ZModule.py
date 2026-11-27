@@ -1,5 +1,6 @@
 import flet as ft
 from core.modules.ZModule.ABS_Z_N import ABS_Z_N
+from core.modules.ZModule.ADD_ZZ_Z import ADD_ZZ_Z
 from core.modules.ZModule.DIV_ZZ_Z import DIV_ZZ_Z
 from core.modules.ZModule.MOD_ZZ_Z import MOD_ZZ_Z
 from core.modules.ZModule.MUL_ZM_Z import MUL_ZM_Z
@@ -8,7 +9,6 @@ from core.modules.ZModule.POZ_Z_D import POZ_Z_D
 from core.modules.ZModule.SUB_ZZ_Z import SUB_ZZ_Z
 from core.modules.ZModule.TRANS_N_Z import TRANS_N_Z
 from core.modules.ZModule.TRANS_Z_N import TRANS_Z_N
-from core.modules.ZModule.ADD_ZZ_Z import ADD_ZZ_Z
 from ui.components.forms.dynamic_func_form import DynamicFuncForm
 
 # Горшков Дмитрий 5381

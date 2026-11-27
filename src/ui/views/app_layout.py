@@ -1,5 +1,6 @@
 import flet as ft
 from ui.components.forms.smart_calculator import SmartCalculator
+from ui.components.modules.FModule import FModule
 from ui.components.modules.NModule import NModule
 from ui.components.modules.PModule import PModule
 from ui.components.modules.QModule import QModule
@@ -25,7 +26,8 @@ class AppLayout(ft.Row):
             1: ZModule(),
             2: QModule(),
             3: PModule(),
-            4: SmartCalculator(),
+            4: FModule(),
+            5: SmartCalculator(),
         }
 
         self.content_area = ft.Container(
