@@ -17,7 +17,6 @@ def INT_Q_B(n: Rational) -> bool:
     Returns:
         bool: True, если число целое; False, если нет.
     """
-    print(str(n), str(RED_Q_Q(n)))
     if not isinstance(n, Rational):
         raise ValueError("Invalid value")
 

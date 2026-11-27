@@ -8,34 +8,20 @@ from typing import Iterable, Union
 from core.base.FormulaLexer import (
     ALL_OPERATORS,
     ALLOWED_FUNCTIONS,
-    BINARY_OPERATORS,
-    OPERATOR_PRECEDENCE,
-    RIGHT_ASSOCIATIVE,
     UNARY_OPERATORS,
     Token,
     infix_tokens_to_postfix,
     tokenize_infix,
 )
-from core.base.FormulaNotation import PostfixFormula, PrefixFormula
+from core.base.Integer import Integer
 from core.base.Rational import Rational
 from core.modules.QModule.RED_Q_Q import RED_Q_Q
 from core.modules.QModule.SUB_QQ_Q import SUB_QQ_Q
 
 __all__ = [
-    "ALL_OPERATORS",
-    "ALLOWED_FUNCTIONS",
-    "BINARY_OPERATORS",
-    "OPERATOR_PRECEDENCE",
-    "RIGHT_ASSOCIATIVE",
-    "UNARY_OPERATORS",
     "FormulaNode",
     "FormulaTree",
     "NodeType",
-    "PostfixFormula",
-    "PrefixFormula",
-    "Token",
-    "infix_tokens_to_postfix",
-    "tokenize_infix",
 ]
 
 
@@ -112,6 +98,57 @@ class FormulaNode:
                 raise ValueError(f"Некорректная функция '{value}' или число аргументов")
             self.value = str(value)
 
+    @classmethod
+    def number(cls, val: Rational | Integer | int | str) -> FormulaNode:
+        if isinstance(val, Rational):
+            q = val
+        elif isinstance(val, Integer):
+            q = Rational.from_str(str(val))
+        elif isinstance(val, int):
+            q = Rational.from_str(str(val))
+        elif isinstance(val, str):
+            q = Rational.from_str(val)
+        else:
+            raise ValueError(f"Невозможно привести {val!r} к Rational")
+        return cls(NodeType.NUMBER, q)
+
+    @classmethod
+    def var(cls, name: str) -> FormulaNode:
+        return cls(NodeType.VARIABLE, name)
+
+    @classmethod
+    def op(cls, symbol: str, *operands: FormulaNode) -> FormulaNode:
+        return cls(NodeType.OPERATOR, symbol, list(operands))
+
+    @classmethod
+    def func(cls, name: str, *args: FormulaNode) -> FormulaNode:
+        return cls(NodeType.FUNCTION, name, list(args))
+
+    @property
+    def is_number(self) -> bool:
+        return self.node_type == NodeType.NUMBER
+
+    @property
+    def is_var(self) -> bool:
+        return self.node_type == NodeType.VARIABLE
+
+    @property
+    def is_op(self) -> bool:
+        return self.node_type == NodeType.OPERATOR
+
+    @property
+    def is_func(self) -> bool:
+        return self.node_type == NodeType.FUNCTION
+
+    def is_zero(self) -> bool:
+        return isinstance(self.value, Rational) and self.value.is_zero()
+
+    def is_one(self) -> bool:
+        return (
+            isinstance(self.value, Rational)
+            and SUB_QQ_Q(self.value, Rational.from_str("1")).is_zero()
+        )
+
     def copy(self) -> FormulaNode:
         """
         Создание глубокой копии поддерева с корнем в текущем узле.
@@ -149,6 +186,19 @@ class FormulaNode:
             lines.append(child.to_ascii_tree(next_prefix, i == len(self.children) - 1, False))
         return "\n".join(lines)
 
+    def to_full_parens_str(self) -> str:
+        """Формирование строковой записи поддерева с полной расстановкой скобок."""
+        if self.node_type in (NodeType.NUMBER, NodeType.VARIABLE):
+            return str(self.value)
+        if self.node_type == NodeType.OPERATOR:
+            if self.value == "u-":
+                return f"(-{self.children[0].to_full_parens_str()})"
+            left = self.children[0].to_full_parens_str()
+            right = self.children[1].to_full_parens_str()
+            return f"({left} {self.value} {right})"
+        args = ", ".join(c.to_full_parens_str() for c in self.children)
+        return f"{self.value}({args})"
+
     def __eq__(self, other: object) -> bool:
         """
         Структурное сравнение двух поддеревьев.
@@ -174,13 +224,7 @@ class FormulaNode:
         Returns:
             str: Полная скобочная запись поддерева.
         """
-        if self.node_type in (NodeType.NUMBER, NodeType.VARIABLE):
-            return str(self.value)
-        if self.node_type == NodeType.OPERATOR:
-            if self.value == "u-":
-                return f"(-{self.children[0]})"
-            return f"({self.children[0]} {self.value} {self.children[1]})"
-        return f"{self.value}({', '.join(str(c) for c in self.children)})"
+        return self.to_full_parens_str()
 
     def __repr__(self) -> str:
         """
@@ -316,7 +360,7 @@ class FormulaTree:
         Returns:
             str: Полная скобочная запись формулы.
         """
-        return str(self.root)
+        return self.root.to_full_parens_str()
 
     def __repr__(self) -> str:
         """
