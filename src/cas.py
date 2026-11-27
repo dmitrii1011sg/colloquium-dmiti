@@ -59,6 +59,10 @@ def cast_argument(value_str: str, target_type):
         return value_str
     if target_type in (int, str, float):
         return target_type(value_str)
+    if target_type == (FormulaTree | PostfixFormula):
+        if value_str.startswith("post:"):
+            return PostfixFormula.from_str(value_str.removeprefix("post:"))
+        return FormulaTree.from_str(value_str)
     if target_type in (
         Natural,
         Integer,
@@ -145,7 +149,11 @@ def main():
         help="Запустить интерактивный режим (REPL)",
     )
     parser.add_argument("command", nargs="?", help="Имя функции (например, ADD_NN_N)")
-    parser.add_argument("args", nargs=argparse.REMAINDER, help="Аргументы для функции")
+    parser.add_argument(
+        "args",
+        nargs=argparse.REMAINDER,
+        help="Аргументы для функции. Для постфикса в TO-7 и TO-8 используйте префикс post:",
+    )
 
     args = parser.parse_args()
 
