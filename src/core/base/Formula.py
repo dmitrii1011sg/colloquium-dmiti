@@ -3,11 +3,14 @@
 from __future__ import annotations
 
 from enum import IntEnum, auto
-from typing import Iterable, Union
+from io import StringIO
+from typing import Callable, Iterable, Union
 
 from core.base.FormulaLexer import (
     ALL_OPERATORS,
     ALLOWED_FUNCTIONS,
+    OPERATOR_PRECEDENCE,
+    RIGHT_ASSOCIATIVE,
     UNARY_OPERATORS,
     Token,
     infix_tokens_to_postfix,
@@ -22,7 +25,19 @@ __all__ = [
     "FormulaNode",
     "FormulaTree",
     "NodeType",
+    "needs_parentheses",
 ]
+
+
+def needs_parentheses(operator: str, parent: str | None, right_child: bool) -> bool:
+    """Нужны ли скобки для сохранения связи двух операторов при повторном разборе."""
+    if parent is None:
+        return False
+    precedence = OPERATOR_PRECEDENCE[operator]
+    parent_precedence = OPERATOR_PRECEDENCE[parent]
+    if precedence != parent_precedence:
+        return precedence < parent_precedence
+    return not right_child if parent in RIGHT_ASSOCIATIVE else right_child
 
 
 class NodeType(IntEnum):
@@ -340,6 +355,59 @@ class FormulaTree:
             str: Строковое дерево с отступами и ветвлением.
         """
         return self.root.to_ascii_tree()
+
+    def rewrite_parentheses(
+        self,
+        text: str,
+        keep_operator: Callable[[str, str | None, bool], bool],
+    ) -> str:
+        """Изменить скобки в полной скобочной записи этого дерева по заданному правилу."""
+        source = StringIO(text)
+        parts: list[str] = []
+
+        def visit(node: FormulaNode, parent: str | None = None, right_child: bool = False) -> None:
+            """Прочитать из исходной записи фрагмент, соответствующий текущему узлу."""
+            if node.node_type in (NodeType.NUMBER, NodeType.VARIABLE):
+                value = source.read(len(str(node.value)))
+                # Знак отрицательного числа при повторном разборе становится оператором.
+                if (
+                    node.is_number
+                    and value.startswith("-")
+                    and needs_parentheses("u-", parent, right_child)
+                ):
+                    value = f"({value})"
+                parts.append(value)
+                return
+
+            if node.node_type == NodeType.FUNCTION:
+                parts.append(source.read(len(str(node.value)) + 1))
+                for index, child in enumerate(node.children):
+                    if index:
+                        parts.append(source.read(2))  # Запятая и пробел.
+                    visit(child)
+                parts.append(source.read(1))
+                return
+
+            operator = str(node.value)
+            keep = keep_operator(operator, parent, right_child)
+            opening = source.read(1)
+            if keep:
+                parts.append(opening)
+
+            if operator == "u-":
+                parts.append(source.read(1))
+                visit(node.children[0], operator, right_child=True)
+            else:
+                visit(node.children[0], operator)
+                parts.append(source.read(len(operator) + 2))  # Оператор с пробелами.
+                visit(node.children[1], operator, right_child=True)
+
+            closing = source.read(1)
+            if keep:
+                parts.append(closing)
+
+        visit(self.root)
+        return "".join(parts)
 
     def __eq__(self, other: object) -> bool:
         """
